@@ -4,7 +4,7 @@ import "./globals.css";
 const SITE_TITLE = "첫칸 | 노베이스 수능 학습 코치";
 const SITE_DESCRIPTION =
   "기초 개념부터 단어 복습, EBS 강의 연계까지 오늘 할 공부를 한 칸씩 안내하는 수능 학습 코치입니다.";
-const METADATA_ORIGIN = "http://localhost:3000";
+const METADATA_ORIGIN = "https://first-kan-study.blessedjsb.chatgpt.site";
 
 export function generateMetadata(): Metadata {
   const metadataBase = new URL(METADATA_ORIGIN);
