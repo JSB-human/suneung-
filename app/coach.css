@@ -1,0 +1,272 @@
+.encouragement-coach {
+  margin: 0 0 16px;
+}
+
+.encouragement-card {
+  position: relative;
+  overflow: hidden;
+  padding: 18px;
+  border: 1px solid #d6e8ad;
+  border-radius: 24px;
+  background:
+    radial-gradient(circle at 100% 0%, rgb(210 241 139 / 55%), transparent 42%),
+    linear-gradient(135deg, #fbfff4 0%, #f2f8e7 100%);
+  box-shadow: var(--shadow-sm);
+}
+
+.encouragement-card::after {
+  position: absolute;
+  right: -28px;
+  bottom: -34px;
+  width: 100px;
+  height: 100px;
+  border: 18px solid rgb(88 126 54 / 8%);
+  border-radius: 50%;
+  content: "";
+}
+
+.encouragement-visual {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 14px;
+  align-items: center;
+}
+
+.encouragement-bubble {
+  position: relative;
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid rgb(95 126 66 / 16%);
+  border-radius: 18px 18px 18px 6px;
+  background: rgb(255 255 255 / 82%);
+}
+
+.encouragement-bubble::before {
+  position: absolute;
+  left: -8px;
+  bottom: 18px;
+  width: 14px;
+  height: 14px;
+  border-bottom: 1px solid rgb(95 126 66 / 16%);
+  border-left: 1px solid rgb(95 126 66 / 16%);
+  background: #fbfdf7;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.encouragement-eyebrow {
+  margin: 0 0 5px;
+  color: #587b35;
+  font-size: 11px;
+  font-weight: 950;
+  letter-spacing: 0.035em;
+}
+
+.encouragement-bubble h2 {
+  margin: 0;
+  color: var(--ink-strong);
+  font-size: 17px;
+  line-height: 1.4;
+  letter-spacing: -0.035em;
+}
+
+.encouragement-bubble > p:not(.encouragement-eyebrow) {
+  margin: 8px 0 0;
+  color: #667062;
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.encouragement-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.encouragement-meta span {
+  padding: 5px 8px;
+  border: 1px solid #dbe7c4;
+  border-radius: 999px;
+  background: #f6faee;
+  color: #46642c;
+  font-size: 10px;
+  font-weight: 900;
+}
+
+.encouragement-actions {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.coach-mascot {
+  position: relative;
+  width: 78px;
+  height: 96px;
+  margin: 0 auto;
+  filter: drop-shadow(0 9px 10px rgb(54 83 39 / 15%));
+}
+
+.coach-face {
+  position: absolute;
+  z-index: 2;
+  top: 7px;
+  left: 6px;
+  width: 66px;
+  height: 64px;
+  border: 3px solid #254d3e;
+  border-radius: 46% 46% 48% 48%;
+  background: #fff8df;
+}
+
+.coach-body {
+  position: absolute;
+  left: 15px;
+  bottom: 0;
+  width: 48px;
+  height: 42px;
+  border: 3px solid #254d3e;
+  border-radius: 22px 22px 14px 14px;
+  background: #9acb61;
+}
+
+.coach-hair {
+  position: absolute;
+  z-index: 3;
+  top: -13px;
+  width: 34px;
+  height: 28px;
+  border: 3px solid #254d3e;
+  background: #77b84e;
+}
+
+.coach-hair-left {
+  left: 2px;
+  border-radius: 32px 5px 28px 6px;
+  transform: rotate(-18deg);
+}
+
+.coach-hair-right {
+  right: 2px;
+  border-radius: 5px 32px 6px 28px;
+  transform: rotate(18deg);
+}
+
+.coach-eye {
+  position: absolute;
+  top: 27px;
+  width: 6px;
+  height: 9px;
+  border-radius: 50%;
+  background: #254d3e;
+}
+
+.coach-eye-left {
+  left: 18px;
+}
+
+.coach-eye-right {
+  right: 18px;
+}
+
+.coach-cheek {
+  position: absolute;
+  top: 39px;
+  width: 10px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f0a99a;
+  opacity: 0.72;
+}
+
+.coach-cheek-left {
+  left: 8px;
+}
+
+.coach-cheek-right {
+  right: 8px;
+}
+
+.coach-mouth {
+  position: absolute;
+  left: 50%;
+  top: 39px;
+  width: 14px;
+  height: 8px;
+  border-bottom: 3px solid #254d3e;
+  border-radius: 0 0 14px 14px;
+  transform: translateX(-50%);
+}
+
+@media (min-width: 680px) {
+  .encouragement-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 18px;
+    align-items: center;
+    padding: 22px;
+  }
+
+  .encouragement-visual {
+    grid-template-columns: 104px minmax(0, 1fr);
+  }
+
+  .coach-mascot {
+    transform: scale(1.12);
+  }
+
+  .encouragement-bubble h2 {
+    font-size: 19px;
+  }
+
+  .encouragement-actions {
+    grid-template-columns: 1fr;
+    min-width: 150px;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 390px) {
+  .encouragement-card {
+    padding: 14px;
+    border-radius: 21px;
+  }
+
+  .encouragement-visual {
+    grid-template-columns: 68px minmax(0, 1fr);
+    gap: 9px;
+  }
+
+  .coach-mascot {
+    transform: scale(0.84);
+  }
+
+  .encouragement-bubble {
+    padding: 12px;
+  }
+
+  .encouragement-bubble h2 {
+    font-size: 14px;
+  }
+
+  .encouragement-bubble > p:not(.encouragement-eyebrow) {
+    font-size: 11px;
+  }
+
+  .encouragement-meta span {
+    padding: 4px 6px;
+    font-size: 9px;
+  }
+
+  .encouragement-actions .primary-action,
+  .encouragement-actions .secondary-action {
+    padding: 0 10px;
+    font-size: 12px;
+  }
+}

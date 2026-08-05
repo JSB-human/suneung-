@@ -1,9 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import "./coach.css";
 
-const SITE_TITLE = "첫칸 | 노베이스 수능 학습 코치";
+const SITE_TITLE = "수능人 | 국영수 노베이스 입시 로드맵";
 const SITE_DESCRIPTION =
-  "기초 개념부터 단어 복습, EBS 강의 연계까지 오늘 할 공부를 한 칸씩 안내하는 수능 학습 코치입니다.";
+  "국어·영어·수학 상세 로드맵, 수학 개념 문제, SRS 단어장, EBS 공식 입문 강의 연결을 한 화면에서 관리하는 모바일 입시 학습 코치입니다.";
 const METADATA_ORIGIN = "https://first-kan-study.blessedjsb.chatgpt.site";
 
 export function generateMetadata(): Metadata {
@@ -14,30 +15,40 @@ export function generateMetadata(): Metadata {
     metadataBase,
     title: {
       default: SITE_TITLE,
-      template: "%s | 첫칸",
+      template: "%s | 수능人",
     },
     description: SITE_DESCRIPTION,
-    applicationName: "첫칸",
-    keywords: ["수능", "입시", "노베이스", "EBS", "학습관리", "단어장"],
+    applicationName: "수능人",
+    keywords: [
+      "수능",
+      "입시",
+      "노베이스",
+      "국어 공부법",
+      "영어 단어장",
+      "수학 문제",
+      "EBSi",
+      "SRS 단어장",
+      "학습관리",
+    ],
     openGraph: {
       title: SITE_TITLE,
-      description: "막막한 수능 공부, 오늘 할 한 칸부터 시작하세요.",
+      description: SITE_DESCRIPTION,
       type: "website",
       locale: "ko_KR",
-      siteName: "첫칸",
+      siteName: "수능人",
       images: [
         {
           url: socialImage,
-          width: 1735,
-          height: 909,
-          alt: "첫칸 - 노베이스 수능생의 오늘 할 한 칸",
+          width: 1672,
+          height: 941,
+          alt: "수능人 - 국영수 노베이스 입시 로드맵, 수학 문제, SRS 단어장, EBS 연결",
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
       title: SITE_TITLE,
-      description: "막막한 수능 공부, 오늘 할 한 칸부터 시작하세요.",
+      description: SITE_DESCRIPTION,
       images: [socialImage],
     },
   };
@@ -46,7 +57,8 @@ export function generateMetadata(): Metadata {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#f3f5ef",
+  viewportFit: "cover",
+  themeColor: "#0d261f",
   colorScheme: "light",
 };
 
