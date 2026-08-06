@@ -1,5 +1,6 @@
 import type { Rng } from "../rng.ts";
 import type { Level, QuestionBody, QuestionGenerator } from "../types.ts";
+import { formatQuadratic } from "../math-format.ts";
 import { buildChoices, type DistractorCandidate } from "./choice-builder.ts";
 
 type LevelRange = {
@@ -64,6 +65,53 @@ const generateLinearEquation: QuestionGenerator = (rng: Rng, level: Level): Ques
   };
 };
 
+function formatBinomial(coefficient: number, constant: number): string {
+  const head = coefficient === 1 ? "x" : coefficient === -1 ? "-x" : `${coefficient}x`;
+  return `(${head} ${constant < 0 ? "-" : "+"} ${Math.abs(constant)})`;
+}
+
+const generatePolynomialExpansion: QuestionGenerator = (rng: Rng, level: Level): QuestionBody => {
+  const range = LEVEL_RANGE[level];
+  const leadA = level === 1 ? 1 : rng.int(1, 3);
+  const leadC = level === 3 ? rng.int(1, 3) : 1;
+  const constantB = rng.nonZeroInt(-Math.min(range.constantMax, 9), Math.min(range.constantMax, 9));
+  const constantD = rng.nonZeroInt(-Math.min(range.constantMax, 9), Math.min(range.constantMax, 9));
+
+  const squareTerm = leadA * leadC;
+  const middleTerm = leadA * constantD + constantB * leadC;
+  const constantTerm = constantB * constantD;
+
+  const answer = formatQuadratic(squareTerm, middleTerm, constantTerm);
+  const prompt = `${formatBinomial(leadA, constantB)}${formatBinomial(leadC, constantD)} 를 전개하면?`;
+
+  const candidates: DistractorCandidate[] = [
+    { value: formatQuadratic(squareTerm, 0, constantTerm), mistakeTag: "missing-cross" },
+    { value: formatQuadratic(squareTerm, middleTerm, -constantTerm), mistakeTag: "constant-sign" },
+    { value: formatQuadratic(squareTerm, -middleTerm, constantTerm), mistakeTag: "middle-sign" },
+    { value: formatQuadratic(squareTerm, constantB + constantD, constantTerm), mistakeTag: "cross-add-only" },
+  ].filter((candidate) => candidate.value !== answer);
+
+  return {
+    prompt,
+    inputLabel: "전개한 식",
+    choices: buildChoices(rng, answer, candidates),
+    acceptableAnswers: [answer],
+    steps: [
+      "앞의 각 항을 뒤의 각 항에 모두 곱한다 (분배법칙).",
+      `x² 항: ${leadA} × ${leadC} = ${squareTerm}`,
+      `x 항: ${leadA} × (${constantD}) + (${constantB}) × ${leadC} = ${middleTerm}`,
+      `상수항: (${constantB}) × (${constantD}) = ${constantTerm}`,
+      `정리하면 ${answer}`,
+    ],
+    hints: [
+      "곱셈공식이야. 괄호 두 개를 항끼리 모두 곱해.",
+      "빠뜨리기 쉬운 건 가운데 x항이야. 바깥끼리, 안쪽끼리 곱한 걸 더해야 해.",
+      `x² 항은 ${squareTerm}, 상수항은 ${constantTerm}. 가운데 항만 남았어.`,
+    ],
+  };
+};
+
 export const MATH_GENERATORS: Record<string, QuestionGenerator> = {
   "ma-linear-eq": generateLinearEquation,
+  "ma-poly-expand": generatePolynomialExpansion,
 };
