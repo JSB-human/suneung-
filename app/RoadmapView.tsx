@@ -112,6 +112,16 @@ export default function RoadmapView({
                   </summary>
                   <div className="unit-body">
                     <div className="unit-goal"><strong>이번 주 목표</strong><br />{unit.goal}</div>
+                    {unit.summaryKeyPoints && unit.summaryKeyPoints.length > 0 ? (
+                      <div className="unit-summary-box">
+                        <strong>📌 이번 주차 핵심 요점정리</strong>
+                        <ul>
+                          {unit.summaryKeyPoints.map((point) => (
+                            <li key={point}>{point}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
                     <div className="unit-columns">
                       <section className="unit-section">
                         <h4>배울 것</h4>
@@ -135,16 +145,14 @@ export default function RoadmapView({
                       <button type="button" className="secondary-action" onClick={onOpenNotes}>
                         연결 개념 학습하기
                       </button>
-                      {activeEbsLink ? (
-                        <a
-                          className="ebs-link"
-                          href={activeEbsLink.href}
-                          target="_blank"
-                          rel="noreferrer noopener"
-                        >
-                          {activeEbsLink.title} ↗
-                        </a>
-                      ) : null}
+                      <a
+                        className="ebs-link"
+                        href={unit.youtubeUrl || activeEbsLink?.href || `https://www.youtube.com/results?search_query=EBS+${guide.label}+${encodeURIComponent(unit.title)}`}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        🎥 추천 EBS/유튜브 강좌 시청 ↗
+                      </a>
                     </div>
                   </div>
                 </details>

@@ -15,10 +15,12 @@ export type RoadmapUnit = {
   phase: string;
   title: string;
   goal: string;
+  summaryKeyPoints?: string[];
   learn: string[];
   routine: string[];
   checkpoint: string;
   noteIds: string[];
+  youtubeUrl?: string;
 };
 
 export type CoreNote = {
@@ -119,10 +121,16 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       phase: "읽기 체력",
       title: "문장 성분과 중심 문장",
       goal: "긴 문장을 주어·서술어 중심으로 끊고 핵심 내용을 한 줄로 말한다.",
+      summaryKeyPoints: [
+        "긴 문장에서 '주어(누가)'와 '서술어(무엇을 한다)'를 가장 먼저 괄호로 묶습니다.",
+        "꾸며주는 말(수식어)을 덜어내면 아무리 길고 어려운 문장도 한눈에 파악됩니다.",
+        "문단마다 가장 핵심이 되는 문장에 밑줄을 치고 한 줄로 요약하는 연습을 합니다.",
+      ],
       learn: ["주어·서술어·목적어", "수식어 덜어내기", "중심 문장과 뒷받침 문장"],
       routine: ["개념 노트 10분", "문장 5개 표시 20분", "한 줄 요약 10분"],
       checkpoint: "처음 보는 문장 5개 중 4개에서 주어와 서술어를 찾으면 통과",
       noteIds: ["ko-sentence"],
+      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+윤혜정+문장성분",
     },
     {
       id: "ko-02",
@@ -130,10 +138,16 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       phase: "읽기 체력",
       title: "접속어와 문단 관계",
       goal: "그러나·따라서·예를 들어가 앞뒤 내용을 어떻게 잇는지 설명한다.",
+      summaryKeyPoints: [
+        "'그러나(대조)', '따라서(인과)', '예를 들어(예시)' 접속어는 문단의 논리적 방향을 결정합니다.",
+        "접속어에 표시하면서 앞문단과 뒷문단이 어떻게 연결되는지 파악합니다.",
+        "글 전체가 주장-근거인지, 문제-해결인지 틀을 세우며 읽습니다.",
+      ],
       learn: ["대조·인과·예시", "문단별 한 줄 요약", "글 전체 흐름"],
       routine: ["접속어 분류 10분", "짧은 문단 3개 20분", "구조 화살표 10분"],
       checkpoint: "3문단 글을 ‘주장→근거→예시’처럼 구조화하면 통과",
       noteIds: ["ko-structure"],
+      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+문단관계",
     },
     {
       id: "ko-03",
@@ -141,10 +155,16 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       phase: "읽기 체력",
       title: "어휘를 문맥으로 추론하기",
       goal: "낯선 말이 나와도 앞뒤 설명과 반대말을 이용해 뜻의 범위를 좁힌다.",
+      summaryKeyPoints: [
+        "모르는 단어가 나와도 당황하지 않고 앞뒤 문맥과 반대말에서 힌트를 얻습니다.",
+        "지문 안에서 정의나 예시가 나온 부분에 표시해 단어의 범위를 좁힙니다.",
+        "어휘 문제는 지문 속 문맥상 의미로 바꾸어 대입해 검증합니다.",
+      ],
       learn: ["정의·재진술", "상위어·하위어", "문맥상 의미"],
       routine: ["기초 어휘 10분", "문맥 추론 5문항 20분", "근거 밑줄 10분"],
       checkpoint: "뜻을 몰랐던 단어 5개 중 3개 이상을 문맥 근거로 설명하면 통과",
       noteIds: ["ko-vocab-context"],
+      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+어휘추론",
     },
     {
       id: "ko-04",
@@ -152,10 +172,16 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       phase: "독서 기초",
       title: "사실·주장·근거 구분",
       goal: "필자의 주장과 이를 뒷받침하는 근거를 분리해 읽는다.",
+      summaryKeyPoints: [
+        "객관적 사실과 필자의 주관적 의견/주장을 명확히 분리합니다.",
+        "주장을 뒷받침하는 구체적 근거 문장이 어디에 있는지 표시합니다.",
+        "선지의 각 단어가 지문 속 근거 문장과 정확히 일치하는지 비교합니다.",
+      ],
       learn: ["사실과 의견", "주장과 근거", "반론과 재반박"],
       routine: ["개념 10분", "인문·사회 글 1개 25분", "선지 근거 15분"],
       checkpoint: "각 선지의 판단 근거가 있는 문장을 정확히 가리키면 통과",
       noteIds: ["ko-claim"],
+      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+윤혜정+주장과근거",
     },
     {
       id: "ko-05",
@@ -163,10 +189,16 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       phase: "독서 기초",
       title: "비교·대조와 개념 관계",
       goal: "두 대상의 공통점과 차이점을 표로 바꿔 읽는다.",
+      summaryKeyPoints: [
+        "두 개념이나 대상이 나오면 공통점과 차이점을 표로 메모하며 읽습니다.",
+        "비교 기준(원인, 결과, 성질 등)을 찾으면 문제가 쉽게 풀립니다.",
+        "A와 B의 차이점을 묻는 선지는 지문의 대조 표현에서 직결됩니다.",
+      ],
       learn: ["비교 기준", "공통점·차이점", "조건에 따른 변화"],
       routine: ["관계어 확인 10분", "과학·기술 글 1개 25분", "비교표 15분"],
       checkpoint: "두 개념을 기준 3개로 비교한 표를 완성하면 통과",
       noteIds: ["ko-structure", "ko-claim"],
+      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+비교대조",
     },
     {
       id: "ko-06",
@@ -174,10 +206,16 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       phase: "독서 기초",
       title: "문제·원인·해결 구조",
       goal: "기술·사회 지문의 과정과 인과 관계를 순서도로 정리한다.",
+      summaryKeyPoints: [
+        "과학·기술 지문은 '원인→결과' 및 '작동 과정 순서'가 핵심입니다.",
+        "순서나 과정이 나타나면 1-2-3 번호를 붙이며 읽습니다.",
+        "문제 상황과 필자가 제시하는 해결책의 한계를 구분합니다.",
+      ],
       learn: ["원인과 결과", "과정의 순서", "해결책의 한계"],
       routine: ["인과 표현 10분", "지문 1개 25분", "과정도 15분"],
       checkpoint: "지문을 5칸 이내 순서도로 바꾸고 조건을 빠뜨리지 않으면 통과",
       noteIds: ["ko-process"],
+      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+과정지문",
     },
     {
       id: "ko-07",
@@ -185,10 +223,16 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       phase: "문학 기초",
       title: "시: 화자·상황·정서",
       goal: "시적 화자가 처한 상황과 정서가 바뀌는 지점을 찾는다.",
+      summaryKeyPoints: [
+        "시적 화자가 처한 '상황(시간/공간)'과 '정서(기쁨/슬픔/체념)'를 파악합니다.",
+        "시어의 긍정(+)과 부정(-) 뉘앙스를 문맥으로 구분합니다.",
+        "시적 표현(비유, 상징, 역설)이 정서를 어떻게 강조하는지 봅니다.",
+      ],
       learn: ["화자와 대상", "정서·태도", "심상과 표현 효과"],
       routine: ["개념어 10분", "작품 2편 25분", "근거 시어 표시 15분"],
       checkpoint: "정서를 말하고 그 근거가 되는 시어 2개를 찾으면 통과",
       noteIds: ["ko-poetry"],
+      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+윤혜정+시분석",
     },
     {
       id: "ko-08",
@@ -196,10 +240,16 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       phase: "문학 기초",
       title: "소설: 인물·사건·서술자",
       goal: "인물 관계와 갈등, 서술자의 위치를 기준으로 장면을 읽는다.",
+      summaryKeyPoints: [
+        "소설은 '인물 간 갈등(내적/외적)'과 '말과 행동'이 중심입니다.",
+        "인물 관계도를 머릿속이나 여백에 그리며 읽으면 장면이 이해됩니다.",
+        "서술자가 작품 안에 있는지(1인칭) 밖에서 보는지(3인칭) 파악합니다.",
+      ],
       learn: ["외적·내적 갈등", "서술 시점", "인물의 말과 행동"],
       routine: ["개념 10분", "짧은 장면 1개 25분", "인물 관계도 15분"],
       checkpoint: "갈등의 원인과 변화 전후를 인물 관계도로 설명하면 통과",
       noteIds: ["ko-fiction"],
+      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+소설시점",
     },
     {
       id: "ko-09",
@@ -207,10 +257,16 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       phase: "문학 기초",
       title: "고전 문학의 낯선 말 넘기",
       goal: "필수 고어와 상황 단서를 활용해 고전시가·고전소설의 큰 흐름을 잡는다.",
+      summaryKeyPoints: [
+        "고전시가는 자주 나오는 시어(달, 임, 님, 님향한 뜻)를 미리 외웁니다.",
+        "현대어 풀이에 집착하기보다 시적 화자의 태도(충정, 자연찬미, 이별)를 잡습니다.",
+        "양반의 시가와 서민의 가사를 주제별로 묶어 읽습니다.",
+      ],
       learn: ["필수 고어", "관습적 소재", "현대어 풀이의 원칙"],
       routine: ["고어 10개 10분", "작품 1편 25분", "현대어 요약 15분"],
       checkpoint: "작품 상황을 인물·장소·사건 3요소로 요약하면 통과",
       noteIds: ["ko-classic"],
+      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+윤혜정+고전시가",
     },
     {
       id: "ko-10",
@@ -218,10 +274,16 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       phase: "언어 기초",
       title: "음운·형태소·품사",
       goal: "말의 소리와 단어의 구성 단위를 구별하고 기본 품사를 판별한다.",
+      summaryKeyPoints: [
+        "음운(소리)과 형태소(뜻을 가진 최소 단위)를 구별합니다.",
+        "체언(명사/대명사/수사)과 용언(동사/형용사)의 활용 관계를 이해합니다.",
+        "단어의 품사 판별 규칙을 적용해 문법 문제를 풀어냅니다.",
+      ],
       learn: ["음운과 음절", "형태소 분석", "체언·용언·수식언"],
       routine: ["개념표 15분", "분석 10문항 20분", "틀린 기준 복기 10분"],
       checkpoint: "단어 5개의 형태소와 품사를 근거와 함께 구분하면 통과",
       noteIds: ["ko-grammar"],
+      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+문법기초",
     },
     {
       id: "ko-11",
@@ -229,10 +291,16 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       phase: "문제 적용",
       title: "선지를 근거로 판정하기",
       goal: "선지의 단어를 지문 표현과 하나씩 대조해 오답 이유를 말한다.",
+      summaryKeyPoints: [
+        "문제 발문(무엇을 묻는가)을 먼저 읽고 지문으로 들어갑니다.",
+        "지문의 표현과 선지 표현 사이의 '단어 바꿔치기' 오답 패턴을 찾아냅니다.",
+        "맞힌 문제도 확실한 근거 밑줄이 있었는지 검증합니다.",
+      ],
       learn: ["범위 확대", "원인·결과 뒤집기", "없는 내용 덧붙이기"],
       routine: ["오답 유형 10분", "독서 4문항 20분", "선지 해부 20분"],
       checkpoint: "틀린 선지 3개의 오류 단어를 정확히 고치면 통과",
       noteIds: ["ko-options"],
+      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+발문분석",
     },
     {
       id: "ko-12",
@@ -240,10 +308,16 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       phase: "EBS 연결",
       title: "EBS 지문을 내 노트로 바꾸기",
       goal: "강의를 듣고 끝내지 않고 지문 구조·개념·오답을 한 장에 남긴다.",
+      summaryKeyPoints: [
+        "EBS 수능특강/수능완성 연계 지문의 핵심 지문 구조를 익힙니다.",
+        "독서 45분, 문학 30분, 선택 15분 등 자신만의 시간 배분을 점검합니다.",
+        "실전 타이머 80분 훈련으로 집중력을 끝까지 유지합니다.",
+      ],
       learn: ["강의 전 1차 독해", "강의 중 보충", "다음 날 재설명"],
       routine: ["지문 먼저 15분", "EBS 강의 25분", "한 장 복습 15분"],
       checkpoint: "강의 없이 지문의 구조와 핵심 개념을 2분 안에 설명하면 통과",
       noteIds: ["ko-ebs-loop"],
+      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+수능특강+국어",
     },
   ],
   english: [
