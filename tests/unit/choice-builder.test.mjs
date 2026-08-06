@@ -44,6 +44,15 @@ test("the correct choice carries no mistakeTag", () => {
   assert.equal(correct.mistakeTag, undefined);
 });
 
+test("does not invent decorated duplicates when the answer is not numeric", () => {
+  const rng = createRng(5);
+  const choices = buildChoices(rng, "x^2 - 4", [{ value: "x^2 + 4", mistakeTag: "sign" }]);
+  for (const choice of choices) {
+    if (choice.value === "x^2 - 4") continue;
+    assert.ok(!choice.value.startsWith("x^2 - 4"), `decorated duplicate: ${choice.value}`);
+  }
+});
+
 test("same seed yields the same order", () => {
   const candidates = [
     { value: "6", mistakeTag: "a" },

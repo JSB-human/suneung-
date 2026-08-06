@@ -29,17 +29,21 @@ export function buildChoices(
   }
 
   const numericBase = Number(correctValue);
-  let offset = 1;
-  while (chosen.length < TOTAL_CHOICES && offset < 60) {
-    const value = Number.isFinite(numericBase)
-      ? String(numericBase + (offset % 2 === 1 ? offset : -offset))
-      : `${correctValue} (${offset})`;
-    offset += 1;
-    if (used.has(value)) {
-      continue;
+  // Only numeric answers can be padded with a synthesised near miss. For a
+  // non-numeric answer there is no way to invent a genuinely wrong option, so we
+  // return the real distractors we have and let the caller's question invariants
+  // reject the question rather than shipping a decorated copy of the answer.
+  if (Number.isFinite(numericBase)) {
+    let offset = 1;
+    while (chosen.length < TOTAL_CHOICES && offset < 60) {
+      const value = String(numericBase + (offset % 2 === 1 ? offset : -offset));
+      offset += 1;
+      if (used.has(value)) {
+        continue;
+      }
+      used.add(value);
+      chosen.push({ value, label: value, mistakeTag: "near-miss" });
     }
-    used.add(value);
-    chosen.push({ value, label: value, mistakeTag: "near-miss" });
   }
 
   return rng.shuffle(chosen);

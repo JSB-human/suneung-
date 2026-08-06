@@ -89,6 +89,8 @@ const generatePolynomialExpansion: QuestionGenerator = (rng: Rng, level: Level):
     { value: formatQuadratic(squareTerm, middleTerm, -constantTerm), mistakeTag: "constant-sign" },
     { value: formatQuadratic(squareTerm, -middleTerm, constantTerm), mistakeTag: "middle-sign" },
     { value: formatQuadratic(squareTerm, constantB + constantD, constantTerm), mistakeTag: "cross-add-only" },
+    { value: formatQuadratic(squareTerm, 2 * constantB * leadC, constantB * constantB), mistakeTag: "square-confusion" },
+    { value: formatQuadratic(squareTerm, middleTerm, constantB + constantD), mistakeTag: "constant-add" },
   ].filter((candidate) => candidate.value !== answer);
 
   return {

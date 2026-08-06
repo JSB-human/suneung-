@@ -272,3 +272,79 @@ test("ma-frac-arith level 1 uses only proper fractions", () => {
     assert.ok(Number(match[4]) < Number(match[5]), `improper second fraction: ${question.prompt}`);
   }
 });
+
+// A choice "decorates" the answer when it keeps the whole answer as a prefix and
+// then adds only cosmetic noise. A remainder that starts with an alphanumeric
+// character continues the last token, so it changes the value ("x^2 - 4x + 4"
+// against "x^2 - 4", or "10" against "1"); a remainder that starts with an
+// operator introduces a real new term ("5/2" against "5"). Anything else — a
+// space, a bracket, a suffix label — leaves the answer intact and is decoration.
+function decoratesAnswer(value, answer) {
+  if (value === answer || !value.startsWith(answer)) {
+    return false;
+  }
+  const remainder = value.slice(answer.length);
+  return !/^[0-9a-zA-Z]/.test(remainder) && !/^\s*[+\-×÷/^]/.test(remainder);
+}
+
+test("no generator ever offers a choice that merely decorates the correct answer", () => {
+  for (const skillId of ["ma-linear-eq", "ma-poly-expand", "ma-factor", "ma-quad-eq", "ma-frac-arith"]) {
+    for (const level of LEVELS) {
+      for (let seed = 0; seed < 300; seed += 1) {
+        const question = generate(skillId, seed, level);
+        const answer = question.acceptableAnswers[0];
+        for (const choice of question.choices) {
+          assert.ok(
+            !decoratesAnswer(choice.value, answer),
+            `${skillId} seed ${seed} level ${level}: decorated answer choice "${choice.value}" against answer "${answer}"`,
+          );
+        }
+      }
+    }
+  }
+});
+
+test("ma-poly-expand never offers two mathematically identical choices", () => {
+  const parseQuadratic = (value) => {
+    const normalised = value.replace(/\s+/g, "");
+    const match = normalised.match(
+      /^(-?\d*)x\^2(?:([+-])(\d*)x)?(?:([+-])(\d+))?$/,
+    );
+    assert.ok(match, `unparseable quadratic: ${value}`);
+    const readLead = (raw) => (raw === "" ? 1 : raw === "-" ? -1 : Number(raw));
+    const a = readLead(match[1]);
+    const b = match[2] ? (match[2] === "-" ? -1 : 1) * (match[3] === "" ? 1 : Number(match[3])) : 0;
+    const c = match[4] ? (match[4] === "-" ? -1 : 1) * Number(match[5]) : 0;
+    return `${a},${b},${c}`;
+  };
+
+  for (const level of LEVELS) {
+    for (let seed = 0; seed < 300; seed += 1) {
+      const question = generate("ma-poly-expand", seed, level);
+      const parsed = question.choices.map((choice) => parseQuadratic(choice.value));
+      assert.equal(
+        new Set(parsed).size,
+        parsed.length,
+        `seed ${seed} level ${level} has duplicate-valued choices: ${question.choices.map((c) => c.value).join(" / ")}`,
+      );
+    }
+  }
+});
+
+test("ma-poly-expand still offers four choices for difference-of-squares questions", () => {
+  let differenceOfSquaresSeen = 0;
+  for (const level of LEVELS) {
+    for (let seed = 0; seed < 300; seed += 1) {
+      const question = generate("ma-poly-expand", seed, level);
+      if (/^x\^2 [+-] \d+$/.test(question.acceptableAnswers[0])) {
+        differenceOfSquaresSeen += 1;
+        assert.equal(
+          question.choices.length,
+          4,
+          `seed ${seed} level ${level}: ${question.choices.map((c) => c.value).join(" / ")}`,
+        );
+      }
+    }
+  }
+  assert.ok(differenceOfSquaresSeen > 0, "expected to encounter difference-of-squares cases");
+});
