@@ -11,6 +11,10 @@ export function gcd(a: number, b: number): number {
   return x === 0 ? 1 : x;
 }
 
+export function lcm(a: number, b: number): number {
+  return Math.abs((a * b) / gcd(a, b));
+}
+
 export function reduceFraction(numerator: number, denominator: number): Fraction {
   if (denominator === 0) {
     throw new Error("denominator must not be zero");

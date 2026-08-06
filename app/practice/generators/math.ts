@@ -1,6 +1,6 @@
 import type { Rng } from "../rng.ts";
 import type { Level, QuestionBody, QuestionGenerator } from "../types.ts";
-import { formatFactor, formatFraction, formatQuadratic, reduceFraction } from "../math-format.ts";
+import { formatFactor, formatFraction, formatQuadratic, lcm, reduceFraction } from "../math-format.ts";
 import { buildChoices, type DistractorCandidate } from "./choice-builder.ts";
 
 type LevelRange = {
@@ -215,14 +215,20 @@ const generateFractionArithmetic: QuestionGenerator = (rng: Rng, level: Level): 
   const numeratorA = rng.int(1, denominatorB * 2);
   const numeratorC = rng.int(1, denominatorD * 2);
 
+  const commonDenominator = lcm(denominatorB, denominatorD);
+  const scaleB = commonDenominator / denominatorB;
+  const scaleD = commonDenominator / denominatorD;
+  const scaledNumeratorA = numeratorA * scaleB;
+  const scaledNumeratorC = numeratorC * scaleD;
+
   let rawNumerator: number;
   let rawDenominator: number;
   if (operator === "+") {
-    rawNumerator = numeratorA * denominatorD + numeratorC * denominatorB;
-    rawDenominator = denominatorB * denominatorD;
+    rawNumerator = scaledNumeratorA + scaledNumeratorC;
+    rawDenominator = commonDenominator;
   } else if (operator === "-") {
-    rawNumerator = numeratorA * denominatorD - numeratorC * denominatorB;
-    rawDenominator = denominatorB * denominatorD;
+    rawNumerator = scaledNumeratorA - scaledNumeratorC;
+    rawDenominator = commonDenominator;
   } else if (operator === "×") {
     rawNumerator = numeratorA * numeratorC;
     rawDenominator = denominatorB * denominatorD;
@@ -253,8 +259,8 @@ const generateFractionArithmetic: QuestionGenerator = (rng: Rng, level: Level): 
   const steps =
     operator === "+" || operator === "-"
       ? [
-          `분모를 ${denominatorB} 와 ${denominatorD} 의 공통분모 ${denominatorB * denominatorD} 로 맞춘다.`,
-          `${numeratorA * denominatorD}/${denominatorB * denominatorD} ${operator} ${numeratorC * denominatorB}/${denominatorB * denominatorD}`,
+          `분모를 ${denominatorB} 와 ${denominatorD} 의 최소공배수 ${commonDenominator} 로 맞춘다.`,
+          `${scaledNumeratorA}/${commonDenominator} ${operator} ${scaledNumeratorC}/${commonDenominator}`,
           `분자끼리 계산하면 ${rawNumerator}/${rawDenominator}`,
           `약분하면 ${answer}`,
         ]
@@ -274,7 +280,7 @@ const generateFractionArithmetic: QuestionGenerator = (rng: Rng, level: Level): 
     operator === "+" || operator === "-"
       ? [
           "분모가 다르면 바로 더하거나 뺄 수 없어.",
-          `공통분모 ${denominatorB * denominatorD} 로 통분부터 해.`,
+          `${denominatorB} 와 ${denominatorD} 의 최소공배수 ${commonDenominator} 로 통분부터 해.`,
           "통분했으면 분자끼리만 계산하고, 마지막에 약분하는 걸 잊지 마.",
         ]
       : operator === "×"

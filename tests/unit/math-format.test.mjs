@@ -5,6 +5,7 @@ import {
   formatFraction,
   formatQuadratic,
   gcd,
+  lcm,
   reduceFraction,
 } from "../../app/practice/math-format.ts";
 
@@ -13,6 +14,13 @@ test("gcd handles negatives and zero", () => {
   assert.equal(gcd(-12, 18), 6);
   assert.equal(gcd(7, 0), 7);
   assert.equal(gcd(0, 0), 1);
+});
+
+test("lcm computes the least common multiple", () => {
+  assert.equal(lcm(2, 8), 8);
+  assert.equal(lcm(3, 4), 12);
+  assert.equal(lcm(6, 9), 18);
+  assert.equal(lcm(5, 5), 5);
 });
 
 test("reduceFraction reduces and normalises sign to the numerator", () => {
