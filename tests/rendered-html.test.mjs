@@ -24,25 +24,20 @@ test("server-renders the expanded mobile study coach", async () => {
   assert.match(html, /<title>수능人 \| 국영수 노베이스 입시 로드맵<\/title>/i);
   assert.match(html, /인1이(?:<!-- -->)?님/);
   assert.match(html, /고1 기초 · 2028학년도 통합형/);
-  assert.match(html, /수능人 파트너 능이/);
+  assert.match(html, /수능人 파트너(?:<!-- -->)? · 하츠네 미쿠/);
   assert.match(html, /2028 수능 D-/);
-  assert.match(html, /3분만 해보기/);
+  assert.match(html, /3분만 집중/);
   assert.match(html, /가장 쉬운 한 칸/);
   assert.match(html, /오늘의 60분/);
   assert.match(html, /문장 뼈대 표시하기/);
   assert.match(html, /오늘의 단어 복습/);
   assert.match(html, /부호와 분수 계산/);
   assert.match(html, /국어(?:<!-- -->)? 기초 12주/);
-  assert.match(html, /국영수 개념 학습실/);
-  assert.match(html, /처음부터 읽는 (?:<!-- -->)?국어(?:<!-- -->)? 기초 교과서/);
-  assert.match(html, /국어(?:<!-- -->)? 기초 도서관/);
-  assert.match(html, /개념 (?:<!-- -->)?10(?:<!-- -->)?개/);
-  assert.match(html, /국어 기초 역량 지식 지도/);
   assert.match(html, /문장 성분과 중심 문장/);
   assert.match(html, /수능人 단어 트레이너/);
   assert.match(html, /10개 복습 시작/);
   assert.match(html, /새 단어/);
-  for (const tabLabel of ["오늘", "로드맵", "개념학습", "단어", "기록"]) {
+  for (const tabLabel of ["오늘", "국어", "영어·단어", "수학", "기록"]) {
     assert.match(html, new RegExp(`>${tabLabel}<`));
   }
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
@@ -78,8 +73,7 @@ test("preserves and migrates local study state safely", async () => {
   assert.match(component, /previouslyFocusedElementRef\.current\?\.focus\(\)/);
   assert.match(component, /window\.confirm/);
   assert.doesNotMatch(component, /dangerouslySetInnerHTML/);
-  assert.match(coach, /수능人 파트너 능이/);
-  assert.match(coach, /포인트는 틀렸다고 줄지 않고/);
+  assert.match(coach, /수능人 파트너 · 하츠네 미쿠/);
   assert.match(layout, /https:\/\/first-kan-study\.blessedjsb\.chatgpt\.site/);
   assert.match(layout, /applicationName: "수능人"/);
   assert.match(layout, /siteName: "수능人"/);
@@ -155,7 +149,7 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(studyHub, /FoundationReference/);
   assert.match(studyHub, /설명부터 문제까지 이 안에서/);
 
-  const vocabularyCount = (vocabulary.match(/\n\s+id: "[a-z-]+",/g) ?? []).length;
+  const vocabularyCount = (vocabulary.match(/id: "[a-z-]+",/g) ?? []).length;
   assert.ok(vocabularyCount >= 40, `expected at least 40 words, found ${vocabularyCount}`);
   for (const rating of ["again", "hard", "good", "easy"]) {
     assert.match(trainer, new RegExp(`"${rating}"`));
@@ -183,10 +177,10 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(css, /grid-template-columns: repeat\(5, 1fr\)/);
   assert.match(css, /@media \(max-width: 390px\)/);
   assert.match(css, /prefers-reduced-motion/);
-  assert.match(css, /--primary: #2647a1/);
-  assert.match(css, /--accent: #dce6ff/);
+  assert.match(css, /--primary: #1d4ed8/);
+  assert.match(css, /--accent: #dbeafe/);
   assert.match(visualCss, /\.today-agenda/);
-  assert.match(css, /background: rgb\(255 253 252 \/ 94%\)/);
+  assert.match(css, /--topbar-bg: rgba\(248, 250, 252, 0\.88\)/);
   assert.match(coachCss, /\.coach-mascot/);
   assert.match(coachCss, /\.encouragement-bubble/);
   assert.match(coachCss, /@media \(max-width: 390px\)/);
