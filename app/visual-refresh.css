@@ -638,3 +638,141 @@
     padding: 14px;
   }
 }
+
+.practice-runner {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--math-border);
+  border-radius: 18px;
+  background: var(--math-surface);
+}
+
+.practice-head {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.practice-eyebrow {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 800;
+  color: var(--math);
+}
+
+.practice-score {
+  margin: 0;
+  font-size: 13px;
+}
+
+.practice-concept-toggle,
+.practice-primary,
+.practice-secondary {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 16px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.practice-concept-toggle,
+.practice-secondary {
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.practice-primary {
+  border: 1px solid var(--math);
+  background: var(--math);
+  color: #fff;
+}
+
+.practice-primary:disabled,
+.practice-secondary:disabled {
+  opacity: 0.5;
+}
+
+.practice-prompt {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.6;
+}
+
+.practice-choices {
+  display: grid;
+  gap: 8px;
+}
+
+.practice-choice {
+  min-height: 48px;
+  padding: 0 14px;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  font-size: 16px;
+}
+
+.practice-choice[aria-pressed="true"] {
+  border-color: var(--math);
+  background: var(--math-soft);
+  font-weight: 700;
+}
+
+.practice-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.practice-hints {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.7;
+}
+
+.practice-result {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+
+.practice-result.is-correct {
+  border-color: var(--math);
+}
+
+.practice-result p {
+  margin: 0;
+  font-weight: 700;
+}
+
+.practice-steps {
+  margin: 0;
+  padding-left: 20px;
+  line-height: 1.7;
+}
+
+.practice-empty {
+  margin: 0;
+  padding: 14px;
+  border-radius: 12px;
+  border: 1px dashed var(--line);
+  line-height: 1.6;
+}
+
+@media (max-width: 390px) {
+  .practice-runner {
+    padding: 14px;
+  }
+
+  .practice-prompt {
+    font-size: 17px;
+  }
+}
