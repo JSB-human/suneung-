@@ -37,6 +37,13 @@ test("server-renders the expanded mobile study coach", async () => {
   assert.match(html, /수능人 단어 트레이너/);
   assert.match(html, /10개 복습 시작/);
   assert.match(html, /새 단어/);
+  // 기초 도서관(FoundationReference)은 과목별 서브탭 뒤에 있으므로 캡슐 본문은 첫 렌더에 없다.
+  // 대신 국어·영어·수학 세 과목 모두에 진입 버튼이 있는지 확인한다.
+  assert.equal(
+    (html.match(/🌱 기초 도서관/g) ?? []).length,
+    3,
+    "국어·영어·수학 탭마다 기초 도서관 서브탭 버튼이 있어야 한다",
+  );
   for (const tabLabel of ["오늘", "국어", "영어·단어", "수학", "기록"]) {
     assert.match(html, new RegExp(`>${tabLabel}<`));
   }
@@ -87,7 +94,8 @@ test("preserves and migrates local study state safely", async () => {
 });
 
 test("ships detailed curricula, practice, SRS vocabulary, and official EBS links", async () => {
-  const [content, mathData, mathMap, languageData, languageMap, trainer, vocabulary, notes, roadmap, css, coachCss, foundation, foundationView, studyHub, visualCss] = await Promise.all([
+  const [app, content, mathData, mathMap, languageData, languageMap, trainer, vocabulary, notes, roadmap, css, coachCss, foundation, foundationView, studyHub, visualCss] = await Promise.all([
+    readFile(new URL("../app/IpsiCoachApp.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/study-content.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/math-curriculum.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/MathKnowledgeMap.tsx", import.meta.url), "utf8"),
@@ -149,6 +157,15 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(foundationView, /틀렸어도 괜찮아요/);
   assert.match(studyHub, /FoundationReference/);
   assert.match(studyHub, /설명부터 문제까지 이 안에서/);
+  // 기초 도서관이 다시 끊기지 않도록: 앱이 FoundationReference를 세 과목 모두에 직접 렌더링해야 한다.
+  assert.match(app, /import FoundationReference from ".\/FoundationReference"/);
+  for (const subject of ["korean", "english", "math"]) {
+    assert.match(
+      app,
+      new RegExp(`<FoundationReference subject="${subject}" />`),
+      `${subject} 탭에서 기초 도서관을 렌더링해야 한다`,
+    );
+  }
 
   const vocabularyCount = (vocabulary.match(/id: "[a-z-]+",/g) ?? []).length;
   assert.ok(vocabularyCount >= 40, `expected at least 40 words, found ${vocabularyCount}`);

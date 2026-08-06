@@ -15,7 +15,7 @@ import { getSkillsForConcept } from "./practice/skill-map";
 import { LANGUAGE_KNOWLEDGE_CURRICULA, type LanguageSubject } from "./language-curriculum";
 import CoreNotes from "./CoreNotes";
 import RoadmapView from "./RoadmapView";
-import StudyHub from "./StudyHub";
+import FoundationReference from "./FoundationReference";
 import VocabTrainer, {
   type VocabTrainerState,
   type VocabWordProgress,
@@ -357,9 +357,9 @@ export default function IpsiCoachApp() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerOpen, setIsTimerOpen] = useState(false);
   const [isMikuBgmOpen, setIsMikuBgmOpen] = useState(false);
-  const [koreanSubTab, setKoreanSubTab] = useState<"roadmap" | "notes" | "map">("roadmap");
-  const [englishSubTab, setEnglishSubTab] = useState<"vocab" | "roadmap" | "notes">("vocab");
-  const [mathSubTab, setMathSubTab] = useState<"roadmap" | "map" | "notes">("roadmap");
+  const [koreanSubTab, setKoreanSubTab] = useState<"roadmap" | "foundation" | "notes" | "map">("roadmap");
+  const [englishSubTab, setEnglishSubTab] = useState<"vocab" | "foundation" | "roadmap" | "notes">("vocab");
+  const [mathSubTab, setMathSubTab] = useState<"roadmap" | "foundation" | "map" | "notes">("roadmap");
 
   const sheetRef = useRef<HTMLDivElement | null>(null);
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
@@ -992,6 +992,14 @@ export default function IpsiCoachApp() {
             </button>
             <button
               type="button"
+              className={`primary-action ${koreanSubTab === "foundation" ? "" : "secondary-action"}`}
+              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
+              onClick={() => setKoreanSubTab("foundation")}
+            >
+              🌱 기초 도서관
+            </button>
+            <button
+              type="button"
               className={`primary-action ${koreanSubTab === "notes" ? "" : "secondary-action"}`}
               style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
               onClick={() => setKoreanSubTab("notes")}
@@ -1016,6 +1024,10 @@ export default function IpsiCoachApp() {
               onToggleUnit={toggleUnit}
               onOpenNotes={() => setKoreanSubTab("notes")}
             />
+          ) : null}
+
+          {koreanSubTab === "foundation" ? (
+            <FoundationReference subject="korean" />
           ) : null}
 
           {koreanSubTab === "notes" ? (
@@ -1062,6 +1074,14 @@ export default function IpsiCoachApp() {
             </button>
             <button
               type="button"
+              className={`primary-action ${englishSubTab === "foundation" ? "" : "secondary-action"}`}
+              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
+              onClick={() => setEnglishSubTab("foundation")}
+            >
+              🌱 기초 도서관
+            </button>
+            <button
+              type="button"
               className={`primary-action ${englishSubTab === "roadmap" ? "" : "secondary-action"}`}
               style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
               onClick={() => setEnglishSubTab("roadmap")}
@@ -1101,6 +1121,10 @@ export default function IpsiCoachApp() {
                 }}
               />
             </article>
+          ) : null}
+
+          {englishSubTab === "foundation" ? (
+            <FoundationReference subject="english" />
           ) : null}
 
           {englishSubTab === "roadmap" ? (
@@ -1148,6 +1172,14 @@ export default function IpsiCoachApp() {
             </button>
             <button
               type="button"
+              className={`primary-action ${mathSubTab === "foundation" ? "" : "secondary-action"}`}
+              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
+              onClick={() => setMathSubTab("foundation")}
+            >
+              🌱 기초 도서관
+            </button>
+            <button
+              type="button"
               className={`primary-action ${mathSubTab === "map" ? "" : "secondary-action"}`}
               style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900, background: mathSubTab === "map" ? "var(--math)" : undefined, borderColor: "var(--math)" }}
               onClick={() => setMathSubTab("map")}
@@ -1172,6 +1204,10 @@ export default function IpsiCoachApp() {
               onToggleUnit={toggleUnit}
               onOpenNotes={() => setMathSubTab("notes")}
             />
+          ) : null}
+
+          {mathSubTab === "foundation" ? (
+            <FoundationReference subject="math" />
           ) : null}
 
           {mathSubTab === "map" ? (
