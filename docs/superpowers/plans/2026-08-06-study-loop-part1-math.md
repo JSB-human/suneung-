@@ -1066,13 +1066,21 @@ import { formatFactor, formatQuadratic } from "../math-format.ts";
 생성기를 추가한다.
 
 ```ts
-function pickFactorRoots(rng: Rng, bound: number): [number, number] {
+function pickFactorRoots(
+  rng: Rng,
+  bound: number,
+  requireDistinct = false,
+): [number, number] {
   for (let attempt = 0; attempt < 40; attempt += 1) {
     const first = rng.nonZeroInt(-bound, bound);
     const second = rng.nonZeroInt(-bound, bound);
-    if (first + second !== 0) {
-      return first <= second ? [first, second] : [second, first];
+    if (first + second === 0) {
+      continue;
     }
+    if (requireDistinct && first === second) {
+      continue;
+    }
+    return first <= second ? [first, second] : [second, first];
   }
   return [1, 2];
 }
@@ -1186,7 +1194,7 @@ function formatRoots(rootA: number, rootB: number): string {
 
 const generateQuadraticEquation: QuestionGenerator = (rng: Rng, level: Level): QuestionBody => {
   const bound = level === 1 ? 5 : level === 2 ? 8 : 11;
-  const [rootA, rootB] = pickFactorRoots(rng, bound);
+  const [rootA, rootB] = pickFactorRoots(rng, bound, true);
 
   const middleTerm = -(rootA + rootB);
   const constantTerm = rootA * rootB;
@@ -1223,6 +1231,10 @@ const generateQuadraticEquation: QuestionGenerator = (rng: Rng, level: Level): Q
 `MATH_GENERATORS`에 `"ma-quad-eq": generateQuadraticEquation,`를 추가한다.
 
 부호에 주의하라. 근이 `rootA`, `rootB`이면 방정식은 `x² − (rootA+rootB)x + rootA·rootB = 0` 이고, 인수는 `(x − rootA)(x − rootB)` 다. 그래서 `formatFactor`에는 `-rootA`를 넘긴다.
+
+`requireDistinct`에 `true`를 넘기는 것이 핵심이다. 중근을 허용하면 `x² + 2x + 1 = 0`처럼 답이 `x = -1` 하나뿐인 완전제곱식이 약 6.5%의 시드에서 나오고, `formatRoots`가 근을 하나로 합쳐 "근이 두 개"를 가정한 테스트가 깨진다. 수학적으로는 옳지만 완전제곱식은 의도적으로 가르쳐야 할 특수 케이스이므로 노베이스 단계에서 무작위로 등장시키지 않는다. `ma-factor`는 `requireDistinct`를 쓰지 않는다 — 그쪽 테스트는 합과 곱만 확인하므로 중근이 문제되지 않는다.
+
+`formatRoots`의 `rootA === rootB` 분기는 남겨 둔다. 정답에서는 이제 도달하지 않지만 오답 후보에서는 여전히 쓰인다. `formatRoots(rootA + 1, rootB)`는 `rootA + 1 === rootB`일 때 근 하나로 합쳐지는데, 이는 "근이 하나뿐이라고 착각한 학생"의 답이라 좋은 오답이다.
 
 - [ ] **Step 4: 테스트 통과 확인**
 
