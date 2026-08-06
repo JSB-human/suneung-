@@ -172,6 +172,8 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(trainer, /수능人 단어 트레이너/);
   assert.match(trainer, /dueDate/);
   assert.match(trainer, /intervalDays/);
+  assert.match(trainer, /from "\.\/practice\/review-queue"/);
+  assert.doesNotMatch(trainer, /function buildNextProgress/);
   assert.match(trainer, /favorite/);
   assert.match(trainer, /role="group"/);
   assert.match(trainer, /aria-pressed/);

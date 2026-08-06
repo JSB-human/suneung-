@@ -2,22 +2,18 @@
 
 import { useId, useMemo, useState } from "react";
 import { VOCAB_WORDS, type VocabWordEntry } from "./vocab-data";
+import {
+  applyRating,
+  getLocalDateKey,
+  isDue,
+  type ReviewProgress,
+} from "./practice/review-queue";
 
 export type VocabRating = "again" | "hard" | "good" | "easy";
 export type VocabStage = "new" | "learning" | "review" | "completed";
 export type VocabFilter = "all" | "new" | "learning" | "review" | "completed" | "due" | "favorite";
 
-export type VocabWordProgress = {
-  status: VocabStage;
-  dueDate: string | null;
-  lastReviewedAt: string | null;
-  intervalDays: number;
-  reviewCount: number;
-  streak: number;
-  favorite: boolean;
-  ease: number;
-  mastery: number;
-};
+export type VocabWordProgress = ReviewProgress;
 
 export type VocabTrainerState = {
   progressById: Record<string, VocabWordProgress>;
@@ -82,20 +78,6 @@ const RATING_HINT: Record<VocabRating, string> = {
 
 const TOUCH_TARGET_STYLE = { minHeight: 44, minWidth: 44 };
 
-function getLocalDateKey(date = new Date()): string {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
-function addDays(baseDateKey: string, days: number): string {
-  const [year, month, day] = baseDateKey.split("-").map((value) => Number(value));
-  const nextDate = new Date(year, month - 1, day);
-  nextDate.setDate(nextDate.getDate() + days);
-  return getLocalDateKey(nextDate);
-}
-
 function normalizeState(state?: VocabTrainerState): VocabTrainerState {
   if (!state) {
     return DEFAULT_STATE;
@@ -109,18 +91,6 @@ function normalizeState(state?: VocabTrainerState): VocabTrainerState {
 
 function getProgress(state: VocabTrainerState, wordId: string): VocabWordProgress | null {
   return state.progressById[wordId] ?? null;
-}
-
-function isDue(progress: VocabWordProgress | null, today: string): boolean {
-  if (!progress) {
-    return true;
-  }
-
-  if (!progress.dueDate) {
-    return progress.status !== "completed";
-  }
-
-  return progress.dueDate <= today;
 }
 
 function resolveStage(progress: VocabWordProgress | null): VocabStage {
@@ -137,92 +107,6 @@ function formatDueDate(progress: VocabWordProgress | null): string {
   }
 
   return progress.dueDate;
-}
-
-function buildNextProgress(
-  previous: VocabWordProgress | null,
-  rating: VocabRating,
-  today: string,
-): VocabWordProgress {
-  const baseline: VocabWordProgress =
-    previous ?? {
-      status: "new",
-      dueDate: null,
-      lastReviewedAt: null,
-      intervalDays: 0,
-      reviewCount: 0,
-      streak: 0,
-      favorite: false,
-      ease: 2.3,
-      mastery: 0,
-    };
-
-  const reviewCount = baseline.reviewCount + 1;
-  const favorite = baseline.favorite;
-
-  if (rating === "again") {
-    return {
-      ...baseline,
-      status: "learning",
-      dueDate: today,
-      lastReviewedAt: today,
-      intervalDays: 0,
-      reviewCount,
-      streak: 0,
-      favorite,
-      ease: Math.max(1.3, baseline.ease - 0.2),
-      mastery: Math.max(0, baseline.mastery - 15),
-    };
-  }
-
-  if (rating === "hard") {
-    const intervalDays = baseline.intervalDays <= 0 ? 1 : Math.min(baseline.intervalDays + 1, 10);
-    const mastery = Math.min(100, baseline.mastery + 8);
-    return {
-      ...baseline,
-      status: reviewCount >= 2 ? "review" : "learning",
-      dueDate: addDays(today, intervalDays),
-      lastReviewedAt: today,
-      intervalDays,
-      reviewCount,
-      streak: baseline.streak + 1,
-      favorite,
-      ease: Math.max(1.4, baseline.ease - 0.05),
-      mastery,
-    };
-  }
-
-  if (rating === "good") {
-    const intervalDays = baseline.intervalDays <= 0 ? 3 : Math.min(Math.max(baseline.intervalDays + 3, 3), 21);
-    const mastery = Math.min(100, baseline.mastery + 16);
-    return {
-      ...baseline,
-      status: mastery >= 70 || reviewCount >= 4 ? "completed" : "review",
-      dueDate: addDays(today, intervalDays),
-      lastReviewedAt: today,
-      intervalDays,
-      reviewCount,
-      streak: baseline.streak + 1,
-      favorite,
-      ease: Math.min(3.0, baseline.ease + 0.05),
-      mastery,
-    };
-  }
-
-  const intervalDays = baseline.intervalDays <= 0 ? 7 : Math.min(Math.max(baseline.intervalDays * 2, 7), 45);
-  const mastery = Math.min(100, baseline.mastery + 24);
-  return {
-    ...baseline,
-    status: mastery >= 60 || reviewCount >= 3 ? "completed" : "review",
-    dueDate: addDays(today, intervalDays),
-    lastReviewedAt: today,
-    intervalDays,
-    reviewCount,
-    streak: baseline.streak + 1,
-    favorite,
-    ease: Math.min(3.2, baseline.ease + 0.15),
-    mastery,
-  };
 }
 
 function buildSessionIds(
@@ -452,7 +336,7 @@ export function VocabTrainer({
     let nextProgressForMessage: VocabWordProgress | null = null;
     const nextState = updateTrainerState((currentState) => {
       const previous = getProgress(currentState, currentWord.id);
-      const nextProgress = buildNextProgress(previous, rating, today);
+      const nextProgress = applyRating(previous, rating, today);
       nextProgressForMessage = nextProgress;
       return {
         progressById: {
