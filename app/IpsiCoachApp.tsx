@@ -10,6 +10,8 @@ import MathKnowledgeMap, {
   createEmptyMathKnowledgeMapValue,
   type MathKnowledgeMapValue,
 } from "./MathKnowledgeMap";
+import PracticeRunner from "./practice/PracticeRunner";
+import { getSkillsForConcept } from "./practice/skill-map";
 import { LANGUAGE_KNOWLEDGE_CURRICULA, type LanguageSubject } from "./language-curriculum";
 import CoreNotes from "./CoreNotes";
 import RoadmapView from "./RoadmapView";
@@ -1177,6 +1179,13 @@ export default function IpsiCoachApp() {
               className="math-knowledge-map"
               value={appState.math}
               onChange={(math) => setAppState((previous) => ({ ...previous, math }))}
+              renderConceptPractice={(conceptId) => {
+                const skillIds = getSkillsForConcept(conceptId);
+                if (skillIds.length === 0) {
+                  return null;
+                }
+                return skillIds.map((skillId) => <PracticeRunner key={skillId} skillId={skillId} />);
+              }}
             />
           ) : null}
 

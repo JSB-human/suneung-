@@ -120,6 +120,7 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(mathMap, /aria-live="polite"/);
   assert.match(mathMap, /correctQuestionIds/);
   assert.match(mathMap, /rel="noreferrer noopener"/);
+  assert.match(mathMap, /renderConceptPractice/);
 
   for (const chapter of ["읽기 기초", "독서\/비문학", "문학", "언어", "화법\/작문\/매체", "문제 적용\/EBS", "어휘\/발음", "듣기", "문장 문법", "구문 독해", "독해 유형", "EBS\/실전"]) {
     assert.match(languageData, new RegExp(chapter));
@@ -199,4 +200,28 @@ test("keeps Vercel and Sites build outputs isolated", async () => {
   assert.equal(vercelConfig.buildCommand, "npm run build:vercel");
   assert.equal(vercelConfig.framework, "nextjs");
   assert.ok(!("outputDirectory" in vercelConfig));
+});
+
+test("wires the infinite practice engine into the math tab", async () => {
+  const [app, runner, safeGenerate, registry, skillMap] = await Promise.all([
+    readFile(new URL("../app/IpsiCoachApp.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/practice/PracticeRunner.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/practice/safe-generate.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/practice/generators/registry.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/practice/skill-map.ts", import.meta.url), "utf8"),
+  ]);
+
+  assert.match(app, /PracticeRunner/);
+  assert.match(app, /getSkillsForConcept/);
+  assert.match(runner, /개념 보기/);
+  assert.match(runner, /힌트 보기/);
+  assert.match(runner, /다음 문제/);
+  assert.match(runner, /aria-live="polite"/);
+  assert.match(runner, /useEffect/, "첫 문항은 마운트 후에 만들어야 한다 (하이드레이션)");
+  assert.match(safeGenerate, /findQuestionViolations/);
+  assert.match(registry, /unknown skillId/);
+
+  for (const skillId of ["ma-frac-arith", "ma-linear-eq", "ma-poly-expand", "ma-factor", "ma-quad-eq"]) {
+    assert.match(skillMap, new RegExp(`"${skillId}"`));
+  }
 });

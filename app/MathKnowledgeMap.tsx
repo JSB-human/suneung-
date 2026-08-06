@@ -1,6 +1,6 @@
 "use client";
 
-import { useId, useState, type CSSProperties } from "react";
+import { useId, useState, type CSSProperties, type ReactNode } from "react";
 
 import {
   MATH_KNOWLEDGE_CURRICULUM,
@@ -22,6 +22,7 @@ export type MathKnowledgeMapProps = {
   onChange: (nextValue: MathKnowledgeMapValue) => void;
   ariaLabel?: string;
   className?: string;
+  renderConceptPractice?: (conceptId: string) => ReactNode;
 };
 
 type QuestionFeedback = {
@@ -157,6 +158,7 @@ export function MathKnowledgeMap({
   onChange,
   ariaLabel = "수학 지식 지도",
   className,
+  renderConceptPractice,
 }: MathKnowledgeMapProps) {
   const firstChapterId = curriculum.chapters[0]?.id ?? null;
   const fallbackChapterId = firstChapterId;
@@ -210,6 +212,9 @@ export function MathKnowledgeMap({
     (selectedConceptId ? conceptIndex[selectedConceptId] : null) ??
     (fallbackConceptId ? conceptIndex[fallbackConceptId] : null) ??
     (curriculum.chapters[0]?.units[0]?.concepts[0] ?? null);
+
+  const conceptPractice =
+    selectedConcept && renderConceptPractice ? renderConceptPractice(selectedConcept.id) : null;
 
   const updateValue = (next: MathKnowledgeMapValue) => {
     onChange({
@@ -452,6 +457,13 @@ export function MathKnowledgeMap({
                   <span style={{ fontWeight: 700, color: "#1d5d96" }}>{selectedConcept.workedExample.answer}</span>
                 </div>
               </section>
+
+              {conceptPractice ? (
+                <section>
+                  <h4 style={{ margin: "0 0 8px", fontSize: 17 }}>계속 새 문제로 연습</h4>
+                  {conceptPractice}
+                </section>
+              ) : null}
 
               <section>
                 <h4 style={{ margin: "0 0 8px", fontSize: 17 }}>직접 풀어 보기</h4>
