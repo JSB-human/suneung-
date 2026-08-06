@@ -5,6 +5,7 @@ import {
   ROADMAPS,
   SUBJECT_GUIDES,
   SUBJECT_KEYS,
+  SUBJECT_MEDIA_LINKS,
   type SubjectKey,
 } from "./study-content";
 
@@ -147,11 +148,21 @@ export default function RoadmapView({
                       </button>
                       <a
                         className="ebs-link"
-                        href={unit.youtubeUrl || activeEbsLink?.href || `https://www.youtube.com/results?search_query=EBS+${guide.label}+${encodeURIComponent(unit.title)}`}
+                        style={{ background: "#1d4ed8", color: "#ffffff", borderColor: "#1d4ed8" }}
+                        href={unit.ebsUrl || activeEbsLink?.href || SUBJECT_MEDIA_LINKS[selectedSubject].ebsUrl}
                         target="_blank"
                         rel="noreferrer noopener"
                       >
-                        🎥 추천 EBS/유튜브 강좌 시청 ↗
+                        🎓 EBSi 공식 강좌 ↗
+                      </a>
+                      <a
+                        className="ebs-link"
+                        style={{ background: "#dc2626", color: "#ffffff", borderColor: "#dc2626" }}
+                        href={unit.youtubeChannelUrl || SUBJECT_MEDIA_LINKS[selectedSubject].youtubeChannelUrl}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                      >
+                        📺 YouTube {unit.youtubeChannelTitle || SUBJECT_MEDIA_LINKS[selectedSubject].youtubeChannelTitle} ↗
                       </a>
                     </div>
                   </div>

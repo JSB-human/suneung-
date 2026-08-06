@@ -20,7 +20,10 @@ export type RoadmapUnit = {
   routine: string[];
   checkpoint: string;
   noteIds: string[];
+  ebsUrl?: string;
   youtubeUrl?: string;
+  youtubeChannelUrl?: string;
+  youtubeChannelTitle?: string;
 };
 
 export type CoreNote = {
@@ -33,7 +36,9 @@ export type CoreNote = {
   formula?: string;
   mistake: string;
   microPractice: string;
-  youtubeUrl?: string;
+  ebsUrl?: string;
+  youtubeChannelUrl?: string;
+  youtubeChannelTitle?: string;
 };
 
 export type SubjectGuide = {
@@ -627,6 +632,35 @@ export const CORE_NOTES: CoreNote[] = [
   { id: "ma-translation", subject: "math", category: "문제", title: "문장을 식으로", oneLine: "무엇을 x로 둘지와 단위를 먼저 정합니다.", essentials: ["미지수 정의", "같은 단위로 통일", "문장 조건마다 식 하나", "답이 상황에 맞는지 확인"], mistake: "식은 맞아도 답의 단위·범위를 쓰지 않는 실수", microPractice: "계산 전 ‘x는 ___이다’와 단위를 한 줄로 쓰세요." },
   { id: "ma-ebs-loop", subject: "math", category: "EBS", title: "EBS 개념 3문제", oneLine: "강의 한 구간마다 대표·유사·변형 문제를 직접 풉니다.", essentials: ["강의 전 예제 시도", "계산 장면에서 멈추고 직접 풀기", "오답은 틀린 첫 줄 기록"], mistake: "강사의 풀이를 이해한 느낌을 혼자 풀 수 있는 상태로 착각하지 않기", microPractice: "강의를 닫고 같은 유형 3문제를 연속으로 풀어 보세요." },
 ];
+
+export const SUBJECT_MEDIA_LINKS: Record<
+  SubjectKey,
+  {
+    ebsUrl: string;
+    ebsTitle: string;
+    youtubeChannelUrl: string;
+    youtubeChannelTitle: string;
+  }
+> = {
+  korean: {
+    ebsUrl: "https://cloud-www.ebsi.co.kr/ebs/pot/potn/retrieveSbjtListByArea.ebs?categoryCode=A100",
+    ebsTitle: "EBSi 국어 공식 강좌",
+    youtubeChannelUrl: "https://www.youtube.com/results?search_query=미친국어+수능+기초",
+    youtubeChannelTitle: "미친국어 (노베이스 독해)",
+  },
+  english: {
+    ebsUrl: "https://cloud-www.ebsi.co.kr/ebs/pot/potn/retrieveSbjtListByArea.ebs?categoryCode=A200",
+    ebsTitle: "EBSi 영어 공식 강좌",
+    youtubeChannelUrl: "https://www.youtube.com/results?search_query=스터디코어+구문독해+BASIC",
+    youtubeChannelTitle: "스터디코어 (구문독해)",
+  },
+  math: {
+    ebsUrl: "https://cloud-www.ebsi.co.kr/ebs/pot/potn/retrieveSbjtListByArea.ebs?categoryCode=A300",
+    ebsTitle: "EBSi 수학 공식 강좌",
+    youtubeChannelUrl: "https://www.youtube.com/@mathmath1",
+    youtubeChannelTitle: "@mathmath1 (수학의샘)",
+  },
+};
 
 export const EBS_LINKS = [
   {

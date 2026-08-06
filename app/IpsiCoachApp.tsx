@@ -752,6 +752,134 @@ export default function IpsiCoachApp() {
               })}
             </div>
 
+            <article
+              style={{
+                marginTop: 18,
+                padding: "18px 20px",
+                borderRadius: 20,
+                background: "var(--surface)",
+                border: "1px solid var(--line)",
+                boxShadow: "var(--shadow-sm)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                <span style={{ fontSize: 22 }}>🎯</span>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: 17, color: "var(--ink-strong)", fontWeight: 900 }}>
+                    오늘 뭐 하지? 5분 Quick 공부법
+                  </h3>
+                  <p style={{ margin: "2px 0 0", fontSize: 12, color: "var(--muted)" }}>
+                    어디서부터 시작할지 막막할 땐 아래 1-2-3 단계를 순서대로 클릭해 보세요!
+                  </p>
+                </div>
+              </div>
+
+              <div style={{ display: "grid", gap: 10 }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 12,
+                    padding: "12px 14px",
+                    borderRadius: 14,
+                    background: "var(--surface-soft)",
+                    border: "1px solid var(--line)",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
+                    <span style={{ fontWeight: 900, color: "var(--english)", fontSize: 13, flexShrink: 0 }}>
+                      1단계 [단어]
+                    </span>
+                    <span style={{ fontSize: 13, color: "var(--ink)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      영단어장 5개 뜻 복습하기
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    className="primary-action"
+                    style={{ minHeight: 36, padding: "0 12px", fontSize: 12, flexShrink: 0 }}
+                    onClick={() => setActiveTab("vocab")}
+                  >
+                    🔤 단어장 열기 →
+                  </button>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 12,
+                    padding: "12px 14px",
+                    borderRadius: 14,
+                    background: "var(--surface-soft)",
+                    border: "1px solid var(--line)",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
+                    <span style={{ fontWeight: 900, color: "var(--korean)", fontSize: 13, flexShrink: 0 }}>
+                      2단계 [개념]
+                    </span>
+                    <span style={{ fontSize: 13, color: "var(--ink)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      국영수 핵심 노트 1개 읽기
+                    </span>
+                  </div>
+                  <button
+                    type="button"
+                    className="primary-action"
+                    style={{ minHeight: 36, padding: "0 12px", fontSize: 12, background: "var(--korean)", borderColor: "var(--korean)", flexShrink: 0 }}
+                    onClick={() => setActiveTab("notes")}
+                  >
+                    📖 개념 읽기 →
+                  </button>
+                </div>
+
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: 12,
+                    padding: "12px 14px",
+                    borderRadius: 14,
+                    background: "var(--surface-soft)",
+                    border: "1px solid var(--line)",
+                    flexWrap: "wrap",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
+                    <span style={{ fontWeight: 900, color: "var(--math)", fontSize: 13, flexShrink: 0 }}>
+                      3단계 [강좌]
+                    </span>
+                    <span style={{ fontSize: 13, color: "var(--ink)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      EBSi 공식 강좌 또는 유튜브 인기 채널
+                    </span>
+                  </div>
+                  <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
+                    <a
+                      className="primary-action"
+                      style={{ minHeight: 34, padding: "0 10px", fontSize: 12, display: "inline-flex", alignItems: "center", textDecoration: "none", background: "#1d4ed8", borderColor: "#1d4ed8" }}
+                      href="https://www.ebsi.co.kr"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      🎓 EBSi 공식 ↗
+                    </a>
+                    <a
+                      className="primary-action"
+                      style={{ minHeight: 34, padding: "0 10px", fontSize: 12, display: "inline-flex", alignItems: "center", textDecoration: "none", background: "#dc2626", borderColor: "#dc2626" }}
+                      href="https://www.youtube.com/@mathmath1"
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      📺 @mathmath1 ↗
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </article>
+
             <div className="hero-actions">
               <button
                 type="button"

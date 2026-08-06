@@ -8,6 +8,7 @@ import {
   type FoundationCapsule,
   type FoundationSubject,
 } from "./foundation-reference";
+import { SUBJECT_MEDIA_LINKS } from "./study-content";
 
 export type FoundationReferenceProps = {
   subject: FoundationSubject;
@@ -337,10 +338,10 @@ export function FoundationReference({
                       </div>
                     </section>
 
-                    <div style={{ marginTop: 4 }}>
+                    <div style={{ marginTop: 6, display: "flex", gap: 8, flexWrap: "wrap" }}>
                       <a
                         className="ebs-link"
-                        href={`https://www.youtube.com/results?search_query=EBS+${meta.label}+${encodeURIComponent(capsule.title)}`}
+                        href={SUBJECT_MEDIA_LINKS[subject].ebsUrl}
                         target="_blank"
                         rel="noreferrer noopener"
                         style={{
@@ -349,14 +350,34 @@ export function FoundationReference({
                           gap: 6,
                           padding: "10px 14px",
                           borderRadius: 12,
-                          background: "var(--accent-soft)",
-                          color: "var(--primary)",
+                          background: "#1d4ed8",
+                          color: "#ffffff",
                           fontWeight: 800,
                           fontSize: 13,
                           textDecoration: "none",
                         }}
                       >
-                        🎥 YouTube / EBS 관련 개념 강의 시청 ↗
+                        🎓 EBSi 공식 강좌 ↗
+                      </a>
+                      <a
+                        className="ebs-link"
+                        href={SUBJECT_MEDIA_LINKS[subject].youtubeChannelUrl}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 6,
+                          padding: "10px 14px",
+                          borderRadius: 12,
+                          background: "#dc2626",
+                          color: "#ffffff",
+                          fontWeight: 800,
+                          fontSize: 13,
+                          textDecoration: "none",
+                        }}
+                      >
+                        📺 YouTube {SUBJECT_MEDIA_LINKS[subject].youtubeChannelTitle} ↗
                       </a>
                     </div>
 

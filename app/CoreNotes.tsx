@@ -6,6 +6,7 @@ import {
   EBS_LINKS,
   SUBJECT_GUIDES,
   SUBJECT_KEYS,
+  SUBJECT_MEDIA_LINKS,
   type SubjectKey,
 } from "./study-content";
 
@@ -124,11 +125,21 @@ export default function CoreNotes({ bookmarks, onToggleBookmark, subject, embedd
                   <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
                     <a
                       className="ebs-link"
-                      href={note.youtubeUrl || `https://www.youtube.com/results?search_query=EBS+${SUBJECT_GUIDES[note.subject].label}+${encodeURIComponent(note.title)}`}
+                      style={{ background: "#1d4ed8", color: "#ffffff", borderColor: "#1d4ed8" }}
+                      href={note.ebsUrl || SUBJECT_MEDIA_LINKS[note.subject].ebsUrl}
                       target="_blank"
                       rel="noreferrer noopener"
                     >
-                      🎥 YouTube / EBS 관련 강좌 검색 ↗
+                      🎓 EBSi 공식 강좌 ↗
+                    </a>
+                    <a
+                      className="ebs-link"
+                      style={{ background: "#dc2626", color: "#ffffff", borderColor: "#dc2626" }}
+                      href={note.youtubeChannelUrl || SUBJECT_MEDIA_LINKS[note.subject].youtubeChannelUrl}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      📺 YouTube {note.youtubeChannelTitle || SUBJECT_MEDIA_LINKS[note.subject].youtubeChannelTitle} ↗
                     </a>
                   </div>
                   <button
