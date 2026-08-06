@@ -2579,14 +2579,27 @@ export type MathKnowledgeMapProps = {
 
 `selectedConcept.practiceQuestions.map(` 를 포함한 `<section>` **바로 앞에** 아래를 삽입한다.
 
+먼저 컴포넌트 본문에서 슬롯 결과를 계산한다.
+
 ```tsx
-{renderConceptPractice ? (
+const conceptPractice =
+  selectedConcept && renderConceptPractice
+    ? renderConceptPractice(selectedConcept.id)
+    : null;
+```
+
+그리고 **반환된 노드**를 기준으로 감싼다.
+
+```tsx
+{conceptPractice ? (
   <section>
     <h4 style={{ margin: "0 0 8px", fontSize: 17 }}>계속 새 문제로 연습</h4>
-    {renderConceptPractice(selectedConcept.id)}
+    {conceptPractice}
   </section>
 ) : null}
 ```
+
+프롭의 존재 여부로 감싸면 안 된다. 앱이 프롭을 항상 넘기므로, 생성기가 없는 개념에서도 "계속 새 문제로 연습" 제목만 남고 내용이 비는 빈 상자가 생긴다.
 
 - [ ] **Step 3: `IpsiCoachApp`에서 슬롯 연결**
 
