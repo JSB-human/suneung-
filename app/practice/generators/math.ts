@@ -212,8 +212,8 @@ const generateFractionArithmetic: QuestionGenerator = (rng: Rng, level: Level): 
 
   const denominatorB = rng.int(2, denominatorMax);
   const denominatorD = rng.int(2, denominatorMax);
-  const numeratorA = rng.int(1, denominatorB * 2);
-  const numeratorC = rng.int(1, denominatorD * 2);
+  const numeratorA = level === 1 ? rng.int(1, denominatorB - 1) : rng.int(1, denominatorB * 2);
+  const numeratorC = level === 1 ? rng.int(1, denominatorD - 1) : rng.int(1, denominatorD * 2);
 
   const commonDenominator = lcm(denominatorB, denominatorD);
   const scaleB = commonDenominator / denominatorB;

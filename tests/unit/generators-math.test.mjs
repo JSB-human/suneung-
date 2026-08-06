@@ -262,3 +262,13 @@ test("ma-frac-arith level 1 uses only addition and subtraction", () => {
     assert.ok(!/[×÷]/.test(question.prompt), `level 1 must not use × or ÷: ${question.prompt}`);
   }
 });
+
+test("ma-frac-arith level 1 uses only proper fractions", () => {
+  for (let seed = 0; seed < 200; seed += 1) {
+    const question = generate("ma-frac-arith", seed, 1);
+    const match = question.prompt.match(/^(\d+)\/(\d+) ([+\-×÷]) (\d+)\/(\d+)/);
+    assert.ok(match, `unparseable prompt: ${question.prompt}`);
+    assert.ok(Number(match[1]) < Number(match[2]), `improper first fraction: ${question.prompt}`);
+    assert.ok(Number(match[4]) < Number(match[5]), `improper second fraction: ${question.prompt}`);
+  }
+});
