@@ -8,6 +8,11 @@ export type SkillMapEntry = {
   coreNoteId?: string;
   foundationId?: string;
   conceptId?: string;
+  /**
+   * 기초 캡슐의 예제가 이 스킬과 같은 주제일 때만 켠다. 캡슐은 핵심 노트보다
+   * 넓은 단원을 다루므로 기본값(꺼짐)에서는 예제를 빌려 오지 않는다.
+   */
+  useCapsuleExample?: boolean;
 };
 
 export const SKILL_MAP: Record<string, SkillMapEntry> = {
@@ -46,6 +51,8 @@ export const SKILL_MAP: Record<string, SkillMapEntry> = {
     coreNoteId: "ma-factor",
     foundationId: "ma-identities-factoring",
     conceptId: "polynomial-expansion-factorization",
+    // 캡슐 예제가 "x²+5x+6을 인수분해하면?" 이라 이 스킬과 주제가 정확히 같다.
+    useCapsuleExample: true,
   },
   "ma-quad-eq": {
     skillId: "ma-quad-eq",
@@ -55,6 +62,8 @@ export const SKILL_MAP: Record<string, SkillMapEntry> = {
     coreNoteId: "ma-quadratic-equation",
     foundationId: "ma-equations",
     conceptId: "equation-inequality-bridge",
+    // 캡슐 예제가 "x²-5x+6=0의 해는?" 이라 이 스킬과 주제가 정확히 같다.
+    useCapsuleExample: true,
   },
 };
 

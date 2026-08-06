@@ -51,3 +51,17 @@ test("skills backed by a core note surface its microPractice", () => {
     assert.ok(source.microPractice?.trim(), `${skillId} has no microPractice`);
   }
 });
+
+test("only skills whose capsule example matches the skill borrow it", () => {
+  // 캡슐 예제를 켠 스킬은 예제가 있어야 하고, 끈 스킬은 없어야 한다.
+  assert.ok(resolveConceptSource("ma-factor").workedExample?.prompt.includes("인수분해"));
+  assert.ok(resolveConceptSource("ma-quad-eq").workedExample?.prompt.includes("=0"));
+
+  for (const skillId of ["ma-linear-eq", "ma-poly-expand", "ma-frac-arith"]) {
+    assert.equal(
+      resolveConceptSource(skillId).workedExample,
+      undefined,
+      `${skillId} must not borrow the broader capsule's example`,
+    );
+  }
+});
