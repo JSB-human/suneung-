@@ -111,13 +111,21 @@ const generatePolynomialExpansion: QuestionGenerator = (rng: Rng, level: Level):
   };
 };
 
-function pickFactorRoots(rng: Rng, bound: number): [number, number] {
+function pickFactorRoots(
+  rng: Rng,
+  bound: number,
+  requireDistinct = false,
+): [number, number] {
   for (let attempt = 0; attempt < 40; attempt += 1) {
     const first = rng.nonZeroInt(-bound, bound);
     const second = rng.nonZeroInt(-bound, bound);
-    if (first + second !== 0) {
-      return first <= second ? [first, second] : [second, first];
+    if (first + second === 0) {
+      continue;
     }
+    if (requireDistinct && first === second) {
+      continue;
+    }
+    return first <= second ? [first, second] : [second, first];
   }
   return [1, 2];
 }
@@ -158,8 +166,48 @@ const generateFactoring: QuestionGenerator = (rng: Rng, level: Level): QuestionB
   };
 };
 
+function formatRoots(rootA: number, rootB: number): string {
+  return rootA === rootB ? `x = ${rootA}` : `x = ${rootA} 또는 x = ${rootB}`;
+}
+
+const generateQuadraticEquation: QuestionGenerator = (rng: Rng, level: Level): QuestionBody => {
+  const bound = level === 1 ? 5 : level === 2 ? 8 : 11;
+  const [rootA, rootB] = pickFactorRoots(rng, bound, true);
+
+  const middleTerm = -(rootA + rootB);
+  const constantTerm = rootA * rootB;
+  const answer = formatRoots(rootA, rootB);
+  const prompt = `${formatQuadratic(1, middleTerm, constantTerm)} = 0 의 해는?`;
+
+  const candidates: DistractorCandidate[] = [
+    { value: formatRoots(-rootA, -rootB), mistakeTag: "root-sign" },
+    { value: formatRoots(rootA, -rootB), mistakeTag: "one-root-sign" },
+    { value: formatRoots(-rootA, rootB), mistakeTag: "one-root-sign" },
+    { value: formatRoots(rootA + 1, rootB), mistakeTag: "factor-pair" },
+    { value: formatRoots(rootA, rootB + 1), mistakeTag: "factor-pair" },
+  ].filter((candidate) => candidate.value !== answer);
+
+  return {
+    prompt,
+    inputLabel: "x의 값",
+    choices: buildChoices(rng, answer, candidates),
+    acceptableAnswers: [answer],
+    steps: [
+      `좌변을 인수분해하면 ${formatFactor(-rootA)}${formatFactor(-rootB)} = 0`,
+      "AB = 0 이면 A = 0 또는 B = 0 이다.",
+      `따라서 ${answer}`,
+    ],
+    hints: [
+      "우변이 0이니까 좌변을 인수분해부터 해 봐.",
+      `곱해서 ${constantTerm}, 더해서 ${middleTerm}이 되는 두 수를 찾아.`,
+      "인수분해했으면 각 괄호를 0으로 놓으면 돼. 부호가 반대로 나오는 것에 주의해.",
+    ],
+  };
+};
+
 export const MATH_GENERATORS: Record<string, QuestionGenerator> = {
   "ma-linear-eq": generateLinearEquation,
   "ma-poly-expand": generatePolynomialExpansion,
   "ma-factor": generateFactoring,
+  "ma-quad-eq": generateQuadraticEquation,
 };

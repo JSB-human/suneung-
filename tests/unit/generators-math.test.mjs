@@ -131,3 +131,33 @@ test("ma-factor orders the two factors consistently", () => {
     assert.ok(first <= second, `factors not sorted for seed ${seed}: ${answer}`);
   }
 });
+
+test("ma-quad-eq satisfies question invariants across many seeds", () => {
+  for (const level of LEVELS) {
+    for (let seed = 0; seed < 200; seed += 1) {
+      const question = generate("ma-quad-eq", seed, level);
+      const violations = findQuestionViolations(question);
+      assert.deepEqual(violations, [], `seed ${seed} level ${level}: ${violations.join(", ")}`);
+    }
+  }
+});
+
+test("ma-quad-eq roots satisfy the printed equation", () => {
+  for (let seed = 0; seed < 200; seed += 1) {
+    const question = generate("ma-quad-eq", seed, 2);
+
+    const promptMatch = question.prompt.match(/^x\^2 ([+-]) (\d*)x ([+-]) (\d+) = 0/);
+    assert.ok(promptMatch, `unparseable prompt: ${question.prompt}`);
+    const bMagnitude = promptMatch[2] === "" ? 1 : Number(promptMatch[2]);
+    const b = promptMatch[1] === "-" ? -bMagnitude : bMagnitude;
+    const c = promptMatch[3] === "-" ? -Number(promptMatch[4]) : Number(promptMatch[4]);
+
+    const rootMatches = [...question.acceptableAnswers[0].matchAll(/x = (-?\d+)/g)];
+    assert.equal(rootMatches.length, 2, `expected two roots: ${question.acceptableAnswers[0]}`);
+
+    for (const rootMatch of rootMatches) {
+      const root = Number(rootMatch[1]);
+      assert.equal(root * root + b * root + c, 0, `seed ${seed}: ${root} is not a root`);
+    }
+  }
+});
