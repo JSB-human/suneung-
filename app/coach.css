@@ -6,11 +6,9 @@
   position: relative;
   overflow: hidden;
   padding: 18px;
-  border: 1px solid #d6e8ad;
+  border: 1px solid var(--line);
   border-radius: 24px;
-  background:
-    radial-gradient(circle at 100% 0%, rgb(210 241 139 / 55%), transparent 42%),
-    linear-gradient(135deg, #fbfff4 0%, #f2f8e7 100%);
+  background: var(--surface-soft);
   box-shadow: var(--shadow-sm);
 }
 
@@ -20,7 +18,7 @@
   bottom: -34px;
   width: 100px;
   height: 100px;
-  border: 18px solid rgb(88 126 54 / 8%);
+  border: 18px solid var(--line);
   border-radius: 50%;
   content: "";
 }
@@ -38,9 +36,9 @@
   position: relative;
   min-width: 0;
   padding: 15px;
-  border: 1px solid rgb(95 126 66 / 16%);
+  border: 1px solid var(--line);
   border-radius: 18px 18px 18px 6px;
-  background: rgb(255 255 255 / 82%);
+  background: var(--surface);
 }
 
 .encouragement-bubble::before {
@@ -49,16 +47,16 @@
   bottom: 18px;
   width: 14px;
   height: 14px;
-  border-bottom: 1px solid rgb(95 126 66 / 16%);
-  border-left: 1px solid rgb(95 126 66 / 16%);
-  background: #fbfdf7;
+  border-bottom: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  background: var(--surface);
   content: "";
   transform: rotate(45deg);
 }
 
 .encouragement-eyebrow {
   margin: 0 0 5px;
-  color: #587b35;
+  color: var(--primary);
   font-size: 11px;
   font-weight: 950;
   letter-spacing: 0.035em;
@@ -74,7 +72,7 @@
 
 .encouragement-bubble > p:not(.encouragement-eyebrow) {
   margin: 8px 0 0;
-  color: #667062;
+  color: var(--muted);
   font-size: 12px;
   line-height: 1.55;
 }
@@ -88,10 +86,10 @@
 
 .encouragement-meta span {
   padding: 5px 8px;
-  border: 1px solid #dbe7c4;
+  border: 1px solid var(--line);
   border-radius: 999px;
-  background: #f6faee;
-  color: #46642c;
+  background: var(--surface);
+  color: var(--muted);
   font-size: 10px;
   font-weight: 900;
 }

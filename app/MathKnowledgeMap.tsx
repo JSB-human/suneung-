@@ -36,19 +36,19 @@ const rootStyle: CSSProperties = {
   padding: 16,
   display: "grid",
   gap: 16,
-  color: "#12212f",
-  background: "linear-gradient(180deg, #f7fbff 0%, #eef5fb 100%)",
+  color: "var(--math-title)",
+  background: "var(--math-surface)",
   borderRadius: 24,
-  border: "1px solid #d6e4f0",
+  border: "1px solid var(--math-border)",
   boxSizing: "border-box",
 };
 
 const cardStyle: CSSProperties = {
-  backgroundColor: "#ffffff",
-  border: "1px solid #dbe6ef",
+  backgroundColor: "var(--surface)",
+  border: "1px solid var(--line)",
   borderRadius: 18,
   padding: 16,
-  boxShadow: "0 10px 24px rgba(18, 33, 47, 0.06)",
+  boxShadow: "var(--shadow-md)",
 };
 
 const chapterButtonStyle = (open: boolean): CSSProperties => ({
@@ -56,9 +56,9 @@ const chapterButtonStyle = (open: boolean): CSSProperties => ({
   textAlign: "left",
   padding: "14px 16px",
   borderRadius: 16,
-  border: open ? "1px solid #2d6fb7" : "1px solid #d5e2ec",
-  background: open ? "#edf5ff" : "#ffffff",
-  color: "#13324b",
+  border: open ? "1px solid var(--math)" : "1px solid var(--line)",
+  background: open ? "var(--math-soft)" : "var(--surface)",
+  color: "var(--ink-strong)",
   fontWeight: 700,
   cursor: "pointer",
 });
@@ -68,9 +68,9 @@ const unitButtonStyle = (open: boolean): CSSProperties => ({
   textAlign: "left",
   padding: "12px 14px",
   borderRadius: 14,
-  border: open ? "1px solid #2d6fb7" : "1px solid #d5e2ec",
-  background: open ? "#f5f9ff" : "#fbfdff",
-  color: "#16354d",
+  border: open ? "1px solid var(--math)" : "1px solid var(--line)",
+  background: open ? "var(--math-soft)" : "var(--surface)",
+  color: "var(--ink)",
   fontWeight: 600,
   cursor: "pointer",
 });
@@ -80,9 +80,9 @@ const conceptButtonStyle = (selected: boolean, completed: boolean): CSSPropertie
   textAlign: "left",
   padding: "12px 14px",
   borderRadius: 14,
-  border: selected ? "1px solid #2d6fb7" : "1px solid #d5e2ec",
-  background: selected ? "#e8f2ff" : "#ffffff",
-  color: "#12212f",
+  border: selected ? "1px solid var(--math)" : "1px solid var(--line)",
+  background: selected ? "var(--math-soft)" : "var(--surface)",
+  color: "var(--ink)",
   cursor: "pointer",
   position: "relative",
   boxSizing: "border-box",
@@ -91,9 +91,9 @@ const conceptButtonStyle = (selected: boolean, completed: boolean): CSSPropertie
 
 const pillStyle = (tone: "blue" | "green" | "slate"): CSSProperties => {
   const colors: Record<typeof tone, CSSProperties> = {
-    blue: { backgroundColor: "#e7f1ff", color: "#205c98" },
-    green: { backgroundColor: "#e8f7ee", color: "#1f7a4f" },
-    slate: { backgroundColor: "#eef3f7", color: "#42586b" },
+    blue: { backgroundColor: "var(--accent-soft)", color: "var(--primary)" },
+    green: { backgroundColor: "var(--success-soft)", color: "var(--success)" },
+    slate: { backgroundColor: "var(--surface-soft)", color: "var(--muted)" },
   };
 
   return {
@@ -112,7 +112,7 @@ const pillStyle = (tone: "blue" | "green" | "slate"): CSSProperties => {
 const actionButtonStyle: CSSProperties = {
   border: "none",
   borderRadius: 12,
-  backgroundColor: "#2062a3",
+  backgroundColor: "var(--math)",
   color: "#ffffff",
   padding: "10px 14px",
   fontWeight: 700,
@@ -121,19 +121,19 @@ const actionButtonStyle: CSSProperties = {
 
 const secondaryButtonStyle: CSSProperties = {
   ...actionButtonStyle,
-  backgroundColor: "#eef3f7",
-  color: "#18354d",
+  backgroundColor: "var(--surface-soft)",
+  color: "var(--ink)",
 };
 
 const inputStyle: CSSProperties = {
   width: "100%",
   borderRadius: 12,
-  border: "1px solid #c9d8e5",
+  border: "1px solid var(--line)",
   padding: "10px 12px",
   fontSize: 15,
-  color: "#12212f",
+  color: "var(--ink)",
   boxSizing: "border-box",
-  backgroundColor: "#ffffff",
+  backgroundColor: "var(--surface)",
 };
 
 const normalizeAnswer = (value: string): string => value.trim().toLowerCase().replace(/\s+/g, "");

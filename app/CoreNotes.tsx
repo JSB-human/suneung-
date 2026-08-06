@@ -121,6 +121,16 @@ export default function CoreNotes({ bookmarks, onToggleBookmark, subject, embedd
                   ) : null}
                   <div className="mistake-box"><strong>자주 하는 실수</strong><br />{note.mistake}</div>
                   <div className="practice-box"><strong>1분 확인</strong><br />{note.microPractice}</div>
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap", alignItems: "center" }}>
+                    <a
+                      className="ebs-link"
+                      href={note.youtubeUrl || `https://www.youtube.com/results?search_query=EBS+${SUBJECT_GUIDES[note.subject].label}+${encodeURIComponent(note.title)}`}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                    >
+                      🎥 YouTube / EBS 관련 강좌 검색 ↗
+                    </a>
+                  </div>
                   <button
                     type="button"
                     className={`bookmark-button ${isSaved ? "is-active" : ""}`}
@@ -146,14 +156,14 @@ export default function CoreNotes({ bookmarks, onToggleBookmark, subject, embedd
       <section className={`panel-block ebs-rail ${embedded ? "is-embedded" : ""}`} style={{ marginTop: 14 }}>
         <div className="section-heading">
           <div>
-            <h2>EBS로 더 공부하기</h2>
-            <p>사이트에서 핵심을 익힌 뒤 공식 강좌와 문제로 이어가세요.</p>
+            <h2>🎥 EBS & YouTube 추천 무료 특강</h2>
+            <p>사이트에서 핵심 개념을 익힌 뒤 공식 강좌와 대표 유튜브 특강 영상으로 바로 이어서 공부하세요.</p>
           </div>
         </div>
         <div className="ebs-grid">
           {visibleEbsLinks.map((link) => (
             <a
-              key={link.subject}
+              key={link.id || link.subject}
               className={`ebs-card subject-${link.subject}`}
               href={link.href}
               target="_blank"
@@ -164,7 +174,7 @@ export default function CoreNotes({ bookmarks, onToggleBookmark, subject, embedd
                 <strong>{link.title}</strong>
                 <span>{link.description}</span>
               </span>
-              <b>열기 ↗</b>
+              <b>시청 ↗</b>
             </a>
           ))}
         </div>

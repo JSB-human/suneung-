@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useId, useState, type CSSProperties } from "react";
 
@@ -47,20 +47,20 @@ const subjectLabel: Record<LanguageSubject, string> = {
 
 const subjectTheme: Record<LanguageSubject, SubjectTheme> = {
   korean: {
-    accent: "#b05d1e",
-    accentSoft: "#fff2e6",
-    accentStrong: "#8c4410",
-    surface: "linear-gradient(180deg, #fffaf5 0%, #f8efe6 100%)",
-    border: "#ead9c7",
-    title: "#3b2818",
+    accent: "var(--korean)",
+    accentSoft: "var(--korean-soft)",
+    accentStrong: "var(--korean-strong)",
+    surface: "var(--korean-surface)",
+    border: "var(--korean-border)",
+    title: "var(--korean-title)",
   },
   english: {
-    accent: "#2062a3",
-    accentSoft: "#ebf5ff",
-    accentStrong: "#184a7d",
-    surface: "linear-gradient(180deg, #f7fbff 0%, #eef5fb 100%)",
-    border: "#d5e3f0",
-    title: "#12212f",
+    accent: "var(--english)",
+    accentSoft: "var(--english-soft)",
+    accentStrong: "var(--english-strong)",
+    surface: "var(--english-surface)",
+    border: "var(--english-border)",
+    title: "var(--english-title)",
   },
 };
 
@@ -79,11 +79,11 @@ const rootStyle = (theme: SubjectTheme): CSSProperties => ({
 });
 
 const cardStyle = (theme: SubjectTheme): CSSProperties => ({
-  backgroundColor: "#ffffff",
+  backgroundColor: "var(--surface)",
   border: `1px solid ${theme.border}`,
   borderRadius: 18,
   padding: 16,
-  boxShadow: "0 10px 24px rgba(18, 33, 47, 0.06)",
+  boxShadow: "var(--shadow-md)",
 });
 
 const accordionButtonStyle = (theme: SubjectTheme, open: boolean): CSSProperties => ({
@@ -92,7 +92,7 @@ const accordionButtonStyle = (theme: SubjectTheme, open: boolean): CSSProperties
   padding: "14px 16px",
   borderRadius: 16,
   border: open ? `1px solid ${theme.accent}` : `1px solid ${theme.border}`,
-  background: open ? theme.accentSoft : "#ffffff",
+  background: open ? theme.accentSoft : "var(--surface)",
   color: theme.title,
   fontWeight: 700,
   cursor: "pointer",
@@ -104,7 +104,7 @@ const unitButtonStyle = (theme: SubjectTheme, open: boolean): CSSProperties => (
   padding: "12px 14px",
   borderRadius: 14,
   border: open ? `1px solid ${theme.accent}` : `1px solid ${theme.border}`,
-  background: open ? "#fbfdff" : "#ffffff",
+  background: open ? theme.accentSoft : "var(--surface)",
   color: theme.title,
   fontWeight: 600,
   cursor: "pointer",
@@ -116,7 +116,7 @@ const conceptButtonStyle = (theme: SubjectTheme, selected: boolean, completed: b
   padding: "12px 14px",
   borderRadius: 14,
   border: selected ? `1px solid ${theme.accent}` : `1px solid ${theme.border}`,
-  background: selected ? theme.accentSoft : "#ffffff",
+  background: selected ? theme.accentSoft : "var(--surface)",
   color: theme.title,
   cursor: "pointer",
   boxSizing: "border-box",
@@ -126,8 +126,8 @@ const conceptButtonStyle = (theme: SubjectTheme, selected: boolean, completed: b
 const pillStyle = (tone: "accent" | "green" | "slate", theme: SubjectTheme): CSSProperties => {
   const colors: Record<"accent" | "green" | "slate", CSSProperties> = {
     accent: { backgroundColor: theme.accentSoft, color: theme.accentStrong },
-    green: { backgroundColor: "#e8f7ee", color: "#1f7a4f" },
-    slate: { backgroundColor: "#eef3f7", color: "#42586b" },
+    green: { backgroundColor: "var(--success-soft)", color: "var(--success)" },
+    slate: { backgroundColor: "var(--surface-soft)", color: "var(--muted)" },
   };
 
   return {

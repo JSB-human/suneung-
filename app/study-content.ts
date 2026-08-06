@@ -31,6 +31,7 @@ export type CoreNote = {
   formula?: string;
   mistake: string;
   microPractice: string;
+  youtubeUrl?: string;
 };
 
 export type SubjectGuide = {
@@ -555,21 +556,51 @@ export const CORE_NOTES: CoreNote[] = [
 
 export const EBS_LINKS = [
   {
+    id: "ko-ebs-course",
     subject: "korean" as const,
-    title: "고등예비과정 공통국어",
-    description: "문장 읽기와 핵심 개념을 처음부터 다시 잡는 공식 공통국어 입문 과정입니다.",
+    title: "EBSi 고등예비과정 공통국어",
+    description: "문장 읽기와 핵심 독해 개념을 처음부터 다시 잡는 공식 입문 강좌입니다.",
     href: "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005517",
+    type: "ebsi" as const,
   },
   {
+    id: "ko-yt-navi",
+    subject: "korean" as const,
+    title: "YouTube 윤혜정의 개념의 나비효과",
+    description: "전국 수험생 독해 필독서! 국어 영역 핵심 개념 무료 유튜브 강좌입니다.",
+    href: "https://www.youtube.com/results?search_query=EBS+윤혜정+개념의+나비효과",
+    type: "youtube" as const,
+  },
+  {
+    id: "en-ebs-course",
     subject: "english" as const,
-    title: "고등예비과정 공통영어",
-    description: "기초 어휘와 구문 이해 감각을 함께 시작하는 공식 공통영어 입문 과정입니다.",
+    title: "EBSi 고등예비과정 공통영어",
+    description: "기초 어휘와 구문 독해 감각을 함께 시작하는 공식 입문 강좌입니다.",
     href: "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005455",
+    type: "ebsi" as const,
   },
   {
+    id: "en-yt-joo",
+    subject: "english" as const,
+    title: "YouTube 주혜연의 해석공식 / 수능특강",
+    description: "문장 뼈대 잡기와 수능 영어 직독직해 구문 해석 유튜브 특강입니다.",
+    href: "https://www.youtube.com/results?search_query=EBS+주혜연+해석공식",
+    type: "youtube" as const,
+  },
+  {
+    id: "ma-ebs-course",
     subject: "math" as const,
-    title: "고등예비과정 공통수학",
+    title: "EBSi 고등예비과정 공통수학",
     description: "중학 계산 복습부터 공통수학 핵심 개념까지 이어 주는 공식 입문 과정입니다.",
     href: "https://www.ebsi.co.kr/ebs/pot/potg/retrieveCourseDetailNw.ebs?bookId=LB00000005472",
+    type: "ebsi" as const,
+  },
+  {
+    id: "ma-yt-50day",
+    subject: "math" as const,
+    title: "YouTube EBS 50일 수학 (정승제/정종영)",
+    description: "노베이스 필수! 초·중등 수학부터 고등 수학까지 50일 완성 무료 유튜브 강의입니다.",
+    href: "https://www.youtube.com/results?search_query=EBS+50일+수학",
+    type: "youtube" as const,
   },
 ];

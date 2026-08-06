@@ -3,9 +3,9 @@
   position: relative;
   overflow: hidden;
   padding: 20px;
-  border: 1px solid #dfe4ef;
+  border: 1px solid var(--line);
   border-radius: 28px;
-  background: linear-gradient(145deg, #fff 0%, #fbfcff 68%, #f0f4ff 100%);
+  background: var(--surface);
   box-shadow: var(--shadow-md);
 }
 
@@ -195,7 +195,7 @@
   top: 68px;
   margin: 0 -4px 12px;
   padding: 7px 5px;
-  background: rgb(246 241 232 / 94%);
+  background: var(--topbar-bg);
   backdrop-filter: blur(14px);
 }
 
@@ -206,7 +206,7 @@
   padding: 18px;
   border: 1px solid var(--line);
   border-radius: 22px;
-  background: white;
+  background: var(--surface);
   box-shadow: var(--shadow-sm);
 }
 
@@ -331,7 +331,7 @@
   gap: 10px;
   margin: 14px 0;
   padding: 16px;
-  border: 1px solid #d9e1f3;
+  border: 1px solid var(--line);
   border-radius: 20px;
   background: var(--accent-soft);
 }
@@ -362,9 +362,9 @@
 
 .encouragement-card {
   padding: 14px 16px;
-  border-color: #dfe4ef;
+  border: 1px solid var(--line);
   border-radius: 20px;
-  background: #f8f9fc;
+  background: var(--surface-soft);
 }
 
 .encouragement-card::after {

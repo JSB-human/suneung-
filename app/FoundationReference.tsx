@@ -19,21 +19,36 @@ const subjectTheme: Record<
   FoundationSubject,
   { accent: string; tint: string; border: string; strong: string }
 > = {
-  korean: { accent: "#A56A52", tint: "#F7EEE9", border: "#E7D5CD", strong: "#744532" },
-  english: { accent: "#556FB5", tint: "#EEF2FB", border: "#D6DDF0", strong: "#354D8B" },
-  math: { accent: "#4E7C7A", tint: "#EDF5F4", border: "#D1E2E0", strong: "#315F5D" },
+  korean: {
+    accent: "var(--korean)",
+    tint: "var(--korean-soft)",
+    border: "var(--korean-border)",
+    strong: "var(--korean-strong)",
+  },
+  english: {
+    accent: "var(--english)",
+    tint: "var(--english-soft)",
+    border: "var(--english-border)",
+    strong: "var(--english-strong)",
+  },
+  math: {
+    accent: "var(--math)",
+    tint: "var(--math-soft)",
+    border: "var(--math-border)",
+    strong: "var(--math-strong)",
+  },
 };
 
 const panelStyle: CSSProperties = {
-  border: "1px solid #E5E7EB",
+  border: "1px solid var(--line)",
   borderRadius: 20,
-  background: "#FFFFFF",
-  boxShadow: "0 8px 24px rgba(17, 24, 39, 0.05)",
+  background: "var(--surface)",
+  boxShadow: "var(--shadow-md)",
 };
 
 const sectionTitleStyle: CSSProperties = {
   margin: 0,
-  color: "#111827",
+  color: "var(--ink-strong)",
   fontSize: 16,
   lineHeight: 1.45,
 };
@@ -137,20 +152,20 @@ export function FoundationReference({
           >
             {meta.label} 기초 도서관
           </span>
-          <span style={{ color: "#667085", fontSize: 13, fontWeight: 700 }}>
+          <span style={{ color: "var(--muted)", fontSize: 13, fontWeight: 700 }}>
             개념 {allCapsules.length}개 · 짧은 확인 {allCapsules.length}문제
           </span>
         </div>
         <div style={{ display: "grid", gap: 6 }}>
-          <h2 style={{ margin: 0, color: "#111827", fontSize: 22, lineHeight: 1.35 }}>
+          <h2 style={{ margin: 0, color: "var(--ink-strong)", fontSize: 22, lineHeight: 1.35 }}>
             {meta.shortDescription}
           </h2>
-          <p style={{ margin: 0, color: "#4B5563", fontSize: 14, lineHeight: 1.65 }}>
+          <p style={{ margin: 0, color: "var(--muted)", fontSize: 14, lineHeight: 1.65 }}>
             {meta.startGuide} 한 개를 읽고 확인 문제 하나만 풀어도 오늘 공부는 시작된 거예요.
           </p>
         </div>
         <label style={{ display: "grid", gap: 7 }}>
-          <span style={{ color: "#374151", fontSize: 13, fontWeight: 800 }}>개념 검색</span>
+          <span style={{ color: "var(--ink)", fontSize: 13, fontWeight: 800 }}>개념 검색</span>
           <input
             type="search"
             value={query}
@@ -162,8 +177,8 @@ export function FoundationReference({
               padding: "11px 13px",
               border: `1px solid ${theme.border}`,
               borderRadius: 12,
-              background: "#FFFFFF",
-              color: "#111827",
+              background: "var(--surface)",
+              color: "var(--ink-strong)",
               fontSize: 15,
               outlineColor: theme.accent,
               boxSizing: "border-box",
@@ -251,7 +266,7 @@ export function FoundationReference({
                       borderTop: `1px solid ${theme.border}`,
                     }}
                   >
-                    <p style={{ margin: 0, color: "#374151", fontSize: 15, lineHeight: 1.75 }}>
+                    <p style={{ margin: 0, color: "var(--ink)", fontSize: 15, lineHeight: 1.75 }}>
                       {capsule.beginnerExplanation}
                     </p>
 
@@ -260,9 +275,9 @@ export function FoundationReference({
                         style={{
                           padding: "11px 12px",
                           borderRadius: 12,
-                          background: "#EEF3FF",
-                          border: "1px solid #DCE6FF",
-                          color: "#2647A1",
+                          background: "var(--accent-soft)",
+                          border: "1px solid var(--line)",
+                          color: "var(--primary)",
                           fontSize: 13,
                           fontWeight: 700,
                           lineHeight: 1.6,
@@ -274,7 +289,7 @@ export function FoundationReference({
 
                     <section style={{ display: "grid", gap: 8 }}>
                       <h3 style={sectionTitleStyle}>먼저 잡을 3가지</h3>
-                      <ol style={{ margin: 0, paddingLeft: 21, color: "#374151", lineHeight: 1.75 }}>
+                      <ol style={{ margin: 0, paddingLeft: 21, color: "var(--ink)", lineHeight: 1.75 }}>
                         {capsule.keyPoints.map((point) => (
                           <li key={point} style={{ paddingLeft: 3 }}>{point}</li>
                         ))}
@@ -321,6 +336,29 @@ export function FoundationReference({
                         </span>
                       </div>
                     </section>
+
+                    <div style={{ marginTop: 4 }}>
+                      <a
+                        className="ebs-link"
+                        href={`https://www.youtube.com/results?search_query=EBS+${meta.label}+${encodeURIComponent(capsule.title)}`}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        style={{
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: 6,
+                          padding: "10px 14px",
+                          borderRadius: 12,
+                          background: "var(--accent-soft)",
+                          color: "var(--primary)",
+                          fontWeight: 800,
+                          fontSize: 13,
+                          textDecoration: "none",
+                        }}
+                      >
+                        🎥 YouTube / EBS 관련 개념 강의 시청 ↗
+                      </a>
+                    </div>
 
                     <section
                       style={{
