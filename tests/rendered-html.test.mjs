@@ -94,7 +94,7 @@ test("preserves and migrates local study state safely", async () => {
 });
 
 test("ships detailed curricula, practice, SRS vocabulary, and official EBS links", async () => {
-  const [app, content, mathData, mathMap, languageData, languageMap, trainer, vocabulary, notes, roadmap, css, coachCss, foundation, foundationView, studyHub, visualCss] = await Promise.all([
+  const [app, content, mathData, mathMap, languageData, languageMap, trainer, vocabulary, notes, roadmap, css, coachCss, foundation, foundationView, visualCss] = await Promise.all([
     readFile(new URL("../app/IpsiCoachApp.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/study-content.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/math-curriculum.ts", import.meta.url), "utf8"),
@@ -109,7 +109,6 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
     readFile(new URL("../app/coach.css", import.meta.url), "utf8"),
     readFile(new URL("../app/foundation-reference.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/FoundationReference.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/StudyHub.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/visual-refresh.css", import.meta.url), "utf8"),
   ]);
 
@@ -155,8 +154,6 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(foundationView, /기초 도서관/);
   assert.match(foundationView, /30초 확인/);
   assert.match(foundationView, /틀렸어도 괜찮아요/);
-  assert.match(studyHub, /FoundationReference/);
-  assert.match(studyHub, /설명부터 문제까지 이 안에서/);
   // 기초 도서관이 다시 끊기지 않도록: 앱이 FoundationReference를 세 과목 모두에 직접 렌더링해야 한다.
   assert.match(app, /import FoundationReference from ".\/FoundationReference"/);
   for (const subject of ["korean", "english", "math"]) {
