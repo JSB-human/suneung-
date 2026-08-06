@@ -144,7 +144,6 @@ export const VOCAB_WORDS: readonly VocabWordEntry[] = [
   { id: "contribute", word: "contribute", meaning: "기여하다, 원인이 되다", example: "Regular review contributes to steady grade improvement.", exampleTranslation: "정기적인 복습은 꾸준한 성적 향상에 기여한다.", tags: ["logic"] },
   { id: "conventional", word: "conventional", meaning: "관습적인, 종전의", example: "The author challenges conventional assumptions.", exampleTranslation: "저자는 관습적인 가정에 도전한다.", tags: ["reading"] },
   { id: "cooperate", word: "cooperate", meaning: "협력하다", example: "Group discussions help students cooperate on problems.", exampleTranslation: "조별 토론은 학생들이 문제 해결에 협력하도록 돕는다.", tags: ["reading"] },
-  { id: "crucial", word: "crucial", meaning: "결정적인, 극히 중요한", example: "Identifying the central claim is crucial for accuracy.", exampleTranslation: "중심 주장을 파악하는 것은 정확성을 위해 결정적이다.", tags: ["reading"] },
   { id: "curtail", word: "curtail", meaning: "축소시키다, 줄이다", example: "Curtail distraction during 25-minute focus study.", exampleTranslation: "25분 집중 공부 중 산만함을 축소시키라.", tags: ["logic"] },
   { id: "deduce", word: "deduce", meaning: "연쇄 추론하다, 연덕하다", example: "We can deduce the answer from given facts.", exampleTranslation: "주어진 사실들로부터 답을 추론해낼 수 있다.", tags: ["logic", "reading"] },
   { id: "define", word: "define", meaning: "정의하다, 구별하다", example: "Clear concepts define effective study habits.", exampleTranslation: "명확한 개념이 효과적인 공부 습관을 정의한다.", tags: ["logic"] },
