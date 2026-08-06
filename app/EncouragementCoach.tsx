@@ -16,19 +16,19 @@ const TOUCH_TARGET_STYLE = { minHeight: 44, minWidth: 44 };
 
 function getEncouragementLine(completedCount: number, totalCount: number): string {
   if (totalCount <= 0 || completedCount <= 0) {
-    return "능이가 보고 있겠습니다. 아직 시작 전이어도 괜찮아요. 가장 쉬운 한 칸부터 열어 보면 됩니다.";
+    return "미쿠가 옆에서 항상 응원하고 있어! 🎵 아직 시작 전이어도 괜찮아, 가장 쉬운 것부터 3분만 해볼까? ✨";
   }
 
   if (completedCount < totalCount) {
-    return `${completedCount}칸이나 해냈습니다. 남은 건 전부가 아니라 다음 한 칸이에요.`;
+    return `우와, 벌써 ${completedCount}개나 완료했네! 🎵 다음 한 칸도 미쿠랑 같이 차근차근 해보자! 💖`;
   }
 
-  return "오늘 할 칸을 다 채웠네요. 무리하지 않아도 이런 마무리가 차곡차곡 쌓입니다.";
+  return "오늘 목표를 완벽하게 다 채웠어! 🌟 정말 대단해! 미쿠가 최고로 칭찬해 줄게! 🎉🎵";
 }
 
 function formatSuneungCountdown(dday: number): string {
   if (dday === 0) {
-    return "2028 수능 D-DAY";
+    return "2028 수능 D-DAY 🎯";
   }
 
   if (dday < 0) {
@@ -55,36 +55,25 @@ export function EncouragementCoach({
   return (
     <section
       className={className ? `encouragement-coach ${className}` : "encouragement-coach"}
-      aria-label="수능人 응원 카드"
+      aria-label="하츠네 미쿠 학습 파트너"
     >
-      <div className="encouragement-card">
+      <div className="encouragement-card" style={{ background: "linear-gradient(135deg, #e6f9f8 0%, #ffffff 100%)", borderColor: "#a0ece7" }}>
         <div className="encouragement-visual">
-          <div className="coach-mascot" aria-hidden="true">
-            <div className="coach-face">
-              <span className="coach-hair coach-hair-left" />
-              <span className="coach-hair coach-hair-right" />
-              <span className="coach-eye coach-eye-left" />
-              <span className="coach-eye coach-eye-right" />
-              <span className="coach-cheek coach-cheek-left" />
-              <span className="coach-cheek coach-cheek-right" />
-              <span className="coach-mouth" />
-            </div>
-            <span className="coach-body" />
+          <div className="miku-avatar-box" style={{ width: 84, height: 84, borderRadius: "50%", background: "#39c5bb", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 12px rgba(57, 197, 187, 0.35)", position: "relative" }}>
+            <span style={{ fontSize: 42, lineHeight: 1, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.15))" }}>🎧</span>
+            <span style={{ position: "absolute", bottom: -2, right: -2, background: "#ff7ebb", color: "#fff", fontSize: 10, fontWeight: 900, padding: "2px 6px", borderRadius: 10 }}>Miku 🎵</span>
           </div>
 
-          <div className="encouragement-bubble">
-            <p className="encouragement-eyebrow">수능人 파트너 능이</p>
-            <h2>{message}</h2>
+          <div className="encouragement-bubble" style={{ borderColor: "#a0ece7" }}>
+            <p className="encouragement-eyebrow" style={{ color: "#00a496" }}>🎵 수능人 파트너 · 하츠네 미쿠 (初音ミク)</p>
+            <h2 style={{ color: "#0f172a" }}>{message}</h2>
             <div className="encouragement-meta" aria-label="학습 진행 정보">
-              <span>{countdownLabel}</span>
-              <span>Lv.{level}</span>
-              <span>성장 포인트 {points}</span>
+              <span style={{ borderColor: "#a0ece7", color: "#00a496", background: "#e6f9f8" }}>{countdownLabel}</span>
+              <span style={{ borderColor: "#ffb7d5", color: "#d946ef", background: "#fdf4ff" }}>Lv.{level}</span>
+              <span style={{ borderColor: "#a0ece7", color: "#00a496", background: "#e6f9f8" }}>성장 포인트 {points} P</span>
             </div>
             <p>
-              연속 학습 {streak}일째입니다. 포인트는 틀렸다고 줄지 않고, 시도와 완료가 쌓일 때만 올라갑니다.
-            </p>
-            <p>
-              틀려도 시도 자체가 의미 있습니다. 지금 멈추지 않는 쪽이 더 중요합니다.
+              연속 학습 {streak}일째 달성 중! 🎵 매일 조금씩 쌓이면 미쿠랑 함께 목표 대학까지 갈 수 있어! ✨
             </p>
           </div>
         </div>
@@ -93,10 +82,10 @@ export function EncouragementCoach({
           <button
             type="button"
             className="primary-action"
-            style={TOUCH_TARGET_STYLE}
+            style={{ ...TOUCH_TARGET_STYLE, background: "#39c5bb", borderColor: "#00a496" }}
             onClick={onStartThreeMinutes}
           >
-            3분만 해보기
+            🎵 미쿠와 3분 집중 시작
           </button>
           <button
             type="button"
@@ -104,7 +93,7 @@ export function EncouragementCoach({
             style={TOUCH_TARGET_STYLE}
             onClick={onOpenEasyStep}
           >
-            가장 쉬운 한 칸
+            가장 쉬운 한 칸 열기
           </button>
         </div>
       </div>

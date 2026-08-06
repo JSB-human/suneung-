@@ -11,6 +11,7 @@ import MathKnowledgeMap, {
   type MathKnowledgeMapValue,
 } from "./MathKnowledgeMap";
 import { LANGUAGE_KNOWLEDGE_CURRICULA, type LanguageSubject } from "./language-curriculum";
+import CoreNotes from "./CoreNotes";
 import RoadmapView from "./RoadmapView";
 import StudyHub from "./StudyHub";
 import VocabTrainer, {
@@ -33,7 +34,7 @@ const LEGACY_STORAGE_KEY = "first-step-study-v1";
 const DEFAULT_FOCUS_MINUTES = 25;
 const CSAT_2028_DATE = { year: 2027, monthIndex: 10, day: 18 } as const;
 
-type TabId = "today" | "roadmap" | "notes" | "vocab" | "records";
+type TabId = "today" | "korean" | "english" | "math" | "records";
 
 type AppState = {
   schemaVersion: 2;
@@ -84,11 +85,11 @@ const DEFAULT_APP_STATE: AppState = {
 };
 
 const NAV_ITEMS: Array<{ id: TabId; label: string }> = [
-  { id: "today", label: "오늘" },
-  { id: "roadmap", label: "로드맵" },
-  { id: "notes", label: "개념학습" },
-  { id: "vocab", label: "단어" },
-  { id: "records", label: "기록" },
+  { id: "today", label: "🎯 오늘" },
+  { id: "korean", label: "🇰🇷 국어" },
+  { id: "english", label: "🇬🇧 영어·단어" },
+  { id: "math", label: "📐 수학" },
+  { id: "records", label: "⚡ 훈련·기록" },
 ];
 
 const LEGACY_ROADMAP_MAP: Record<string, string> = {
@@ -353,15 +354,16 @@ export default function IpsiCoachApp() {
   const [timerSeconds, setTimerSeconds] = useState(DEFAULT_FOCUS_MINUTES * 60);
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerOpen, setIsTimerOpen] = useState(false);
+  const [isMikuBgmOpen, setIsMikuBgmOpen] = useState(false);
 
   const sheetRef = useRef<HTMLDivElement | null>(null);
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
   const timerHeadingId = useId();
   const panelIds: Record<TabId, string> = {
     today: useId(),
-    roadmap: useId(),
-    notes: useId(),
-    vocab: useId(),
+    korean: useId(),
+    english: useId(),
+    math: useId(),
     records: useId(),
   };
 
@@ -576,16 +578,12 @@ export default function IpsiCoachApp() {
 
   const openRoadmap = (subject: SubjectKey) => {
     setRoadmapSubject(subject);
-    switchTab("roadmap");
+    switchTab(subject);
   };
 
   const startTask = (task: StudyTask) => {
     setRoadmapSubject(task.subject);
-    if (task.destination === "roadmap") {
-      switchTab("roadmap");
-    } else {
-      switchTab(task.destination);
-    }
+    switchTab(task.subject);
     setStatusMessage(
       task.destination === "vocab"
         ? "오늘 복습할 단어부터 준비했습니다. 기억이 흐려도 괜찮아요."
@@ -681,19 +679,29 @@ export default function IpsiCoachApp() {
           className="brand-lockup"
           href="#main-content"
           onClick={() => setActiveTab("today")}
-          aria-label="수능人 오늘 화면으로 이동"
+          aria-label="수능人 x 미쿠 오늘 화면으로 이동"
         >
-          <span className="brand-mark" aria-hidden="true">人</span>
-          <span className="brand-copy"><strong>수능人</strong><span>노베이스 입시 코치</span></span>
+          <span className="brand-mark" aria-hidden="true" style={{ background: "#39c5bb" }}>🎧</span>
+          <span className="brand-copy"><strong style={{ color: "#00a496" }}>수능人 x 미쿠🎵</strong><span>노베이스 입시 코치</span></span>
         </a>
-        <button
-          type="button"
-          className={`timer-pill ${isTimerRunning ? "is-running" : ""}`}
-          onClick={() => setIsTimerOpen(true)}
-        >
-          <span className="timer-dot" aria-hidden="true" />
-          {isTimerRunning ? formatTimer(timerSeconds) : "집중 타이머"}
-        </button>
+        <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+          <button
+            type="button"
+            className="primary-action"
+            style={{ minHeight: 36, padding: "0 12px", fontSize: 12, background: "#39c5bb", borderColor: "#00a496" }}
+            onClick={() => setIsMikuBgmOpen(true)}
+          >
+            🎵 미쿠 BGM
+          </button>
+          <button
+            type="button"
+            className={`timer-pill ${isTimerRunning ? "is-running" : ""}`}
+            onClick={() => setIsTimerOpen(true)}
+          >
+            <span className="timer-dot" aria-hidden="true" />
+            {isTimerRunning ? formatTimer(timerSeconds) : "집중 타이머"}
+          </button>
+        </div>
       </header>
 
       <main id="main-content" className="app-content">
@@ -799,7 +807,7 @@ export default function IpsiCoachApp() {
                     type="button"
                     className="primary-action"
                     style={{ minHeight: 36, padding: "0 12px", fontSize: 12, flexShrink: 0 }}
-                    onClick={() => setActiveTab("vocab")}
+                    onClick={() => switchTab("english")}
                   >
                     🔤 단어장 열기 →
                   </button>
@@ -829,7 +837,7 @@ export default function IpsiCoachApp() {
                     type="button"
                     className="primary-action"
                     style={{ minHeight: 36, padding: "0 12px", fontSize: 12, background: "var(--korean)", borderColor: "var(--korean)", flexShrink: 0 }}
-                    onClick={() => setActiveTab("notes")}
+                    onClick={() => switchTab("korean")}
                   >
                     📖 개념 읽기 →
                   </button>
@@ -929,12 +937,12 @@ export default function IpsiCoachApp() {
               setTimerPreset(3);
               setIsTimerOpen(true);
               setStatusMessage(
-                "능이와 딱 3분만 시작해 봐요. 시작한 순간 이미 한 칸 전진했어요.",
+                "미쿠와 딱 3분만 시작해 봐요. 시작한 순간 이미 한 칸 전진했어요! 🎵",
               );
             }}
             onOpenEasyStep={() => {
               setRoadmapSubject(nextSubject);
-              switchTab("notes");
+              switchTab(nextSubject);
             }}
           />
 
@@ -952,79 +960,139 @@ export default function IpsiCoachApp() {
         </section>
 
         <section
-          id={panelIds.roadmap}
-          className={`view ${activeTab === "roadmap" ? "is-active" : ""}`}
+          id={panelIds.korean}
+          className={`view ${activeTab === "korean" ? "is-active" : ""}`}
           role="tabpanel"
-          aria-labelledby="tab-roadmap"
-          hidden={activeTab !== "roadmap"}
-        >
-          <RoadmapView
-            selectedSubject={roadmapSubject}
-            onSelectSubject={setRoadmapSubject}
-            completedUnitIds={appState.completedUnitIds}
-            onToggleUnit={toggleUnit}
-            onOpenNotes={() => switchTab("notes")}
-          />
-        </section>
-
-        <section
-          id={panelIds.notes}
-          className={`view ${activeTab === "notes" ? "is-active" : ""}`}
-          role="tabpanel"
-          aria-labelledby="tab-notes"
-          hidden={activeTab !== "notes"}
-        >
-          <StudyHub
-            selectedSubject={roadmapSubject}
-            onSelectSubject={setRoadmapSubject}
-            bookmarks={appState.bookmarkedNoteIds}
-            onToggleBookmark={toggleBookmark}
-            knowledgeContent={roadmapSubject === "math" ? (
-              <MathKnowledgeMap
-                className="math-knowledge-map"
-                value={appState.math}
-                onChange={(math) => setAppState((previous) => ({ ...previous, math }))}
-              />
-            ) : (
-              <LanguageKnowledgeMap
-                key={selectedLanguageSubject}
-                subject={selectedLanguageSubject}
-                value={appState.language[selectedLanguageSubject]}
-                onChange={(languageValue) => setAppState((previous) => ({ ...previous, language: { ...previous.language, [selectedLanguageSubject]: languageValue } }))}
-                className="language-knowledge-map"
-              />
-            )}
-          />
-        </section>
-
-        <section
-          id={panelIds.vocab}
-          className={`view ${activeTab === "vocab" ? "is-active" : ""}`}
-          role="tabpanel"
-          aria-labelledby="tab-vocab"
-          hidden={activeTab !== "vocab"}
+          aria-labelledby="tab-korean"
+          hidden={activeTab !== "korean"}
         >
           <div className="page-intro">
             <div>
-              <p className="eyebrow">외운 뒤가 진짜 복습</p>
-              <h1>영어 단어장</h1>
-              <p>오늘 기억한 정도에 따라 다음 복습일이 달라지고, 익힌 단어는 내 단어장에 계속 정리됩니다.</p>
+              <p className="eyebrow">2028 수능 통합형 완벽 대비</p>
+              <h1>🇰🇷 수능 국어 학습 전당</h1>
+              <p>기초 문장 성분부터 비문학 독서, 문학 개념어, 언어와 매체 오답 분석까지 한 곳에서 공부합니다.</p>
             </div>
           </div>
-          <VocabTrainer
-            value={appState.vocab}
-            onChange={(vocab) => setAppState((previous) => ({ ...previous, vocab }))}
-            onSessionComplete={(summary) => {
-              setAppState((previous) =>
-                addStudyMinutes(
-                  previous,
-                  getLocalDateKey(),
-                  Math.max(5, summary.reviewedCount),
-                ),
-              );
-              setStatusMessage(`${summary.reviewedCount}개 단어 복습을 완료했습니다.`);
-            }}
+
+          <RoadmapView
+            selectedSubject="korean"
+            onSelectSubject={setRoadmapSubject}
+            completedUnitIds={appState.completedUnitIds}
+            onToggleUnit={toggleUnit}
+            onOpenNotes={() => switchTab("korean")}
           />
+
+          <div style={{ marginTop: 20 }}>
+            <CoreNotes
+              subject="korean"
+              bookmarks={appState.bookmarkedNoteIds}
+              onToggleBookmark={toggleBookmark}
+            />
+          </div>
+
+          <div style={{ marginTop: 20 }}>
+            <LanguageKnowledgeMap
+              subject="korean"
+              value={appState.language.korean}
+              onChange={(languageValue) => setAppState((previous) => ({ ...previous, language: { ...previous.language, korean: languageValue } }))}
+              className="language-knowledge-map"
+            />
+          </div>
+        </section>
+
+        <section
+          id={panelIds.english}
+          className={`view ${activeTab === "english" ? "is-active" : ""}`}
+          role="tabpanel"
+          aria-labelledby="tab-english"
+          hidden={activeTab !== "english"}
+        >
+          <div className="page-intro">
+            <div>
+              <p className="eyebrow">수능 필수 어휘 155+ & 구문 독해</p>
+              <h1>🇬🇧 수능 영어 & 필수 단어장</h1>
+              <p>망각 곡선 SRS 영단어 암기와 12주 구문 독해 로드맵을 전면에서 바로 학습하세요.</p>
+            </div>
+          </div>
+
+          <article className="panel-block" style={{ marginBottom: 20, border: "2px solid var(--english-border)", background: "var(--surface)" }}>
+            <div className="section-heading">
+              <div>
+                <h2>🔤 수능 필수 영단어장 (155+ 단어)</h2>
+                <p>SRS 플래시카드 복습 시스템과 수능 예문·우리말 해석·태그 검색을 바로 제공합니다.</p>
+              </div>
+            </div>
+            <VocabTrainer
+              value={appState.vocab}
+              onChange={(vocab) => setAppState((previous) => ({ ...previous, vocab }))}
+              onSessionComplete={(summary) => {
+                setAppState((previous) =>
+                  addStudyMinutes(
+                    previous,
+                    getLocalDateKey(),
+                    Math.max(5, summary.reviewedCount),
+                  ),
+                );
+                setStatusMessage(`${summary.reviewedCount}개 단어 복습을 완료했습니다.`);
+              }}
+            />
+          </article>
+
+          <RoadmapView
+            selectedSubject="english"
+            onSelectSubject={setRoadmapSubject}
+            completedUnitIds={appState.completedUnitIds}
+            onToggleUnit={toggleUnit}
+            onOpenNotes={() => switchTab("english")}
+          />
+
+          <div style={{ marginTop: 20 }}>
+            <CoreNotes
+              subject="english"
+              bookmarks={appState.bookmarkedNoteIds}
+              onToggleBookmark={toggleBookmark}
+            />
+          </div>
+        </section>
+
+        <section
+          id={panelIds.math}
+          className={`view ${activeTab === "math" ? "is-active" : ""}`}
+          role="tabpanel"
+          aria-labelledby="tab-math"
+          hidden={activeTab !== "math"}
+        >
+          <div className="page-intro">
+            <div>
+              <p className="eyebrow">초·중등 계통부터 고등 수학까지</p>
+              <h1>📐 수능 수학 & 50일 수학 지식 지도</h1>
+              <p>부호 계산, 일차방정식, 이차함수, 도형과 피타고라스 계통을 기초부터 차근차근 익힙니다.</p>
+            </div>
+          </div>
+
+          <RoadmapView
+            selectedSubject="math"
+            onSelectSubject={setRoadmapSubject}
+            completedUnitIds={appState.completedUnitIds}
+            onToggleUnit={toggleUnit}
+            onOpenNotes={() => switchTab("math")}
+          />
+
+          <div style={{ marginTop: 20 }}>
+            <MathKnowledgeMap
+              className="math-knowledge-map"
+              value={appState.math}
+              onChange={(math) => setAppState((previous) => ({ ...previous, math }))}
+            />
+          </div>
+
+          <div style={{ marginTop: 20 }}>
+            <CoreNotes
+              subject="math"
+              bookmarks={appState.bookmarkedNoteIds}
+              onToggleBookmark={toggleBookmark}
+            />
+          </div>
         </section>
 
         <section
@@ -1147,6 +1215,93 @@ export default function IpsiCoachApp() {
                 <button type="button" className="secondary-action" onClick={resetTimer}>처음부터</button>
               </div>
               <button type="button" className="quiet-action" onClick={() => setIsTimerOpen(false)}>타이머 접기</button>
+            </div>
+          </div>
+        </div>
+      ) : null}
+
+      {isMikuBgmOpen ? (
+        <div className="sheet-layer" style={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+          <button type="button" className="sheet-backdrop" aria-label="미쿠 BGM 닫기" onClick={() => setIsMikuBgmOpen(false)} />
+          <div
+            className="study-sheet"
+            role="dialog"
+            aria-modal="true"
+            style={{
+              maxWidth: 440,
+              borderRadius: 24,
+              padding: 24,
+              background: "linear-gradient(135deg, #e6f9f8 0%, #ffffff 100%)",
+              border: "2px solid #a0ece7",
+              boxShadow: "0 16px 36px rgba(57, 197, 187, 0.25)",
+              zIndex: 1000,
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ fontSize: 32 }}>🎧</span>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: 18, color: "#0f172a", fontWeight: 900 }}>🎵 미쿠 BGM & 수능 공부 명곡</h3>
+                  <p style={{ margin: 0, fontSize: 12, color: "#00a496", fontWeight: 800 }}>Hatsune Miku Study Playlist</p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsMikuBgmOpen(false)}
+                style={{ border: "none", background: "none", fontSize: 22, cursor: "pointer", color: "#64748b" }}
+              >
+                ✕
+              </button>
+            </div>
+
+            <p style={{ fontSize: 13, color: "#334155", lineHeight: 1.6, marginBottom: 16 }}>
+              공부할 때 미쿠의 대표 명곡과 집중력을 높여주는 Chill Lo-Fi BGM을 들으며 함께 열공해요! 🎵✨
+            </p>
+
+            <div style={{ display: "grid", gap: 10 }}>
+              <a
+                href="https://www.youtube.com/results?search_query=hatsune+miku+lofi+study+bgm"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="primary-action"
+                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", textDecoration: "none", background: "#39c5bb", borderColor: "#00a496", padding: "12px 16px" }}
+              >
+                <span>☕ Miku Lo-Fi Chill Study BGM ↗</span>
+                <span style={{ fontSize: 12, background: "rgba(255,255,255,0.25)", padding: "2px 8px", borderRadius: 8 }}>재생 🎵</span>
+              </a>
+
+              <a
+                href="https://www.youtube.com/results?search_query=Tell+Your+World+Hatsune+Miku"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="secondary-action"
+                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", textDecoration: "none", borderColor: "#a0ece7", padding: "12px 16px" }}
+              >
+                <span>🎵 Tell Your World - kz (livetune) ↗</span>
+                <span style={{ fontSize: 12 }}>시청 ↗</span>
+              </a>
+
+              <a
+                href="https://www.youtube.com/results?search_query=Hatsune+Miku+39"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="secondary-action"
+                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", textDecoration: "none", borderColor: "#a0ece7", padding: "12px 16px" }}
+              >
+                <span>💖 39 (Sanku) - DECO*27 x sasakure ↗</span>
+                <span style={{ fontSize: 12 }}>시청 ↗</span>
+              </a>
+
+              <a
+                href="https://www.youtube.com/results?search_query=Hatsune+Miku+Melt"
+                target="_blank"
+                rel="noreferrer noopener"
+                className="secondary-action"
+                style={{ display: "flex", alignItems: "center", justifyContent: "space-between", textDecoration: "none", borderColor: "#a0ece7", padding: "12px 16px" }}
+              >
+                <span>✨ Melt (메르트) - ryo (supercell) ↗</span>
+                <span style={{ fontSize: 12 }}>시청 ↗</span>
+              </a>
             </div>
           </div>
         </div>

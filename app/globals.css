@@ -36,6 +36,12 @@
   --math-border: #99f6e4;
   --math-title: #134e4a;
 
+  --miku-teal: #39c5bb;
+  --miku-teal-dark: #00a496;
+  --miku-pink: #ff7ebb;
+  --miku-soft: #e6f9f8;
+  --miku-border: #a0ece7;
+
   --success: #15803d;
   --success-soft: #dcfce7;
   --warning: #b45309;
@@ -1690,8 +1696,8 @@ details[open] > summary .chevron {
   left: 10px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  width: min(calc(100% - 20px), 620px);
-  min-height: 66px;
+  width: min(calc(100% - 20px), 640px);
+  min-height: 68px;
   margin: 0 auto;
   padding: 6px;
   border: 1px solid var(--line);
@@ -1702,33 +1708,28 @@ details[open] > summary .chevron {
 }
 
 .nav-tab {
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   min-width: 0;
-  min-height: 52px;
-  place-content: center;
-  gap: 2px;
+  min-height: 54px;
   padding: 4px 2px;
   border: 0;
   border-radius: 16px;
   background: transparent;
   color: var(--muted);
   cursor: pointer;
-  font-size: 11px;
-  font-weight: 850;
-}
-
-.nav-tab::before {
-  width: 5px;
-  height: 5px;
-  margin: 0 auto 2px;
-  border-radius: 50%;
-  background: currentColor;
-  content: "";
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
 }
 
 .nav-tab.is-active {
-  background: var(--accent-soft);
-  color: var(--primary);
+  background: var(--primary);
+  color: #ffffff;
+  box-shadow: 0 4px 12px rgba(29, 78, 216, 0.3);
 }
 
 /* Focus timer sheet */
