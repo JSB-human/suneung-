@@ -161,3 +161,71 @@ test("ma-quad-eq roots satisfy the printed equation", () => {
     }
   }
 });
+
+test("ma-frac-arith satisfies question invariants across many seeds", () => {
+  for (const level of LEVELS) {
+    for (let seed = 0; seed < 200; seed += 1) {
+      const question = generate("ma-frac-arith", seed, level);
+      const violations = findQuestionViolations(question);
+      assert.deepEqual(violations, [], `seed ${seed} level ${level}: ${violations.join(", ")}`);
+    }
+  }
+});
+
+test("ma-frac-arith answer matches an independent exact computation", () => {
+  for (let seed = 0; seed < 200; seed += 1) {
+    const question = generate("ma-frac-arith", seed, 2);
+    const match = question.prompt.match(/^(\d+)\/(\d+) ([+\-×÷]) (\d+)\/(\d+)/);
+    assert.ok(match, `unparseable prompt: ${question.prompt}`);
+
+    const a = Number(match[1]);
+    const b = Number(match[2]);
+    const operator = match[3];
+    const c = Number(match[4]);
+    const d = Number(match[5]);
+
+    let numerator;
+    let denominator;
+    if (operator === "+") {
+      numerator = a * d + c * b;
+      denominator = b * d;
+    } else if (operator === "-") {
+      numerator = a * d - c * b;
+      denominator = b * d;
+    } else if (operator === "×") {
+      numerator = a * c;
+      denominator = b * d;
+    } else {
+      numerator = a * d;
+      denominator = b * c;
+    }
+
+    const divide = (x, y) => {
+      let p = Math.abs(x);
+      let q = Math.abs(y);
+      while (q !== 0) {
+        const r = p % q;
+        p = q;
+        q = r;
+      }
+      return p === 0 ? 1 : p;
+    };
+
+    const sign = denominator < 0 ? -1 : 1;
+    const common = divide(numerator, denominator);
+    const reducedNumerator = numerator === 0 ? 0 : (sign * numerator) / common;
+    const reducedDenominator = numerator === 0 ? 1 : (sign * denominator) / common;
+    const expected =
+      reducedDenominator === 1 ? String(reducedNumerator) : `${reducedNumerator}/${reducedDenominator}`;
+
+    assert.equal(question.acceptableAnswers[0], expected, `seed ${seed}: ${question.prompt}`);
+  }
+});
+
+test("ma-frac-arith level 1 uses only addition and subtraction", () => {
+  for (let seed = 0; seed < 100; seed += 1) {
+    const question = generate("ma-frac-arith", seed, 1);
+    assert.ok(/[+\-]/.test(question.prompt), question.prompt);
+    assert.ok(!/[×÷]/.test(question.prompt), `level 1 must not use × or ÷: ${question.prompt}`);
+  }
+});

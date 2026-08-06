@@ -1,6 +1,6 @@
 import type { Rng } from "../rng.ts";
 import type { Level, QuestionBody, QuestionGenerator } from "../types.ts";
-import { formatFactor, formatQuadratic } from "../math-format.ts";
+import { formatFactor, formatFraction, formatQuadratic, reduceFraction } from "../math-format.ts";
 import { buildChoices, type DistractorCandidate } from "./choice-builder.ts";
 
 type LevelRange = {
@@ -205,9 +205,104 @@ const generateQuadraticEquation: QuestionGenerator = (rng: Rng, level: Level): Q
   };
 };
 
+const generateFractionArithmetic: QuestionGenerator = (rng: Rng, level: Level): QuestionBody => {
+  const denominatorMax = level === 1 ? 8 : level === 2 ? 11 : 14;
+  const operators = level === 1 ? ["+", "-"] : ["+", "-", "×", "÷"];
+  const operator = rng.pick(operators);
+
+  const denominatorB = rng.int(2, denominatorMax);
+  const denominatorD = rng.int(2, denominatorMax);
+  const numeratorA = rng.int(1, denominatorB * 2);
+  const numeratorC = rng.int(1, denominatorD * 2);
+
+  let rawNumerator: number;
+  let rawDenominator: number;
+  if (operator === "+") {
+    rawNumerator = numeratorA * denominatorD + numeratorC * denominatorB;
+    rawDenominator = denominatorB * denominatorD;
+  } else if (operator === "-") {
+    rawNumerator = numeratorA * denominatorD - numeratorC * denominatorB;
+    rawDenominator = denominatorB * denominatorD;
+  } else if (operator === "×") {
+    rawNumerator = numeratorA * numeratorC;
+    rawDenominator = denominatorB * denominatorD;
+  } else {
+    rawNumerator = numeratorA * denominatorD;
+    rawDenominator = denominatorB * numeratorC;
+  }
+
+  const result = reduceFraction(rawNumerator, rawDenominator);
+  const answer = formatFraction(result);
+  const prompt = `${numeratorA}/${denominatorB} ${operator} ${numeratorC}/${denominatorD} 를 계산하면? (기약분수로)`;
+
+  const naive =
+    operator === "+"
+      ? formatFraction(reduceFraction(numeratorA + numeratorC, denominatorB + denominatorD))
+      : operator === "-"
+        ? formatFraction(reduceFraction(numeratorA - numeratorC, denominatorB - denominatorD || 1))
+        : formatFraction(reduceFraction(rawDenominator, rawNumerator || 1));
+
+  const candidates: DistractorCandidate[] = [
+    { value: naive, mistakeTag: "denominator-shortcut" },
+    { value: formatFraction(reduceFraction(-result.numerator, result.denominator)), mistakeTag: "sign" },
+    { value: formatFraction({ numerator: rawNumerator, denominator: rawDenominator === 0 ? 1 : rawDenominator }), mistakeTag: "not-reduced" },
+    { value: formatFraction(reduceFraction(result.numerator + 1, result.denominator)), mistakeTag: "off-by-one" },
+    { value: formatFraction(reduceFraction(result.numerator, result.denominator + 1)), mistakeTag: "off-by-one" },
+  ].filter((candidate) => candidate.value !== answer);
+
+  const steps =
+    operator === "+" || operator === "-"
+      ? [
+          `분모를 ${denominatorB} 와 ${denominatorD} 의 공통분모 ${denominatorB * denominatorD} 로 맞춘다.`,
+          `${numeratorA * denominatorD}/${denominatorB * denominatorD} ${operator} ${numeratorC * denominatorB}/${denominatorB * denominatorD}`,
+          `분자끼리 계산하면 ${rawNumerator}/${rawDenominator}`,
+          `약분하면 ${answer}`,
+        ]
+      : operator === "×"
+        ? [
+            "분자는 분자끼리, 분모는 분모끼리 곱한다.",
+            `${numeratorA * numeratorC}/${denominatorB * denominatorD}`,
+            `약분하면 ${answer}`,
+          ]
+        : [
+            "나눗셈은 뒤 분수를 뒤집어 곱한다.",
+            `${numeratorA}/${denominatorB} × ${denominatorD}/${numeratorC} = ${rawNumerator}/${rawDenominator}`,
+            `약분하면 ${answer}`,
+          ];
+
+  const hints: [string, string, string] =
+    operator === "+" || operator === "-"
+      ? [
+          "분모가 다르면 바로 더하거나 뺄 수 없어.",
+          `공통분모 ${denominatorB * denominatorD} 로 통분부터 해.`,
+          "통분했으면 분자끼리만 계산하고, 마지막에 약분하는 걸 잊지 마.",
+        ]
+      : operator === "×"
+        ? [
+            "곱셈은 통분이 필요 없어.",
+            "분자는 분자끼리, 분모는 분모끼리 곱해.",
+            "곱한 뒤 약분하면 끝이야.",
+          ]
+        : [
+            "나눗셈은 곱셈으로 바꿔서 풀어.",
+            `뒤에 있는 ${numeratorC}/${denominatorD} 를 뒤집으면 ${denominatorD}/${numeratorC} 야.`,
+            "뒤집어 곱한 다음 약분하면 끝이야.",
+          ];
+
+  return {
+    prompt,
+    inputLabel: "계산 결과",
+    choices: buildChoices(rng, answer, candidates),
+    acceptableAnswers: [answer],
+    steps,
+    hints,
+  };
+};
+
 export const MATH_GENERATORS: Record<string, QuestionGenerator> = {
   "ma-linear-eq": generateLinearEquation,
   "ma-poly-expand": generatePolynomialExpansion,
   "ma-factor": generateFactoring,
   "ma-quad-eq": generateQuadraticEquation,
+  "ma-frac-arith": generateFractionArithmetic,
 };
