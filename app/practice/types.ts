@@ -26,3 +26,5 @@ export type GeneratedQuestion = QuestionBody & {
 };
 
 export type QuestionGenerator = (rng: Rng, level: Level) => QuestionBody;
+
+export type Rating = "again" | "hard" | "good" | "easy";

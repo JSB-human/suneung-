@@ -1,6 +1,6 @@
-import type { GeneratedQuestion } from "./types.ts";
+import type { GeneratedQuestion, Rating } from "./types.ts";
 
-export type Rating = "again" | "hard" | "good" | "easy";
+export type { Rating };
 
 export type GradeResult = {
   isCorrect: boolean;
