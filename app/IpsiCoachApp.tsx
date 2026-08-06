@@ -85,11 +85,11 @@ const DEFAULT_APP_STATE: AppState = {
 };
 
 const NAV_ITEMS: Array<{ id: TabId; label: string }> = [
-  { id: "today", label: "🎯 오늘" },
-  { id: "korean", label: "🇰🇷 국어" },
-  { id: "english", label: "🇬🇧 영어·단어" },
-  { id: "math", label: "📐 수학" },
-  { id: "records", label: "⚡ 훈련·기록" },
+  { id: "today", label: "오늘" },
+  { id: "korean", label: "국어" },
+  { id: "english", label: "영어·단어" },
+  { id: "math", label: "수학" },
+  { id: "records", label: "기록" },
 ];
 
 const LEGACY_ROADMAP_MAP: Record<string, string> = {
@@ -355,6 +355,9 @@ export default function IpsiCoachApp() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerOpen, setIsTimerOpen] = useState(false);
   const [isMikuBgmOpen, setIsMikuBgmOpen] = useState(false);
+  const [koreanSubTab, setKoreanSubTab] = useState<"roadmap" | "notes" | "map">("roadmap");
+  const [englishSubTab, setEnglishSubTab] = useState<"vocab" | "roadmap" | "notes">("vocab");
+  const [mathSubTab, setMathSubTab] = useState<"roadmap" | "map" | "notes">("roadmap");
 
   const sheetRef = useRef<HTMLDivElement | null>(null);
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
@@ -681,7 +684,9 @@ export default function IpsiCoachApp() {
           onClick={() => setActiveTab("today")}
           aria-label="수능人 x 미쿠 오늘 화면으로 이동"
         >
-          <span className="brand-mark" aria-hidden="true" style={{ background: "#39c5bb" }}>🎧</span>
+          <span className="brand-mark" aria-hidden="true" style={{ padding: 0, overflow: "hidden", borderRadius: "50%" }}>
+            <img src="/miku_avatar.jpg" alt="미쿠 코치" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+          </span>
           <span className="brand-copy"><strong style={{ color: "#00a496" }}>수능人 x 미쿠🎵</strong><span>노베이스 입시 코치</span></span>
         </a>
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
@@ -969,35 +974,64 @@ export default function IpsiCoachApp() {
           <div className="page-intro">
             <div>
               <p className="eyebrow">2028 수능 통합형 완벽 대비</p>
-              <h1>🇰🇷 수능 국어 학습 전당</h1>
-              <p>기초 문장 성분부터 비문학 독서, 문학 개념어, 언어와 매체 오답 분석까지 한 곳에서 공부합니다.</p>
+              <h1>수능 국어 학습 전당</h1>
+              <p>기초 문장 성분부터 비문학 독서, 문학 개념어, 언어와 매체 오답 분석까지 학습합니다.</p>
             </div>
           </div>
 
-          <RoadmapView
-            selectedSubject="korean"
-            onSelectSubject={setRoadmapSubject}
-            completedUnitIds={appState.completedUnitIds}
-            onToggleUnit={toggleUnit}
-            onOpenNotes={() => switchTab("korean")}
-          />
+          <div style={{ display: "flex", gap: 6, marginBottom: 18, borderBottom: "1px solid var(--line)", paddingBottom: 10, overflowX: "auto" }}>
+            <button
+              type="button"
+              className={`primary-action ${koreanSubTab === "roadmap" ? "" : "secondary-action"}`}
+              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
+              onClick={() => setKoreanSubTab("roadmap")}
+            >
+              📍 12주 독해 로드맵
+            </button>
+            <button
+              type="button"
+              className={`primary-action ${koreanSubTab === "notes" ? "" : "secondary-action"}`}
+              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
+              onClick={() => setKoreanSubTab("notes")}
+            >
+              📖 핵심 개념 노트
+            </button>
+            <button
+              type="button"
+              className={`primary-action ${koreanSubTab === "map" ? "" : "secondary-action"}`}
+              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
+              onClick={() => setKoreanSubTab("map")}
+            >
+              🗺️ 국어 지식 지도
+            </button>
+          </div>
 
-          <div style={{ marginTop: 20 }}>
+          {koreanSubTab === "roadmap" ? (
+            <RoadmapView
+              selectedSubject="korean"
+              onSelectSubject={setRoadmapSubject}
+              completedUnitIds={appState.completedUnitIds}
+              onToggleUnit={toggleUnit}
+              onOpenNotes={() => setKoreanSubTab("notes")}
+            />
+          ) : null}
+
+          {koreanSubTab === "notes" ? (
             <CoreNotes
               subject="korean"
               bookmarks={appState.bookmarkedNoteIds}
               onToggleBookmark={toggleBookmark}
             />
-          </div>
+          ) : null}
 
-          <div style={{ marginTop: 20 }}>
+          {koreanSubTab === "map" ? (
             <LanguageKnowledgeMap
               subject="korean"
               value={appState.language.korean}
               onChange={(languageValue) => setAppState((previous) => ({ ...previous, language: { ...previous.language, korean: languageValue } }))}
               className="language-knowledge-map"
             />
-          </div>
+          ) : null}
         </section>
 
         <section
@@ -1010,49 +1044,80 @@ export default function IpsiCoachApp() {
           <div className="page-intro">
             <div>
               <p className="eyebrow">수능 필수 어휘 155+ & 구문 독해</p>
-              <h1>🇬🇧 수능 영어 & 필수 단어장</h1>
-              <p>망각 곡선 SRS 영단어 암기와 12주 구문 독해 로드맵을 전면에서 바로 학습하세요.</p>
+              <h1>수능 영어 & 필수 단어장</h1>
+              <p>망각 곡선 SRS 영단어 암기와 12주 구문 독해 로드맵을 바로 학습하세요.</p>
             </div>
           </div>
 
-          <article className="panel-block" style={{ marginBottom: 20, border: "2px solid var(--english-border)", background: "var(--surface)" }}>
-            <div className="section-heading">
-              <div>
-                <h2>🔤 수능 필수 영단어장 (155+ 단어)</h2>
-                <p>SRS 플래시카드 복습 시스템과 수능 예문·우리말 해석·태그 검색을 바로 제공합니다.</p>
+          <div style={{ display: "flex", gap: 6, marginBottom: 18, borderBottom: "1px solid var(--line)", paddingBottom: 10, overflowX: "auto" }}>
+            <button
+              type="button"
+              className={`primary-action ${englishSubTab === "vocab" ? "" : "secondary-action"}`}
+              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900, background: englishSubTab === "vocab" ? "var(--english)" : undefined, borderColor: "var(--english)" }}
+              onClick={() => setEnglishSubTab("vocab")}
+            >
+              🔤 수능 영단어장 (155+)
+            </button>
+            <button
+              type="button"
+              className={`primary-action ${englishSubTab === "roadmap" ? "" : "secondary-action"}`}
+              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
+              onClick={() => setEnglishSubTab("roadmap")}
+            >
+              📍 12주 구문 로드맵
+            </button>
+            <button
+              type="button"
+              className={`primary-action ${englishSubTab === "notes" ? "" : "secondary-action"}`}
+              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
+              onClick={() => setEnglishSubTab("notes")}
+            >
+              📖 핵심 구문 노트
+            </button>
+          </div>
+
+          {englishSubTab === "vocab" ? (
+            <article className="panel-block" style={{ border: "2px solid var(--english-border)", background: "var(--surface)" }}>
+              <div className="section-heading">
+                <div>
+                  <h2>🔤 수능 필수 영단어장 (155+ 단어)</h2>
+                  <p>망각 곡선 SRS 플래시카드 복습과 수능 예문·해석·태그 검색을 바로 이용하세요.</p>
+                </div>
               </div>
-            </div>
-            <VocabTrainer
-              value={appState.vocab}
-              onChange={(vocab) => setAppState((previous) => ({ ...previous, vocab }))}
-              onSessionComplete={(summary) => {
-                setAppState((previous) =>
-                  addStudyMinutes(
-                    previous,
-                    getLocalDateKey(),
-                    Math.max(5, summary.reviewedCount),
-                  ),
-                );
-                setStatusMessage(`${summary.reviewedCount}개 단어 복습을 완료했습니다.`);
-              }}
+              <VocabTrainer
+                value={appState.vocab}
+                onChange={(vocab) => setAppState((previous) => ({ ...previous, vocab }))}
+                onSessionComplete={(summary) => {
+                  setAppState((previous) =>
+                    addStudyMinutes(
+                      previous,
+                      getLocalDateKey(),
+                      Math.max(5, summary.reviewedCount),
+                    ),
+                  );
+                  setStatusMessage(`${summary.reviewedCount}개 단어 복습을 완료했습니다.`);
+                }}
+              />
+            </article>
+          ) : null}
+
+          {englishSubTab === "roadmap" ? (
+            <RoadmapView
+              selectedSubject="english"
+              onSelectSubject={setRoadmapSubject}
+              completedUnitIds={appState.completedUnitIds}
+              onToggleUnit={toggleUnit}
+              onOpenNotes={() => setEnglishSubTab("notes")}
             />
-          </article>
+          ) : null}
 
-          <RoadmapView
-            selectedSubject="english"
-            onSelectSubject={setRoadmapSubject}
-            completedUnitIds={appState.completedUnitIds}
-            onToggleUnit={toggleUnit}
-            onOpenNotes={() => switchTab("english")}
-          />
-
-          <div style={{ marginTop: 20 }}>
+          {englishSubTab === "notes" ? (
             <CoreNotes
               subject="english"
               bookmarks={appState.bookmarkedNoteIds}
               onToggleBookmark={toggleBookmark}
             />
-          </div>
+          ) : null}
         </section>
 
         <section
@@ -1065,34 +1130,63 @@ export default function IpsiCoachApp() {
           <div className="page-intro">
             <div>
               <p className="eyebrow">초·중등 계통부터 고등 수학까지</p>
-              <h1>📐 수능 수학 & 50일 수학 지식 지도</h1>
-              <p>부호 계산, 일차방정식, 이차함수, 도형과 피타고라스 계통을 기초부터 차근차근 익힙니다.</p>
+              <h1>수능 수학 & 50일 수학 지식 지도</h1>
+              <p>부호 계산, 일차방정식, 이차함수, 도형과 피타고라스 계통을 차근차근 익힙니다.</p>
             </div>
           </div>
 
-          <RoadmapView
-            selectedSubject="math"
-            onSelectSubject={setRoadmapSubject}
-            completedUnitIds={appState.completedUnitIds}
-            onToggleUnit={toggleUnit}
-            onOpenNotes={() => switchTab("math")}
-          />
+          <div style={{ display: "flex", gap: 6, marginBottom: 18, borderBottom: "1px solid var(--line)", paddingBottom: 10, overflowX: "auto" }}>
+            <button
+              type="button"
+              className={`primary-action ${mathSubTab === "roadmap" ? "" : "secondary-action"}`}
+              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
+              onClick={() => setMathSubTab("roadmap")}
+            >
+              📍 12주 수학 로드맵
+            </button>
+            <button
+              type="button"
+              className={`primary-action ${mathSubTab === "map" ? "" : "secondary-action"}`}
+              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900, background: mathSubTab === "map" ? "var(--math)" : undefined, borderColor: "var(--math)" }}
+              onClick={() => setMathSubTab("map")}
+            >
+              📐 50일수학 지식 지도
+            </button>
+            <button
+              type="button"
+              className={`primary-action ${mathSubTab === "notes" ? "" : "secondary-action"}`}
+              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
+              onClick={() => setMathSubTab("notes")}
+            >
+              📖 핵심 수학 노트
+            </button>
+          </div>
 
-          <div style={{ marginTop: 20 }}>
+          {mathSubTab === "roadmap" ? (
+            <RoadmapView
+              selectedSubject="math"
+              onSelectSubject={setRoadmapSubject}
+              completedUnitIds={appState.completedUnitIds}
+              onToggleUnit={toggleUnit}
+              onOpenNotes={() => setMathSubTab("notes")}
+            />
+          ) : null}
+
+          {mathSubTab === "map" ? (
             <MathKnowledgeMap
               className="math-knowledge-map"
               value={appState.math}
               onChange={(math) => setAppState((previous) => ({ ...previous, math }))}
             />
-          </div>
+          ) : null}
 
-          <div style={{ marginTop: 20 }}>
+          {mathSubTab === "notes" ? (
             <CoreNotes
               subject="math"
               bookmarks={appState.bookmarkedNoteIds}
               onToggleBookmark={toggleBookmark}
             />
-          </div>
+          ) : null}
         </section>
 
         <section
@@ -1239,7 +1333,11 @@ export default function IpsiCoachApp() {
           >
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                <span style={{ fontSize: 32 }}>🎧</span>
+                <img
+                  src="/miku_avatar.jpg"
+                  alt="하츠네 미쿠"
+                  style={{ width: 54, height: 54, borderRadius: "50%", objectFit: "cover", border: "2px solid #39c5bb", boxShadow: "0 2px 8px rgba(57,197,187,0.3)" }}
+                />
                 <div>
                   <h3 style={{ margin: 0, fontSize: 18, color: "#0f172a", fontWeight: 900 }}>🎵 미쿠 BGM & 수능 공부 명곡</h3>
                   <p style={{ margin: 0, fontSize: 12, color: "#00a496", fontWeight: 800 }}>Hatsune Miku Study Playlist</p>

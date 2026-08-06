@@ -59,9 +59,13 @@ export function EncouragementCoach({
     >
       <div className="encouragement-card" style={{ background: "linear-gradient(135deg, #e6f9f8 0%, #ffffff 100%)", borderColor: "#a0ece7" }}>
         <div className="encouragement-visual">
-          <div className="miku-avatar-box" style={{ width: 84, height: 84, borderRadius: "50%", background: "#39c5bb", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 4px 12px rgba(57, 197, 187, 0.35)", position: "relative" }}>
-            <span style={{ fontSize: 42, lineHeight: 1, filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.15))" }}>🎧</span>
-            <span style={{ position: "absolute", bottom: -2, right: -2, background: "#ff7ebb", color: "#fff", fontSize: 10, fontWeight: 900, padding: "2px 6px", borderRadius: 10 }}>Miku 🎵</span>
+          <div className="miku-avatar-box" style={{ width: 84, height: 84, borderRadius: "50%", position: "relative", flexShrink: 0 }}>
+            <img
+              src="/miku_avatar.jpg"
+              alt="하츠네 미쿠 학습 코치"
+              style={{ width: 84, height: 84, borderRadius: "50%", objectFit: "cover", border: "3px solid #39c5bb", boxShadow: "0 4px 12px rgba(57, 197, 187, 0.4)" }}
+            />
+            <span style={{ position: "absolute", bottom: -2, right: -2, background: "#ff7ebb", color: "#fff", fontSize: 10, fontWeight: 900, padding: "2px 6px", borderRadius: 10, boxShadow: "0 2px 4px rgba(0,0,0,0.15)" }}>Miku 🎵</span>
           </div>
 
           <div className="encouragement-bubble" style={{ borderColor: "#a0ece7" }}>
