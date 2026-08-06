@@ -9,6 +9,7 @@ export type ConceptSource = {
   keyPoints: string[];
   formula?: string;
   mistake: string;
+  microPractice?: string;
   workedExample?: {
     prompt: string;
     process: string;
@@ -41,6 +42,10 @@ export function resolveConceptSource(skillId: string): ConceptSource | null {
     keyPoints: [...keyPoints],
     formula: note?.formula ?? capsule?.frame,
     mistake: note?.mistake ?? capsule?.commonTrap ?? "",
-    workedExample: capsule?.workedExample,
+    microPractice: note?.microPractice,
+    // The capsule covers a broader topic than the core note, so its worked
+    // example is often about a different operation. Only borrow it when there is
+    // no core note to speak for this skill.
+    workedExample: note ? undefined : capsule?.workedExample,
   };
 }

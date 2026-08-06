@@ -41,6 +41,12 @@ export default function ConceptSheet({ skillId, open, onClose }: ConceptSheetPro
         ))}
       </ul>
 
+      {source.microPractice ? (
+        <div className="concept-sheet-example">
+          <strong>직접 해보기 · {source.microPractice}</strong>
+        </div>
+      ) : null}
+
       {source.workedExample ? (
         <div className="concept-sheet-example">
           <strong>{source.workedExample.prompt}</strong>
