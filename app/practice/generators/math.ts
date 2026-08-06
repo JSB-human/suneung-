@@ -253,7 +253,7 @@ const generateFractionArithmetic: QuestionGenerator = (rng: Rng, level: Level): 
   const candidates: DistractorCandidate[] = [
     { value: naive, mistakeTag: "denominator-shortcut" },
     { value: formatFraction(reduceFraction(-result.numerator, result.denominator)), mistakeTag: "sign" },
-    { value: formatFraction({ numerator: rawNumerator, denominator: rawDenominator === 0 ? 1 : rawDenominator }), mistakeTag: "not-reduced" },
+    { value: formatFraction(reduceFraction(numeratorA * denominatorD - numeratorC * denominatorB || 1, denominatorB * denominatorD + 1)), mistakeTag: "cross-error" },
     { value: formatFraction(reduceFraction(result.numerator + 1, result.denominator)), mistakeTag: "off-by-one" },
     { value: formatFraction(reduceFraction(result.numerator, result.denominator + 1)), mistakeTag: "off-by-one" },
   ].filter((candidate) => candidate.value !== answer);

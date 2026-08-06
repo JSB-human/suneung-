@@ -287,6 +287,29 @@ function decoratesAnswer(value, answer) {
   return !/^[0-9a-zA-Z]/.test(remainder) && !/^\s*[+\-×÷/^]/.test(remainder);
 }
 
+test("no generator offers a wrong choice that is numerically equal to the answer", () => {
+  const toNumber = (value) => {
+    const match = value.match(/^(-?\d+)(?:\/(\d+))?$/);
+    return match ? Number(match[1]) / (match[2] ? Number(match[2]) : 1) : Number.NaN;
+  };
+
+  for (const level of LEVELS) {
+    for (let seed = 0; seed < 500; seed += 1) {
+      const question = generate("ma-frac-arith", seed, level);
+      const answer = toNumber(question.acceptableAnswers[0]);
+      assert.ok(Number.isFinite(answer), `unparseable answer: ${question.acceptableAnswers[0]}`);
+      for (const choice of question.choices) {
+        if (choice.value === question.acceptableAnswers[0]) continue;
+        const value = toNumber(choice.value);
+        assert.ok(
+          !Number.isFinite(value) || Math.abs(value - answer) > 1e-9,
+          `seed ${seed} level ${level}: "${choice.value}" equals the answer "${question.acceptableAnswers[0]}"`,
+        );
+      }
+    }
+  }
+});
+
 test("no generator ever offers a choice that merely decorates the correct answer", () => {
   for (const skillId of ["ma-linear-eq", "ma-poly-expand", "ma-factor", "ma-quad-eq", "ma-frac-arith"]) {
     for (const level of LEVELS) {
