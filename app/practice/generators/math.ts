@@ -132,7 +132,7 @@ function pickFactorRoots(
 
 const generateFactoring: QuestionGenerator = (rng: Rng, level: Level): QuestionBody => {
   const bound = level === 1 ? 5 : level === 2 ? 8 : 11;
-  const [rootA, rootB] = pickFactorRoots(rng, bound);
+  const [rootA, rootB] = pickFactorRoots(rng, bound, true);
 
   const middleTerm = rootA + rootB;
   const constantTerm = rootA * rootB;

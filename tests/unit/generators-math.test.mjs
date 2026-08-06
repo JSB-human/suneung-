@@ -132,6 +132,39 @@ test("ma-factor orders the two factors consistently", () => {
   }
 });
 
+test("ma-factor never offers two mathematically identical choices", () => {
+  const expand = (answer) => {
+    const match = answer.match(/^\(x ([+-]) (\d+)\)\(x ([+-]) (\d+)\)$/);
+    const first = match[1] === "-" ? -Number(match[2]) : Number(match[2]);
+    const second = match[3] === "-" ? -Number(match[4]) : Number(match[4]);
+    return `${first + second},${first * second}`;
+  };
+
+  for (const level of LEVELS) {
+    for (let seed = 0; seed < 200; seed += 1) {
+      const question = generate("ma-factor", seed, level);
+      const expanded = question.choices.map((choice) => expand(choice.value));
+      assert.equal(
+        new Set(expanded).size,
+        expanded.length,
+        `seed ${seed} level ${level} has duplicate-valued choices: ${question.choices.map((c) => c.value).join(" / ")}`,
+      );
+    }
+  }
+});
+
+test("ma-factor never emits a repeated root", () => {
+  for (const level of LEVELS) {
+    for (let seed = 0; seed < 200; seed += 1) {
+      const answer = generate("ma-factor", seed, level).acceptableAnswers[0];
+      const match = answer.match(/^\(x ([+-]) (\d+)\)\(x ([+-]) (\d+)\)$/);
+      const first = match[1] === "-" ? -Number(match[2]) : Number(match[2]);
+      const second = match[3] === "-" ? -Number(match[4]) : Number(match[4]);
+      assert.notEqual(first, second, `seed ${seed} level ${level}: repeated root in ${answer}`);
+    }
+  }
+});
+
 test("ma-quad-eq satisfies question invariants across many seeds", () => {
   for (const level of LEVELS) {
     for (let seed = 0; seed < 200; seed += 1) {
