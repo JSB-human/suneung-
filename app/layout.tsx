@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./coach.css";
+import "./visual-refresh.css";
 
 const SITE_TITLE = "수능人 | 국영수 노베이스 입시 로드맵";
 const SITE_DESCRIPTION =
@@ -58,7 +59,7 @@ export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  themeColor: "#0d261f",
+  themeColor: "#2647a1",
   colorScheme: "light",
 };
 

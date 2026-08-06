@@ -90,7 +90,7 @@ export const TODAY_TASKS: StudyTask[] = [
     title: "문장 뼈대 표시하기",
     description: "짧은 독서 문장 3개에서 주어·서술어와 접속어 찾기",
     duration: 20,
-    destination: "roadmap",
+    destination: "notes",
   },
   {
     id: "today-english",

@@ -1,28 +1,28 @@
 :root {
-  --page: #f4f2eb;
-  --paper: #fffdf8;
+  --page: #f6f1e8;
+  --paper: #fffdfc;
   --surface: #ffffff;
-  --surface-soft: #edf3ed;
-  --ink: #15332b;
-  --ink-strong: #0d261f;
-  --muted: #64736d;
-  --line: #dce3dc;
-  --primary: #1d5b4b;
-  --primary-dark: #134437;
-  --accent: #c8ef73;
-  --accent-soft: #eaf8c9;
-  --korean: #be5a42;
-  --korean-soft: #fff0e9;
-  --english: #5265b5;
-  --english-soft: #eef0ff;
-  --math: #168077;
-  --math-soft: #e5f7f4;
-  --success: #287553;
-  --warning: #aa7119;
-  --danger: #b23b3b;
-  --shadow-sm: 0 1px 2px rgb(18 48 39 / 7%);
-  --shadow-md: 0 14px 36px rgb(18 48 39 / 9%);
-  --shadow-lg: 0 24px 70px rgb(18 48 39 / 16%);
+  --surface-soft: #f2f0ec;
+  --ink: #1f2a37;
+  --ink-strong: #111827;
+  --muted: #667085;
+  --line: #e5e7eb;
+  --primary: #2647a1;
+  --primary-dark: #1c357a;
+  --accent: #dce6ff;
+  --accent-soft: #eef3ff;
+  --korean: #a56a52;
+  --korean-soft: #f7eee9;
+  --english: #556fb5;
+  --english-soft: #eef2fb;
+  --math: #4e7c7a;
+  --math-soft: #edf5f4;
+  --success: #32745d;
+  --warning: #9a6517;
+  --danger: #a63f3f;
+  --shadow-sm: 0 1px 3px rgb(17 24 39 / 7%);
+  --shadow-md: 0 14px 34px rgb(17 24 39 / 8%);
+  --shadow-lg: 0 20px 52px rgb(17 24 39 / 14%);
   --radius-sm: 12px;
   --radius-md: 18px;
   --radius-lg: 26px;
@@ -43,7 +43,7 @@ body {
   margin: 0;
   min-width: 320px;
   background:
-    radial-gradient(circle at 10% 0%, rgb(200 239 115 / 20%), transparent 32rem),
+    radial-gradient(circle at 10% 0%, rgb(220 230 255 / 42%), transparent 34rem),
     var(--page);
   color: var(--ink);
   font-family: "Pretendard Variable", Pretendard, "SUIT Variable", SUIT, -apple-system,
@@ -72,7 +72,7 @@ button:focus-visible,
 a:focus-visible,
 input:focus-visible,
 summary:focus-visible {
-  outline: 3px solid rgb(82 101 181 / 38%);
+  outline: 3px solid rgb(38 71 161 / 34%);
   outline-offset: 3px;
 }
 
@@ -98,8 +98,8 @@ p {
   justify-content: space-between;
   min-height: 68px;
   padding: 10px max(18px, calc((100vw - 1120px) / 2));
-  border-bottom: 1px solid rgb(220 227 220 / 78%);
-  background: rgb(244 242 235 / 86%);
+  border-bottom: 1px solid rgb(229 231 235 / 88%);
+  background: rgb(246 241 232 / 90%);
   backdrop-filter: blur(18px);
 }
 
@@ -117,8 +117,8 @@ p {
   height: 38px;
   place-items: center;
   border-radius: 13px;
-  background: var(--ink-strong);
-  color: var(--accent);
+  background: var(--primary-dark);
+  color: white;
   font-size: 17px;
   font-weight: 900;
   box-shadow: var(--shadow-sm);
@@ -171,7 +171,7 @@ p {
 .app-content {
   width: min(100%, 1120px);
   margin: 0 auto;
-  padding: 22px 16px 44px;
+  padding: 18px 16px 44px;
 }
 
 .live-status,
@@ -212,10 +212,9 @@ p {
 .page-intro h2 {
   margin: 3px 0 6px;
   color: var(--ink-strong);
-  font-family: Georgia, "Noto Serif KR", serif;
-  font-size: clamp(28px, 7vw, 44px);
-  line-height: 1.18;
-  letter-spacing: -0.055em;
+  font-size: clamp(29px, 7vw, 40px);
+  line-height: 1.2;
+  letter-spacing: -0.045em;
 }
 
 .page-intro > div > p:last-child {
@@ -350,7 +349,7 @@ p {
   border: 1px solid var(--primary);
   background: var(--primary);
   color: white;
-  box-shadow: 0 8px 18px rgb(29 91 75 / 18%);
+  box-shadow: 0 8px 18px rgb(38 71 161 / 18%);
 }
 
 .hero-card .primary-action {
@@ -397,7 +396,7 @@ p {
   padding: 20px;
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
-  background: rgb(255 255 255 / 90%);
+  background: rgb(255 255 255 / 94%);
   box-shadow: var(--shadow-sm);
 }
 
@@ -524,11 +523,11 @@ p {
   gap: 14px;
   align-content: space-between;
   background: var(--accent-soft);
-  border-color: #d6eab0;
+  border-color: #dce4f7;
 }
 
 .next-step-card .eyebrow {
-  color: #557229;
+  color: var(--primary);
 }
 
 .next-step-card h3 {
@@ -539,7 +538,7 @@ p {
 
 .next-step-card p {
   margin-bottom: 0;
-  color: #536448;
+  color: var(--muted);
   font-size: 13px;
 }
 
@@ -623,7 +622,7 @@ p {
   margin: 13px 0 18px;
   padding: 20px;
   border-radius: var(--radius-lg);
-  background: var(--ink-strong);
+  background: var(--primary-dark);
   color: white;
 }
 
@@ -634,7 +633,7 @@ p {
 
 .subject-guide p {
   margin-bottom: 0;
-  color: #c9d9d2;
+  color: #dce6ff;
   font-size: 13px;
 }
 
@@ -660,7 +659,7 @@ p {
   position: absolute;
   left: 0;
   content: "✓";
-  color: var(--accent);
+  color: #b9caff;
   font-weight: 950;
 }
 
@@ -789,10 +788,10 @@ details[open] > summary .chevron {
 .checkpoint {
   margin-top: 14px;
   padding: 13px;
-  border-left: 4px solid var(--accent);
+  border-left: 4px solid var(--primary);
   border-radius: 0 12px 12px 0;
-  background: #f8fbe9;
-  color: #4e6245;
+  background: var(--accent-soft);
+  color: #3f527e;
   font-size: 12px;
 }
 
@@ -879,7 +878,7 @@ details[open] > summary .chevron {
 .trainer-search-field input:focus,
 .math-answer-input:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgb(29 91 75 / 10%);
+  box-shadow: 0 0 0 3px rgb(38 71 161 / 11%);
 }
 
 .note-grid {
@@ -944,7 +943,7 @@ details[open] > summary .chevron {
   padding: 13px;
   border-radius: 13px;
   background: var(--accent-soft);
-  color: #52683b;
+  color: #3f527e;
   font-size: 12px;
 }
 
@@ -1564,9 +1563,9 @@ details[open] > summary .chevron {
   min-height: 66px;
   margin: 0 auto;
   padding: 6px;
-  border: 1px solid rgb(255 255 255 / 45%);
+  border: 1px solid rgb(229 231 235 / 94%);
   border-radius: 22px;
-  background: rgb(13 38 31 / 94%);
+  background: rgb(255 253 252 / 94%);
   box-shadow: var(--shadow-lg);
   backdrop-filter: blur(18px);
 }
@@ -1581,9 +1580,9 @@ details[open] > summary .chevron {
   border: 0;
   border-radius: 16px;
   background: transparent;
-  color: #a8b9b2;
+  color: var(--muted);
   cursor: pointer;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 850;
 }
 
@@ -1597,8 +1596,8 @@ details[open] > summary .chevron {
 }
 
 .nav-tab.is-active {
-  background: var(--accent);
-  color: var(--ink-strong);
+  background: var(--accent-soft);
+  color: var(--primary);
 }
 
 /* Focus timer sheet */

@@ -14,6 +14,8 @@ type NoteFilter = SubjectKey | "all" | "saved";
 export type CoreNotesProps = {
   bookmarks: string[];
   onToggleBookmark: (noteId: string) => void;
+  subject?: SubjectKey;
+  embedded?: boolean;
 };
 
 const FILTER_LABEL: Record<NoteFilter, string> = {
@@ -24,45 +26,51 @@ const FILTER_LABEL: Record<NoteFilter, string> = {
   saved: "저장한 노트",
 };
 
-export default function CoreNotes({ bookmarks, onToggleBookmark }: CoreNotesProps) {
+export default function CoreNotes({ bookmarks, onToggleBookmark, subject, embedded = false }: CoreNotesProps) {
   const [activeFilter, setActiveFilter] = useState<NoteFilter>("all");
   const [query, setQuery] = useState("");
 
   const visibleNotes = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase("ko-KR");
     return CORE_NOTES.filter((note) => {
-      const matchesFilter =
-        activeFilter === "all" ||
-        (activeFilter === "saved" && bookmarks.includes(note.id)) ||
-        note.subject === activeFilter;
+      const matchesFilter = subject
+        ? note.subject === subject
+        : activeFilter === "all" ||
+          (activeFilter === "saved" && bookmarks.includes(note.id)) ||
+          note.subject === activeFilter;
       const searchableText = [
         note.title,
         note.category,
         note.oneLine,
         note.formula ?? "",
         note.mistake,
+        note.microPractice,
         ...note.essentials,
       ]
         .join(" ")
         .toLocaleLowerCase("ko-KR");
       return matchesFilter && (!normalizedQuery || searchableText.includes(normalizedQuery));
     });
-  }, [activeFilter, bookmarks, query]);
+  }, [activeFilter, bookmarks, query, subject]);
+
+  const visibleEbsLinks = subject
+    ? EBS_LINKS.filter((link) => link.subject === subject)
+    : EBS_LINKS;
 
   return (
     <>
-      <div className="page-intro">
+      {!embedded ? <div className="page-intro">
         <div>
           <p className="eyebrow">개념 · 공식 · 실수 방지</p>
           <h1>핵심 노트</h1>
           <p>외워야 할 것과 이해해야 할 것을 나눠 보고, 자주 틀리는 지점까지 한 카드에 정리했습니다.</p>
         </div>
-      </div>
+      </div> : null}
 
-      <section className="panel-block" aria-label="핵심 노트 찾기">
+      <section className={`panel-block notes-panel ${embedded ? "is-embedded" : ""}`} aria-label="핵심 노트 찾기">
         <div className="note-toolbar">
           <label className="search-field">
-            개념 검색
+            {subject ? `${SUBJECT_GUIDES[subject].label} 노트 검색` : "개념 검색"}
             <input
               type="search"
               value={query}
@@ -70,7 +78,7 @@ export default function CoreNotes({ bookmarks, onToggleBookmark }: CoreNotesProp
               onChange={(event) => setQuery(event.target.value)}
             />
           </label>
-          <div className="note-filters" aria-label="과목 필터">
+          {!subject ? <div className="note-filters" aria-label="과목 필터">
             {(["all", ...SUBJECT_KEYS, "saved"] as NoteFilter[]).map((filter) => (
               <button
                 key={filter}
@@ -82,21 +90,21 @@ export default function CoreNotes({ bookmarks, onToggleBookmark }: CoreNotesProp
                 {FILTER_LABEL[filter]}
               </button>
             ))}
-          </div>
+          </div> : null}
         </div>
 
         <div className="note-grid">
-          {visibleNotes.map((note) => {
+          {visibleNotes.map((note, index) => {
             const isSaved = bookmarks.includes(note.id);
             return (
-              <details key={note.id} className={`note-card subject-${note.subject}`}>
+              <details key={note.id} className={`note-card subject-${note.subject}`} open={embedded && index < 1 && !query ? true : undefined}>
                 <summary>
                   <div className="note-card-title">
                     <span>{SUBJECT_GUIDES[note.subject].label} · {note.category}</span>
                     <strong>{note.title}</strong>
                     <p>{note.oneLine}</p>
                   </div>
-                  <span className="chevron" aria-hidden="true">⌄</span>
+                  <span className="chevron" aria-hidden="true">펼치기</span>
                 </summary>
                 <div className="note-body">
                   <section className="note-section">
@@ -135,15 +143,15 @@ export default function CoreNotes({ bookmarks, onToggleBookmark }: CoreNotesProp
         ) : null}
       </section>
 
-      <section className="panel-block" style={{ marginTop: 14 }}>
+      <section className={`panel-block ebs-rail ${embedded ? "is-embedded" : ""}`} style={{ marginTop: 14 }}>
         <div className="section-heading">
           <div>
-            <h2>기초 다음은 EBS로</h2>
-            <p>현재 단계에 맞는 공식 입문 과정부터 연결합니다.</p>
+            <h2>EBS로 더 공부하기</h2>
+            <p>사이트에서 핵심을 익힌 뒤 공식 강좌와 문제로 이어가세요.</p>
           </div>
         </div>
         <div className="ebs-grid">
-          {EBS_LINKS.map((link) => (
+          {visibleEbsLinks.map((link) => (
             <a
               key={link.subject}
               className={`ebs-card subject-${link.subject}`}

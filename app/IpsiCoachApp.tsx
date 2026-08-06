@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
-import CoreNotes from "./CoreNotes";
 import EncouragementCoach from "./EncouragementCoach";
 import LanguageKnowledgeMap, {
   createEmptyLanguageKnowledgeMapValue,
@@ -13,6 +12,7 @@ import MathKnowledgeMap, {
 } from "./MathKnowledgeMap";
 import { LANGUAGE_KNOWLEDGE_CURRICULA, type LanguageSubject } from "./language-curriculum";
 import RoadmapView from "./RoadmapView";
+import StudyHub from "./StudyHub";
 import VocabTrainer, {
   type VocabTrainerState,
   type VocabWordProgress,
@@ -86,7 +86,7 @@ const DEFAULT_APP_STATE: AppState = {
 const NAV_ITEMS: Array<{ id: TabId; label: string }> = [
   { id: "today", label: "오늘" },
   { id: "roadmap", label: "로드맵" },
-  { id: "notes", label: "핵심노트" },
+  { id: "notes", label: "개념학습" },
   { id: "vocab", label: "단어" },
   { id: "records", label: "기록" },
 ];
@@ -579,6 +579,20 @@ export default function IpsiCoachApp() {
     switchTab("roadmap");
   };
 
+  const startTask = (task: StudyTask) => {
+    setRoadmapSubject(task.subject);
+    if (task.destination === "roadmap") {
+      switchTab("roadmap");
+    } else {
+      switchTab(task.destination);
+    }
+    setStatusMessage(
+      task.destination === "vocab"
+        ? "오늘 복습할 단어부터 준비했습니다. 기억이 흐려도 괜찮아요."
+        : `${SUBJECT_GUIDES[task.subject].label} ${task.title} 학습을 열었습니다.`,
+    );
+  };
+
   const toggleTask = (task: StudyTask) => {
     const currentDateKey = getLocalDateKey();
     const isComplete =
@@ -694,37 +708,87 @@ export default function IpsiCoachApp() {
           aria-labelledby="tab-today"
           hidden={activeTab !== "today"}
         >
-          <article className="hero-card">
-            <span className="hero-kicker">고1 기초 · 2028학년도 통합형 · D-{Math.max(0, dday)}</span>
-            <h2>{displayName}님,<br />오늘도 한 칸만 갑니다.</h2>
-            <p>{displayGoal} 지금은 세 과목을 다 잘하려 하기보다, 오늘 정한 60분을 끝내는 것이 먼저입니다.</p>
-            <div className="hero-progress">
-              <strong>오늘 코스 {completedTaskCount}/{TODAY_TASKS.length}</strong>
+          <article className="today-agenda">
+            <header className="agenda-header">
+              <div>
+                <span className="hero-kicker">고1 기초 · 2028학년도 통합형</span>
+                <h1>{displayName}님, 오늘은 딱 세 칸이에요.</h1>
+                <p>{displayGoal}. 어려우면 가장 쉬운 것부터 시작해도 충분합니다.</p>
+              </div>
+              <div className="agenda-meta" aria-label="수능과 학습 현황">
+                <span>수능 D-{Math.max(0, dday)}</span><span>{streak}일 연속</span><span>Lv.{level}</span>
+              </div>
+            </header>
+
+            <div className="hero-progress agenda-progress">
+              <strong>오늘의 60분 · {completedTaskCount}/{TODAY_TASKS.length} 완료</strong>
               <span>{todayProgress}%</span>
               <div className="progress-track" aria-hidden="true">
                 <div className="progress-fill" style={{ width: `${todayProgress}%` }} />
               </div>
             </div>
+
+            <div className="agenda-task-list">
+              {TODAY_TASKS.map((task) => {
+                const isComplete = appState.completedTasks.includes(task.id);
+                return (
+                  <div key={task.id} className={`agenda-task ${SUBJECT_CLASS[task.subject]} ${isComplete ? "is-complete" : ""}`}>
+                    <button type="button" className="agenda-task-open" onClick={() => startTask(task)}>
+                      <span className="subject-badge">{SUBJECT_GUIDES[task.subject].shortLabel}</span>
+                      <span className="course-copy"><strong>{task.title}</strong><span>{task.description}</span></span>
+                      <span className="course-time">{task.duration}분</span>
+                    </button>
+                    <button
+                      type="button"
+                      className="agenda-task-check"
+                      aria-pressed={isComplete}
+                      aria-label={`${task.title} ${isComplete ? "완료 취소" : "완료 기록"}`}
+                      onClick={() => toggleTask(task)}
+                    >
+                      {isComplete ? "✓ 완료" : "완료"}
+                    </button>
+                  </div>
+                );
+              })}
+            </div>
+
             <div className="hero-actions">
               <button
                 type="button"
                 className="primary-action"
                 onClick={() => {
                   const nextTask = TODAY_TASKS.find((task) => !appState.completedTasks.includes(task.id));
-                  if (!nextTask || nextTask.destination === "roadmap") {
-                    openRoadmap(nextTask?.subject ?? nextSubject);
-                  } else {
-                    switchTab(nextTask.destination);
-                  }
+                  if (nextTask) startTask(nextTask);
+                  else openRoadmap(nextSubject);
                 }}
               >
-                {completedTaskCount === TODAY_TASKS.length ? "내일 로드맵 미리 보기" : "이어서 공부하기"}
+                {completedTaskCount === TODAY_TASKS.length ? "내일 로드맵 미리 보기" : "가장 쉬운 한 칸 시작"}
               </button>
-              <button type="button" className="secondary-action" onClick={() => setIsTimerOpen(true)}>
-                25분 집중 시작
+              <button
+                type="button"
+                className="secondary-action"
+                onClick={() => {
+                  setTimerPreset(3);
+                  setIsTimerOpen(true);
+                }}
+              >
+                3분만 집중
               </button>
             </div>
           </article>
+
+          <div className="dashboard-grid compact-dashboard">
+            <article className="panel-block next-step-card">
+              <div>
+                <p className="eyebrow">가장 비어 있는 과목</p>
+                <h3>{SUBJECT_GUIDES[nextSubject].label} 다음 칸</h3>
+                <p>{nextRoadmapTitle}</p>
+              </div>
+              <button type="button" className="secondary-action" onClick={() => openRoadmap(nextSubject)}>
+                전체 순서 확인
+              </button>
+            </article>
+          </div>
 
           <EncouragementCoach
             completedCount={completedTaskCount}
@@ -740,46 +804,13 @@ export default function IpsiCoachApp() {
                 "능이와 딱 3분만 시작해 봐요. 시작한 순간 이미 한 칸 전진했어요.",
               );
             }}
-            onOpenEasyStep={() => openRoadmap(nextSubject)}
+            onOpenEasyStep={() => {
+              setRoadmapSubject(nextSubject);
+              switchTab("notes");
+            }}
           />
 
-          <div className="dashboard-grid">
-            <article className="panel-block today-panel">
-              <div className="section-heading">
-                <div><h2>오늘의 60분</h2><p>국어 20 · 영어 15 · 수학 25</p></div>
-                <p>{completedTaskCount}/{TODAY_TASKS.length} 완료</p>
-              </div>
-              <div className="course-list">
-                {TODAY_TASKS.map((task) => {
-                  const isComplete = appState.completedTasks.includes(task.id);
-                  return (
-                    <button
-                      key={task.id}
-                      type="button"
-                      className={`course-card ${SUBJECT_CLASS[task.subject]} ${isComplete ? "is-complete" : ""}`}
-                      aria-pressed={isComplete}
-                      onClick={() => toggleTask(task)}
-                    >
-                      <span className="subject-badge">{SUBJECT_GUIDES[task.subject].shortLabel}</span>
-                      <span className="course-copy"><strong>{task.title}</strong><span>{task.description}</span></span>
-                      <span className="course-time">{isComplete ? "완료" : `${task.duration}분`}</span>
-                    </button>
-                  );
-                })}
-              </div>
-            </article>
-
-            <article className="panel-block next-step-card">
-              <div>
-                <p className="eyebrow">가장 비어 있는 과목</p>
-                <h3>{SUBJECT_GUIDES[nextSubject].label} 다음 칸</h3>
-                <p>{nextRoadmapTitle}</p>
-              </div>
-              <button type="button" className="primary-action" onClick={() => openRoadmap(nextSubject)}>
-                로드맵에서 위치 보기
-              </button>
-            </article>
-
+          <div className="dashboard-grid progress-dashboard">
             <article className="panel-block">
               <div className="section-heading"><div><h2>지금까지 쌓인 것</h2><p>새로고침해도 이 기기에 남습니다.</p></div></div>
               <div className="mini-stats">
@@ -805,22 +836,6 @@ export default function IpsiCoachApp() {
             completedUnitIds={appState.completedUnitIds}
             onToggleUnit={toggleUnit}
             onOpenNotes={() => switchTab("notes")}
-            mathContent={
-              <MathKnowledgeMap
-                className="math-knowledge-map"
-                value={appState.math}
-                onChange={(math) => setAppState((previous) => ({ ...previous, math }))}
-              />
-            }
-            languageContent={
-              <LanguageKnowledgeMap
-                key={selectedLanguageSubject}
-                subject={selectedLanguageSubject}
-                value={appState.language[selectedLanguageSubject]}
-                onChange={(languageValue) => setAppState((previous) => ({ ...previous, language: { ...previous.language, [selectedLanguageSubject]: languageValue } }))}
-                className="language-knowledge-map"
-              />
-            }
           />
         </section>
 
@@ -831,7 +846,27 @@ export default function IpsiCoachApp() {
           aria-labelledby="tab-notes"
           hidden={activeTab !== "notes"}
         >
-          <CoreNotes bookmarks={appState.bookmarkedNoteIds} onToggleBookmark={toggleBookmark} />
+          <StudyHub
+            selectedSubject={roadmapSubject}
+            onSelectSubject={setRoadmapSubject}
+            bookmarks={appState.bookmarkedNoteIds}
+            onToggleBookmark={toggleBookmark}
+            knowledgeContent={roadmapSubject === "math" ? (
+              <MathKnowledgeMap
+                className="math-knowledge-map"
+                value={appState.math}
+                onChange={(math) => setAppState((previous) => ({ ...previous, math }))}
+              />
+            ) : (
+              <LanguageKnowledgeMap
+                key={selectedLanguageSubject}
+                subject={selectedLanguageSubject}
+                value={appState.language[selectedLanguageSubject]}
+                onChange={(languageValue) => setAppState((previous) => ({ ...previous, language: { ...previous.language, [selectedLanguageSubject]: languageValue } }))}
+                className="language-knowledge-map"
+              />
+            )}
+          />
         </section>
 
         <section

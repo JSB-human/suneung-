@@ -33,12 +33,16 @@ test("server-renders the expanded mobile study coach", async () => {
   assert.match(html, /오늘의 단어 복습/);
   assert.match(html, /부호와 분수 계산/);
   assert.match(html, /국어(?:<!-- -->)? 기초 12주/);
+  assert.match(html, /국영수 개념 학습실/);
+  assert.match(html, /처음부터 읽는 (?:<!-- -->)?국어(?:<!-- -->)? 기초 교과서/);
+  assert.match(html, /국어(?:<!-- -->)? 기초 도서관/);
+  assert.match(html, /개념 (?:<!-- -->)?10(?:<!-- -->)?개/);
   assert.match(html, /국어 기초 역량 지식 지도/);
   assert.match(html, /문장 성분과 중심 문장/);
   assert.match(html, /수능人 단어 트레이너/);
   assert.match(html, /10개 복습 시작/);
   assert.match(html, /새 단어/);
-  for (const tabLabel of ["오늘", "로드맵", "핵심노트", "단어", "기록"]) {
+  for (const tabLabel of ["오늘", "로드맵", "개념학습", "단어", "기록"]) {
     assert.match(html, new RegExp(`>${tabLabel}<`));
   }
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
@@ -89,7 +93,7 @@ test("preserves and migrates local study state safely", async () => {
 });
 
 test("ships detailed curricula, practice, SRS vocabulary, and official EBS links", async () => {
-  const [content, mathData, mathMap, languageData, languageMap, trainer, vocabulary, notes, roadmap, css, coachCss] = await Promise.all([
+  const [content, mathData, mathMap, languageData, languageMap, trainer, vocabulary, notes, roadmap, css, coachCss, foundation, foundationView, studyHub, visualCss] = await Promise.all([
     readFile(new URL("../app/study-content.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/math-curriculum.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/MathKnowledgeMap.tsx", import.meta.url), "utf8"),
@@ -101,6 +105,10 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
     readFile(new URL("../app/RoadmapView.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../app/coach.css", import.meta.url), "utf8"),
+    readFile(new URL("../app/foundation-reference.ts", import.meta.url), "utf8"),
+    readFile(new URL("../app/FoundationReference.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/StudyHub.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/visual-refresh.css", import.meta.url), "utf8"),
   ]);
 
   for (const subjectPrefix of ["ko-", "en-"]) {
@@ -128,7 +136,24 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(languageMap, /completedConceptIds/);
   assert.match(languageMap, /correctQuestionIds/);
   assert.match(languageMap, /괜찮아요\. 지금 발견해서 이득이에요/);
-  assert.match(roadmap, /languageContent/);
+  assert.match(roadmap, /개념 학습실에서 시작/);
+  assert.doesNotMatch(roadmap, /languageContent|mathContent/);
+
+  const capsuleCounts = {
+    korean: (foundation.match(/subject: "korean"/g) ?? []).length,
+    english: (foundation.match(/subject: "english"/g) ?? []).length,
+    math: (foundation.match(/subject: "math"/g) ?? []).length,
+  };
+  assert.deepEqual(capsuleCounts, { korean: 10, english: 11, math: 10 });
+  for (const field of ["beginnerExplanation", "keyPoints", "workedExample", "commonTrap", "quickCheck"]) {
+    assert.match(foundation, new RegExp(field));
+  }
+  assert.match(foundation, /대수·미적분Ⅰ·확률과 통계/);
+  assert.match(foundationView, /기초 도서관/);
+  assert.match(foundationView, /30초 확인/);
+  assert.match(foundationView, /틀렸어도 괜찮아요/);
+  assert.match(studyHub, /FoundationReference/);
+  assert.match(studyHub, /설명부터 문제까지 이 안에서/);
 
   const vocabularyCount = (vocabulary.match(/\n\s+id: "[a-z-]+",/g) ?? []).length;
   assert.ok(vocabularyCount >= 40, `expected at least 40 words, found ${vocabularyCount}`);
@@ -158,6 +183,10 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(css, /grid-template-columns: repeat\(5, 1fr\)/);
   assert.match(css, /@media \(max-width: 390px\)/);
   assert.match(css, /prefers-reduced-motion/);
+  assert.match(css, /--primary: #2647a1/);
+  assert.match(css, /--accent: #dce6ff/);
+  assert.match(visualCss, /\.today-agenda/);
+  assert.match(css, /background: rgb\(255 253 252 \/ 94%\)/);
   assert.match(coachCss, /\.coach-mascot/);
   assert.match(coachCss, /\.encouragement-bubble/);
   assert.match(coachCss, /@media \(max-width: 390px\)/);
