@@ -162,3 +162,18 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(coachCss, /\.encouragement-bubble/);
   assert.match(coachCss, /@media \(max-width: 390px\)/);
 });
+
+test("keeps Vercel and Sites build outputs isolated", async () => {
+  const [packageSource, vercelSource] = await Promise.all([
+    readFile(new URL("../package.json", import.meta.url), "utf8"),
+    readFile(new URL("../vercel.json", import.meta.url), "utf8"),
+  ]);
+  const packageJson = JSON.parse(packageSource);
+  const vercelConfig = JSON.parse(vercelSource);
+
+  assert.equal(packageJson.scripts.build, "vinext build");
+  assert.equal(packageJson.scripts["build:vercel"], "next build");
+  assert.equal(vercelConfig.buildCommand, "npm run build:vercel");
+  assert.equal(vercelConfig.framework, "nextjs");
+  assert.ok(!("outputDirectory" in vercelConfig));
+});
