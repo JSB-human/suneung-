@@ -89,3 +89,45 @@ function expandToString(a, b, c) {
   }
   return parts.length === 0 ? "0" : parts.join(" ");
 }
+
+test("ma-factor satisfies question invariants across many seeds", () => {
+  for (const level of LEVELS) {
+    for (let seed = 0; seed < 200; seed += 1) {
+      const question = generate("ma-factor", seed, level);
+      const violations = findQuestionViolations(question);
+      assert.deepEqual(violations, [], `seed ${seed} level ${level}: ${violations.join(", ")}`);
+    }
+  }
+});
+
+test("ma-factor answer expands back to the printed polynomial", () => {
+  for (let seed = 0; seed < 200; seed += 1) {
+    const question = generate("ma-factor", seed, 2);
+
+    const promptMatch = question.prompt.match(/^x\^2 ([+-]) (\d*)x ([+-]) (\d+)/);
+    assert.ok(promptMatch, `unparseable prompt: ${question.prompt}`);
+    const middleMagnitude = promptMatch[2] === "" ? 1 : Number(promptMatch[2]);
+    const middle = promptMatch[1] === "-" ? -middleMagnitude : middleMagnitude;
+    const constant = promptMatch[3] === "-" ? -Number(promptMatch[4]) : Number(promptMatch[4]);
+
+    const answerMatch = question.acceptableAnswers[0].match(
+      /^\(x ([+-]) (\d+)\)\(x ([+-]) (\d+)\)$/,
+    );
+    assert.ok(answerMatch, `unparseable answer: ${question.acceptableAnswers[0]}`);
+    const rootA = answerMatch[1] === "-" ? -Number(answerMatch[2]) : Number(answerMatch[2]);
+    const rootB = answerMatch[3] === "-" ? -Number(answerMatch[4]) : Number(answerMatch[4]);
+
+    assert.equal(rootA + rootB, middle, `seed ${seed}: middle term mismatch`);
+    assert.equal(rootA * rootB, constant, `seed ${seed}: constant term mismatch`);
+  }
+});
+
+test("ma-factor orders the two factors consistently", () => {
+  for (let seed = 0; seed < 100; seed += 1) {
+    const answer = generate("ma-factor", seed, 2).acceptableAnswers[0];
+    const match = answer.match(/^\(x ([+-]) (\d+)\)\(x ([+-]) (\d+)\)$/);
+    const first = match[1] === "-" ? -Number(match[2]) : Number(match[2]);
+    const second = match[3] === "-" ? -Number(match[4]) : Number(match[4]);
+    assert.ok(first <= second, `factors not sorted for seed ${seed}: ${answer}`);
+  }
+});

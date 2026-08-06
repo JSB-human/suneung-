@@ -1,6 +1,6 @@
 import type { Rng } from "../rng.ts";
 import type { Level, QuestionBody, QuestionGenerator } from "../types.ts";
-import { formatQuadratic } from "../math-format.ts";
+import { formatFactor, formatQuadratic } from "../math-format.ts";
 import { buildChoices, type DistractorCandidate } from "./choice-builder.ts";
 
 type LevelRange = {
@@ -111,7 +111,55 @@ const generatePolynomialExpansion: QuestionGenerator = (rng: Rng, level: Level):
   };
 };
 
+function pickFactorRoots(rng: Rng, bound: number): [number, number] {
+  for (let attempt = 0; attempt < 40; attempt += 1) {
+    const first = rng.nonZeroInt(-bound, bound);
+    const second = rng.nonZeroInt(-bound, bound);
+    if (first + second !== 0) {
+      return first <= second ? [first, second] : [second, first];
+    }
+  }
+  return [1, 2];
+}
+
+const generateFactoring: QuestionGenerator = (rng: Rng, level: Level): QuestionBody => {
+  const bound = level === 1 ? 5 : level === 2 ? 8 : 11;
+  const [rootA, rootB] = pickFactorRoots(rng, bound);
+
+  const middleTerm = rootA + rootB;
+  const constantTerm = rootA * rootB;
+  const answer = `${formatFactor(rootA)}${formatFactor(rootB)}`;
+  const prompt = `${formatQuadratic(1, middleTerm, constantTerm)} 를 인수분해하면?`;
+
+  const candidates: DistractorCandidate[] = [
+    { value: `${formatFactor(-rootA)}${formatFactor(-rootB)}`, mistakeTag: "both-signs" },
+    { value: `${formatFactor(rootA)}${formatFactor(-rootB)}`, mistakeTag: "one-sign" },
+    { value: `${formatFactor(-rootA)}${formatFactor(rootB)}`, mistakeTag: "one-sign" },
+    { value: `${formatFactor(rootA + 1)}${formatFactor(rootB - 1)}`, mistakeTag: "sum-only" },
+    { value: `${formatFactor(rootA - 1)}${formatFactor(rootB + 1)}`, mistakeTag: "sum-only" },
+  ].filter((candidate) => candidate.value !== answer);
+
+  return {
+    prompt,
+    inputLabel: "인수분해한 식",
+    choices: buildChoices(rng, answer, candidates),
+    acceptableAnswers: [answer],
+    steps: [
+      `곱해서 ${constantTerm}, 더해서 ${middleTerm}이 되는 두 수를 찾는다.`,
+      `그 두 수는 ${rootA} 와 ${rootB} 이다.`,
+      `따라서 ${answer}`,
+      `검산: 전개하면 ${formatQuadratic(1, middleTerm, constantTerm)}`,
+    ],
+    hints: [
+      "x²+(a+b)x+ab = (x+a)(x+b) 꼴이야.",
+      `곱해서 ${constantTerm}이 되는 두 정수 짝을 모두 적어 봐.`,
+      `그중 더해서 ${middleTerm}이 되는 짝이 답이야.`,
+    ],
+  };
+};
+
 export const MATH_GENERATORS: Record<string, QuestionGenerator> = {
   "ma-linear-eq": generateLinearEquation,
   "ma-poly-expand": generatePolynomialExpansion,
+  "ma-factor": generateFactoring,
 };
