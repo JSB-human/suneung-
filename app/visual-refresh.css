@@ -554,3 +554,87 @@
     transform: scale(0.64);
   }
 }
+
+.concept-sheet {
+  display: grid;
+  gap: 10px;
+  padding: 16px;
+  margin-top: 12px;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow: var(--shadow-md);
+}
+
+.concept-sheet-head {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  justify-content: space-between;
+}
+
+.concept-sheet-head h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.concept-sheet-eyebrow {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--math);
+}
+
+.concept-sheet-close {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.concept-sheet-oneline {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.concept-sheet-formula {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--accent);
+  font-weight: 700;
+}
+
+.concept-sheet-points {
+  margin: 0;
+  padding-left: 18px;
+  line-height: 1.7;
+}
+
+.concept-sheet-example {
+  display: grid;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px dashed var(--line);
+}
+
+.concept-sheet-example p,
+.concept-sheet-example span {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.concept-sheet-mistake {
+  margin: 0;
+  font-size: 14px;
+  color: var(--math-title);
+}
+
+@media (max-width: 390px) {
+  .concept-sheet {
+    padding: 14px;
+  }
+}
