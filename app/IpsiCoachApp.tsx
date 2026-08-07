@@ -11,7 +11,17 @@ import MathKnowledgeMap, {
   type MathKnowledgeMapValue,
 } from "./MathKnowledgeMap";
 import PracticeRunner from "./practice/PracticeRunner";
-import { getSkillsForConcept } from "./practice/skill-map";
+import TodayPractice from "./practice/TodayPractice";
+import WrongNotes from "./practice/WrongNotes";
+import type { PracticeOutcomeReport } from "./practice/PracticeRunner";
+import { getSkillEntry, getSkillsForConcept } from "./practice/skill-map";
+import {
+  EMPTY_PRACTICE_STATE,
+  migrateVocabIntoReview,
+  normalizePracticeState,
+  recordOutcome,
+  type PracticeState,
+} from "./practice/practice-state";
 import { LANGUAGE_KNOWLEDGE_CURRICULA, type LanguageSubject } from "./language-curriculum";
 import CoreNotes from "./CoreNotes";
 import RoadmapView from "./RoadmapView";
@@ -39,7 +49,7 @@ const CSAT_2028_DATE = { year: 2027, monthIndex: 10, day: 18 } as const;
 type TabId = "today" | "korean" | "english" | "math" | "records";
 
 type AppState = {
-  schemaVersion: 2;
+  schemaVersion: 3;
   userName: string;
   dailyGoal: string;
   taskDate: string;
@@ -50,6 +60,7 @@ type AppState = {
   vocab: VocabTrainerState;
   language: Record<LanguageSubject, LanguageKnowledgeMapValue>;
   math: MathKnowledgeMapValue;
+  practice: PracticeState;
 };
 
 type LegacyWordStatus = "unknown" | "fuzzy" | "mastered";
@@ -70,7 +81,7 @@ const EMPTY_VOCAB_STATE: VocabTrainerState = {
 };
 
 const DEFAULT_APP_STATE: AppState = {
-  schemaVersion: 2,
+  schemaVersion: 3,
   userName: "인1이",
   dailyGoal: "완벽보다 오늘의 한 칸",
   taskDate: "",
@@ -84,6 +95,7 @@ const DEFAULT_APP_STATE: AppState = {
     english: createEmptyLanguageKnowledgeMapValue(),
   },
   math: createEmptyMathKnowledgeMapValue(),
+  practice: EMPTY_PRACTICE_STATE,
 };
 
 const NAV_ITEMS: Array<{ id: TabId; label: string }> = [
@@ -209,7 +221,7 @@ function normalizeStoredState(value: unknown, todayKey: string): AppState {
   const candidate = value as Partial<AppState>;
   const storedTaskDate = typeof candidate.taskDate === "string" ? candidate.taskDate : todayKey;
   return {
-    schemaVersion: 2,
+    schemaVersion: 3,
     userName: normalizeUserName(candidate.userName),
     dailyGoal:
       typeof candidate.dailyGoal === "string" ? candidate.dailyGoal : DEFAULT_APP_STATE.dailyGoal,
@@ -226,6 +238,20 @@ function normalizeStoredState(value: unknown, todayKey: string): AppState {
     vocab: normalizeVocabState(candidate.vocab),
     math: normalizeMathState(candidate.math),
     language: normalizeLanguageState(candidate.language),
+    practice: (() => {
+      const practice = normalizePracticeState(
+        (candidate as { practice?: unknown }).practice,
+      );
+      // v2에는 단어 진도가 vocab.progressById에만 있었다. 복습 큐로 옮기되
+      // 이미 옮겨진 항목은 건드리지 않는다.
+      return {
+        ...practice,
+        reviewById: migrateVocabIntoReview(
+          normalizeVocabState(candidate.vocab).progressById,
+          practice.reviewById,
+        ),
+      };
+    })(),
   };
 }
 
@@ -261,7 +287,7 @@ function migrateLegacyState(value: LegacyState, todayKey: string): AppState {
 
   return {
     ...DEFAULT_APP_STATE,
-    schemaVersion: 2,
+    schemaVersion: 3,
     userName: normalizeUserName(value.userName),
     dailyGoal: typeof value.dailyGoal === "string" ? value.dailyGoal : DEFAULT_APP_STATE.dailyGoal,
     taskDate: todayKey,
@@ -643,6 +669,26 @@ export default function IpsiCoachApp() {
     setStatusMessage(isSaved ? "핵심 노트 저장을 해제했습니다." : "핵심 노트를 저장했습니다.");
   };
 
+  // 문제 하나를 1분으로 세어 학습 기록과 연속 학습일에 반영한다.
+  const handlePracticeOutcome = (report: PracticeOutcomeReport) => {
+    const currentDateKey = getLocalDateKey();
+    const targetSeconds = getSkillEntry(report.skillId)?.targetSeconds ?? 60;
+    setAppState((previous) =>
+      addStudyMinutes(
+        {
+          ...previous,
+          practice: recordOutcome(previous.practice, {
+            ...report,
+            targetSeconds,
+            today: currentDateKey,
+          }),
+        },
+        currentDateKey,
+        1,
+      ),
+    );
+  };
+
   const setTimerPreset = (minutes: number) => {
     setFocusMinutes(minutes);
     setTimerSeconds(minutes * 60);
@@ -953,6 +999,12 @@ export default function IpsiCoachApp() {
             }}
           />
 
+          <TodayPractice
+            reviewById={appState.practice.reviewById}
+            today={todayKey}
+            onOutcome={handlePracticeOutcome}
+          />
+
           <div className="dashboard-grid progress-dashboard">
             <article className="panel-block">
               <div className="section-heading"><div><h2>지금까지 쌓인 것</h2><p>새로고침해도 이 기기에 남습니다.</p></div></div>
@@ -1220,7 +1272,9 @@ export default function IpsiCoachApp() {
                 if (skillIds.length === 0) {
                   return null;
                 }
-                return skillIds.map((skillId) => <PracticeRunner key={skillId} skillId={skillId} />);
+                return skillIds.map((skillId) => (
+                  <PracticeRunner key={skillId} skillId={skillId} onOutcome={handlePracticeOutcome} />
+                ));
               }}
             />
           ) : null}
@@ -1273,6 +1327,17 @@ export default function IpsiCoachApp() {
               ))}
             </div>
           </article>
+
+          <section className="study-detail-section" aria-label="오답노트">
+            <div className="content-section-heading">
+              <span>WRONG NOTES</span>
+              <div>
+                <h2>다시 풀 문제</h2>
+                <p>틀린 문제를 모아 뒀어요. 똑같은 문제로 다시 풀거나 비슷한 문제로 확인하세요.</p>
+              </div>
+            </div>
+            <WrongNotes notes={appState.practice.wrongNotes} onOutcome={handlePracticeOutcome} />
+          </section>
 
           <article className="panel-block" style={{ marginBottom: 14 }}>
             <div className="section-heading"><div><h2>과목별 위치</h2><p>로드맵에서 완료한 단원 기준</p></div></div>

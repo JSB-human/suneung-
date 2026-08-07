@@ -36,6 +36,7 @@ test("server-renders the expanded mobile study coach", async () => {
   assert.match(html, /문장 성분과 중심 문장/);
   assert.match(html, /수능人 단어 트레이너/);
   assert.match(html, /10개 복습 시작/);
+  assert.match(html, /오늘의 연습/);
   assert.match(html, /새 단어/);
   // 기초 도서관(FoundationReference)은 과목별 서브탭 뒤에 있으므로 캡슐 본문은 첫 렌더에 없다.
   // 대신 국어·영어·수학 세 과목 모두에 진입 버튼이 있는지 확인한다.
@@ -61,7 +62,9 @@ test("preserves and migrates local study state safely", async () => {
   assert.match(component, /first-step-study-v2/);
   assert.match(component, /first-step-study-v1/);
   assert.match(component, /migrateLegacyState/);
-  assert.match(component, /schemaVersion: 2/);
+  assert.match(component, /schemaVersion: 3/);
+  assert.match(component, /migrateVocabIntoReview/, "v2 단어 진도가 복습 큐로 옮겨져야 한다");
+  assert.match(component, /recordOutcome/);
   assert.match(component, /normalizeLanguageState/);
   assert.match(component, /getDaysUntil2028Csat/);
   assert.match(component, /year: 2027, monthIndex: 10, day: 18/);
