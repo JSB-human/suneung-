@@ -80,3 +80,21 @@ test("math nodes that have a generator carry its skillId", () => {
     assert.equal(node.subject, "math");
   }
 });
+
+test("english capsules teach words and sentence shape before listening strategy", () => {
+  const capsules = getNodesForSubject("english").filter((node) => node.kind === "capsule");
+  const orderOf = (sourceId) => capsules.findIndex((node) => node.sourceId === sourceId);
+
+  assert.ok(orderOf("en-vocabulary") < orderOf("en-listening-preview"), "단어가 듣기 전략보다 먼저여야 한다");
+  assert.ok(orderOf("en-sv-skeleton") < orderOf("en-listening-preview"), "문장 뼈대가 듣기 전략보다 먼저여야 한다");
+  assert.equal(capsules[0].sourceId, "en-vocabulary");
+  assert.equal(capsules[1].sourceId, "en-sv-skeleton");
+});
+
+test("an explicit capsule order does not drop or duplicate any capsule", () => {
+  for (const subject of ["korean", "english", "math"]) {
+    const capsules = getNodesForSubject(subject).filter((node) => node.kind === "capsule");
+    const ids = capsules.map((node) => node.sourceId);
+    assert.equal(new Set(ids).size, ids.length, `${subject}: duplicate capsule`);
+  }
+});

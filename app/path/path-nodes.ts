@@ -1,4 +1,4 @@
-import { FOUNDATION_REFERENCE } from "../foundation-reference.ts";
+import { FOUNDATION_REFERENCE, type FoundationCapsule } from "../foundation-reference.ts";
 import { LANGUAGE_KNOWLEDGE_CURRICULA } from "../language-curriculum.ts";
 import { MATH_KNOWLEDGE_CURRICULUM } from "../math-curriculum.ts";
 import { SKILL_MAP } from "../practice/skill-map.ts";
@@ -7,6 +7,44 @@ import { FORMULA_MAP } from "./formula-map.ts";
 import type { PathNode } from "./types.ts";
 
 const SUBJECTS: Subject[] = ["korean", "english", "math"];
+
+// 과목별 캡슐 순서를 파일 순서와 다르게 강제하고 싶을 때 여기에 등록한다.
+// 나열된 캡슐은 이 순서대로, 나열되지 않은 캡슐은 원래 파일 순서를 유지한 채 뒤에 붙는다.
+// 개념(concept) 노드는 이 매핑의 영향을 받지 않는다 — 개념 순서는 커리큘럼 챕터 구조를 그대로 따른다.
+const CAPSULE_ORDER: Partial<Record<Subject, string[]>> = {
+  english: [
+    "en-vocabulary",
+    "en-sv-skeleton",
+    "en-listening-preview",
+    "en-listening-flow",
+    "en-modifiers",
+    "en-clauses",
+    "en-participles",
+    "en-relatives",
+    "en-reading-logic",
+    "en-question-types",
+    "en-grammar-check",
+  ],
+};
+
+function orderCapsules(subject: Subject, capsules: FoundationCapsule[]): FoundationCapsule[] {
+  const order = CAPSULE_ORDER[subject];
+  if (!order) {
+    return capsules;
+  }
+  const rank = new Map(order.map((sourceId, index) => [sourceId, index]));
+  return capsules
+    .map((capsule, index) => ({ capsule, index }))
+    .sort((a, b) => {
+      const rankA = rank.get(a.capsule.id) ?? Number.MAX_SAFE_INTEGER;
+      const rankB = rank.get(b.capsule.id) ?? Number.MAX_SAFE_INTEGER;
+      if (rankA !== rankB) {
+        return rankA - rankB;
+      }
+      return a.index - b.index;
+    })
+    .map(({ capsule }) => capsule);
+}
 
 function findSkillId(sourceId: string): string | undefined {
   const entry = Object.values(SKILL_MAP).find(
@@ -42,10 +80,9 @@ function buildSubjectNodes(subject: Subject): PathNode[] {
     });
   };
 
-  for (const capsule of FOUNDATION_REFERENCE) {
-    if (capsule.subject === subject) {
-      push(capsule.id, "capsule", capsule.title, capsule.beginnerExplanation);
-    }
+  const subjectCapsules = FOUNDATION_REFERENCE.filter((capsule) => capsule.subject === subject);
+  for (const capsule of orderCapsules(subject, subjectCapsules)) {
+    push(capsule.id, "capsule", capsule.title, capsule.beginnerExplanation);
   }
 
   if (subject === "math") {

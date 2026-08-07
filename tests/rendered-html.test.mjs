@@ -43,7 +43,7 @@ test("server-renders the expanded mobile study coach", async () => {
   // 과목 탭은 서브탭 없이 길 하나만 보여 준다.
   assert.match(html, /칸 완료/);
   assert.match(html, /긴 문장도 주어·서술어부터/, "국어 길 1번 칸");
-  assert.match(html, /듣기 전 10초, 선택지로 예측/, "영어 길 1번 칸");
+  assert.match(html, /단어는 뜻 하나보다 문장 가족으로/, "영어 길 1번 칸");
   assert.match(html, /부호·분수·지수 연산/, "수학 길 1번 칸");
   // 잠긴 칸도 제목이 렌더되어야 전체 그림이 보인다.
   assert.match(html, /일차방정식에서 부등식과 좌표 해석으로/, "수학 길 마지막 칸");
