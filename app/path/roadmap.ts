@@ -218,10 +218,17 @@ export function buildRoadmap({
     expectedDone + (baseline[elapsedWeeks] ?? 0),
   );
 
-  const nodesAhead = doneCount - expectedDone;
+  // 지난주 끝 기준(expectedDone)과 이번 주 끝 기준(weekGoalCumulative) 사이는
+  // "제때"다. 이번 주 몫을 막 끝낸 사람에게 "앞서 있다"고 말하지 않기 위해서다.
+  let nodesAhead = 0;
+  if (doneCount > weekGoalCumulative) {
+    nodesAhead = doneCount - weekGoalCumulative;
+  } else if (doneCount < expectedDone) {
+    nodesAhead = doneCount - expectedDone;
+  }
   const weeksAhead = Math.trunc(nodesAhead / basePerWeek);
   const pace: RoadmapPace =
-    nodesAhead >= basePerWeek ? "ahead" : nodesAhead <= -basePerWeek ? "behind" : "onTrack";
+    nodesAhead > 0 ? "ahead" : nodesAhead < 0 ? "behind" : "onTrack";
 
   return {
     subject,

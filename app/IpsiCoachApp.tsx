@@ -780,6 +780,7 @@ export default function IpsiCoachApp() {
           <PathView
             subject="korean"
             state={appState.path}
+            todayKey={todayKey}
             onCompleteNode={handleCompleteNode}
             onOutcome={handlePracticeOutcome}
           />
@@ -803,6 +804,7 @@ export default function IpsiCoachApp() {
           <PathView
             subject="english"
             state={appState.path}
+            todayKey={todayKey}
             onCompleteNode={handleCompleteNode}
             onOutcome={handlePracticeOutcome}
           />
@@ -826,6 +828,7 @@ export default function IpsiCoachApp() {
           <PathView
             subject="math"
             state={appState.path}
+            todayKey={todayKey}
             onCompleteNode={handleCompleteNode}
             onOutcome={handlePracticeOutcome}
           />

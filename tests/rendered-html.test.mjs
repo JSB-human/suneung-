@@ -47,6 +47,10 @@ test("server-renders the expanded mobile study coach", async () => {
   assert.match(html, /부호·분수·지수 연산/, "수학 길 1번 칸");
   // 잠긴 칸도 제목이 렌더되어야 전체 그림이 보인다.
   assert.match(html, /일차방정식에서 부등식과 좌표 해석으로/, "수학 길 마지막 칸");
+  // 길 맨 위의 이번 주 카드 — 로드맵은 길에서 파생된다.
+  assert.match(html, /이번 주 (?:\d+칸|몫은 끝냈어|복습)/, "이번 주 카드");
+  assert.match(html, /수능까지 전체 로드맵 보기/, "로드맵 펼치기 버튼");
+  assert.match(html, /기초 다지기|개념 완성|유형 적응|실전/, "단계 이름");
   // 서브탭은 완전히 사라졌다.
   assert.doesNotMatch(html, /🌱 기초 도서관/);
   assert.doesNotMatch(html, /12주 독해 로드맵/);
@@ -71,6 +75,12 @@ test("preserves and migrates local study state safely", async () => {
   assert.match(component, /schemaVersion: 4/);
   assert.match(component, /normalizePathState/, "v4 마이그레이션이 있어야 한다");
   assert.match(component, /PathView/);
+  // 로드맵은 렌더 중 new Date()를 부르지 않고 오늘 날짜를 프롭으로 받는다.
+  assert.equal(
+    component.match(/todayKey=\{todayKey\}/g)?.length,
+    3,
+    "세 과목 길이 전부 오늘 날짜를 프롭으로 받아야 한다",
+  );
   assert.match(component, /migrateVocabIntoReview/, "v2 단어 진도가 복습 큐로 옮겨져야 한다");
   // 복습 큐 화면(TodayPractice)이 기록 탭에서 다시 렌더되어야 한다 — 오늘 탭에서 빠졌다고 통째로 사라지면 안 된다.
   assert.match(component, /import TodayPractice from "\.\/practice\/TodayPractice"/, "TodayPractice를 다시 임포트해야 한다");

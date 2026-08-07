@@ -177,13 +177,27 @@ test("2a. a beginner on day one is on track, not already behind", () => {
   }
 });
 
-test("2b. matching the baseline exactly reads as on track", () => {
+test("2b. anywhere inside this week's band reads as on track", () => {
   const todayKey = "2026-09-07";
   const reference = planFor("korean", todayKey, EMPTY_PATH_STATE);
   const expectedDone = -reference.nodesAhead;
-  const onTrack = planFor("korean", todayKey, stateWithFirst("korean", expectedDone));
-  assert.equal(onTrack.pace, "onTrack");
-  assert.equal(onTrack.nodesAhead, 0);
+  const weekGoal = reference.weekGoalCumulative;
+  assert.ok(weekGoal > expectedDone, "이번 주 목표가 지난주 기준보다 커야 한다");
+
+  for (let done = expectedDone; done <= weekGoal; done += 1) {
+    const plan = planFor("korean", todayKey, stateWithFirst("korean", done));
+    assert.equal(plan.pace, "onTrack", `${done}칸 완료가 onTrack이 아니다`);
+    assert.equal(plan.nodesAhead, 0);
+  }
+
+  // 이번 주 몫을 막 끝낸 것은 "앞서 있는" 게 아니다 — 제때다.
+  const justMet = planFor("korean", todayKey, stateWithFirst("korean", weekGoal));
+  assert.equal(justMet.isWeekGoalMet, true);
+  assert.equal(justMet.pace, "onTrack");
+
+  const oneMore = planFor("korean", todayKey, stateWithFirst("korean", weekGoal + 1));
+  assert.equal(oneMore.pace, "ahead");
+  assert.equal(oneMore.nodesAhead, 1);
 });
 
 test("2c. the weekly goal is anchored to the calendar, not to progress", () => {
