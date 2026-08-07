@@ -234,6 +234,8 @@ test("wires the infinite practice engine into the math tab", async () => {
   assert.match(runner, /다음 문제/);
   assert.match(runner, /aria-live="polite"/);
   assert.match(runner, /useEffect/, "첫 문항은 마운트 후에 만들어야 한다 (하이드레이션)");
+  assert.match(runner, /onOutcome\?\.\(/, "풀이 결과를 위로 보고해야 오답노트가 쌓인다");
+  assert.match(runner, /startedAtRef/);
   assert.match(safeGenerate, /findQuestionViolations/);
   assert.match(registry, /unknown skillId/);
 

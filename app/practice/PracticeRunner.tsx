@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ConceptSheet from "./ConceptSheet";
 import { resolveConceptSource } from "./concept-source.ts";
 import { gradeAnswer } from "./grading.ts";
@@ -9,12 +9,29 @@ import { generateSafely } from "./safe-generate.ts";
 import { getSkillEntry } from "./skill-map.ts";
 import type { GeneratedQuestion, Level } from "./types.ts";
 
+export type PracticeOutcomeReport = {
+  skillId: string;
+  seed: number;
+  level: Level;
+  isCorrect: boolean;
+  mistakeTag: string | null;
+  hintsUsed: number;
+  elapsedSeconds: number;
+};
+
 export type PracticeRunnerProps = {
   skillId: string;
   level?: Level;
+  initialSeed?: number;
+  onOutcome?: (report: PracticeOutcomeReport) => void;
 };
 
-export default function PracticeRunner({ skillId, level = 1 }: PracticeRunnerProps) {
+export default function PracticeRunner({
+  skillId,
+  level = 1,
+  initialSeed,
+  onOutcome,
+}: PracticeRunnerProps) {
   const entry = getSkillEntry(skillId);
   const supported = Boolean(entry) && hasSkill(skillId);
   const hasConcept = Boolean(resolveConceptSource(skillId));
@@ -26,6 +43,11 @@ export default function PracticeRunner({ skillId, level = 1 }: PracticeRunnerPro
   const [conceptOpen, setConceptOpen] = useState(false);
   const [solvedCount, setSolvedCount] = useState(0);
   const [attemptCount, setAttemptCount] = useState(0);
+  // 0으로 시작해도 안전하다: 첫 문항 마운트 이펙트가 실제 문제를 만들기 전에
+  // 항상 이 값을 Date.now()로 덮어쓰므로, check()가 이 값을 읽는 시점엔
+  // 이미 갱신되어 있다. useRef 초기화 인자에서 Date.now()를 바로 부르면
+  // react-hooks/purity 규칙(렌더 중 impure 함수 호출 금지)에 걸린다.
+  const startedAtRef = useRef<number>(0);
 
   // 첫 문항은 마운트 후에 만든다. 시드가 무작위라 서버 렌더에서 만들면
   // 클라이언트와 다른 문제가 나와 하이드레이션이 어긋난다.
@@ -35,11 +57,12 @@ export default function PracticeRunner({ skillId, level = 1 }: PracticeRunnerPro
     }
     // 무작위 시드 문제 생성은 서버 렌더와 어긋나므로 의도적으로 마운트 후 클라이언트에서만 실행한다.
     // eslint-disable-next-line react-hooks/set-state-in-effect
-    setQuestion(generateSafely(skillId, level));
+    setQuestion(generateSafely(skillId, level, initialSeed));
+    startedAtRef.current = Date.now();
     setSelected(null);
     setChecked(false);
     setHintsShown(0);
-  }, [level, skillId, supported]);
+  }, [initialSeed, level, skillId, supported]);
 
   const result = useMemo(
     () => (question && checked && selected ? gradeAnswer(question, selected) : null),
@@ -48,6 +71,7 @@ export default function PracticeRunner({ skillId, level = 1 }: PracticeRunnerPro
 
   const nextQuestion = useCallback(() => {
     setQuestion(generateSafely(skillId, level));
+    startedAtRef.current = Date.now();
     setSelected(null);
     setChecked(false);
     setHintsShown(0);
@@ -57,12 +81,22 @@ export default function PracticeRunner({ skillId, level = 1 }: PracticeRunnerPro
     if (!question || !selected || checked) {
       return;
     }
+    const graded = gradeAnswer(question, selected);
     setChecked(true);
     setAttemptCount((previous) => previous + 1);
-    if (gradeAnswer(question, selected).isCorrect) {
+    if (graded.isCorrect) {
       setSolvedCount((previous) => previous + 1);
     }
-  }, [checked, question, selected]);
+    onOutcome?.({
+      skillId: question.skillId,
+      seed: question.seed,
+      level: question.level,
+      isCorrect: graded.isCorrect,
+      mistakeTag: graded.mistakeTag,
+      hintsUsed: hintsShown,
+      elapsedSeconds: Math.max(0, Math.round((Date.now() - startedAtRef.current) / 1000)),
+    });
+  }, [checked, hintsShown, onOutcome, question, selected]);
 
   if (!supported || !entry) {
     return (
