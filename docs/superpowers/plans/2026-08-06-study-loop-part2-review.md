@@ -1327,7 +1327,9 @@ type AppState = {
     })(),
 ```
 
-`migrateLegacyState`(v1 경로)에는 손대지 않는다. `DEFAULT_APP_STATE`를 펼치므로 `practice`가 자동으로 빈 값이 되고, 그 뒤 v2 정규화를 거치면서 단어 진도가 옮겨진다.
+`migrateLegacyState`(v1 경로)에서는 `schemaVersion: 2` 리터럴 **한 글자만** `3`으로 고친다. 그대로 두면 새 `AppState` 타입과 맞지 않아 타입 에러가 난다. 나머지는 건드리지 않는다.
+
+**주의 (실행 중 확인된 사실):** `migrateLegacyState`의 결과는 `normalizeStoredState`를 거치지 않고 곧바로 상태에 들어간다. 따라서 v1에서 올라오는 그 로드에서는 단어 진도가 `reviewById`로 옮겨지지 않고, 다음 로드에서 옮겨진다. 잃는 것은 없다 — `vocab.progressById`가 여전히 `VocabTrainer`가 읽는 원본이고, `TodayPractice`는 `skill:` 키만 본다.
 
 - [ ] **Step 4: 결과 기록 핸들러 추가**
 
