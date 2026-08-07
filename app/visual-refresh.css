@@ -830,3 +830,31 @@
     align-items: flex-start;
   }
 }
+
+.today-practice {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid var(--math-border);
+  border-radius: 18px;
+  background: var(--math-surface);
+}
+
+.today-practice-head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.today-practice-head h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.today-practice-sub {
+  margin: 4px 0 0;
+  font-size: 14px;
+  opacity: 0.8;
+}
