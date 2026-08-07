@@ -776,3 +776,57 @@
     font-size: 17px;
   }
 }
+
+.wrong-notes {
+  display: grid;
+  gap: 12px;
+}
+
+.wrong-notes-count {
+  margin: 0;
+  font-weight: 700;
+}
+
+.wrong-notes-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.wrong-note {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.wrong-note-date {
+  margin-left: 8px;
+  font-size: 13px;
+  opacity: 0.7;
+}
+
+.wrong-note-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wrong-notes-retry {
+  display: grid;
+  gap: 10px;
+  justify-items: start;
+}
+
+@media (max-width: 390px) {
+  .wrong-note {
+    align-items: flex-start;
+  }
+}
