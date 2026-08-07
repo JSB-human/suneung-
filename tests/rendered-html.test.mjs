@@ -72,6 +72,10 @@ test("preserves and migrates local study state safely", async () => {
   assert.match(component, /normalizePathState/, "v4 마이그레이션이 있어야 한다");
   assert.match(component, /PathView/);
   assert.match(component, /migrateVocabIntoReview/, "v2 단어 진도가 복습 큐로 옮겨져야 한다");
+  // 복습 큐 화면(TodayPractice)이 기록 탭에서 다시 렌더되어야 한다 — 오늘 탭에서 빠졌다고 통째로 사라지면 안 된다.
+  assert.match(component, /import TodayPractice from "\.\/practice\/TodayPractice"/, "TodayPractice를 다시 임포트해야 한다");
+  assert.match(component, /<TodayPractice/, "TodayPractice가 실제로 렌더되어야 한다");
+  assert.match(component, /listDueKeys/, "오늘 탭에서 복습 개수를 세어야 한다");
   // 서브탭 상태는 전부 사라졌다.
   assert.doesNotMatch(component, /koreanSubTab|englishSubTab|mathSubTab/);
   // 동생 데이터는 화면에서 빠져도 저장소에는 남아야 한다.

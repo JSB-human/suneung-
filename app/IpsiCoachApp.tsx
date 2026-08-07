@@ -10,9 +10,11 @@ import {
   createEmptyMathKnowledgeMapValue,
   type MathKnowledgeMapValue,
 } from "./MathKnowledgeMap";
+import TodayPractice from "./practice/TodayPractice";
 import WrongNotes from "./practice/WrongNotes";
 import type { PracticeOutcomeReport } from "./practice/PracticeRunner";
 import { getSkillEntry } from "./practice/skill-map";
+import { listDueKeys } from "./practice/review-queue";
 import {
   EMPTY_PRACTICE_STATE,
   migrateVocabIntoReview,
@@ -389,6 +391,7 @@ export default function IpsiCoachApp() {
     const progress = appState.vocab.progressById[word.id];
     return !progress || !progress.dueDate || progress.dueDate <= todayKey;
   }).length;
+  const dueReviewCount = listDueKeys(appState.practice.reviewById, todayKey, "skill").length;
   const dday = getDaysUntil2028Csat();
   const completedNodeCount = appState.path.completedNodeIds.length;
   const completedLanguageConceptCount =
@@ -701,6 +704,17 @@ export default function IpsiCoachApp() {
             onOpenEasyStep={() => switchTab(nextSubject)}
           />
 
+          {dueReviewCount > 0 ? (
+            <button
+              type="button"
+              className="today-review-row"
+              onClick={() => switchTab("records")}
+            >
+              <span>복습할 게 {dueReviewCount}개 있어요</span>
+              <span aria-hidden="true">기록 탭에서 풀기 →</span>
+            </button>
+          ) : null}
+
           <section className="today-next-list" aria-label="오늘의 다음 칸">
             {SUBJECT_KEYS.map((subject) => {
               const next = getNextNode(appState.path, subject);
@@ -866,6 +880,21 @@ export default function IpsiCoachApp() {
               </div>
             </div>
             <WrongNotes notes={appState.practice.wrongNotes} onOutcome={handlePracticeOutcome} />
+          </section>
+
+          <section className="study-detail-section" aria-label="복습 큐">
+            <div className="content-section-heading">
+              <span>REVIEW QUEUE</span>
+              <div>
+                <h2>복습할 것들</h2>
+                <p>때가 된 단어와 문제를 다시 풀며 오래 기억에 남겨요.</p>
+              </div>
+            </div>
+            <TodayPractice
+              reviewById={appState.practice.reviewById}
+              today={todayKey}
+              onOutcome={handlePracticeOutcome}
+            />
           </section>
 
           <article className="panel-block" style={{ marginBottom: 14 }}>
