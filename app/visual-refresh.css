@@ -912,3 +912,84 @@
     padding: 14px;
   }
 }
+
+.path-view {
+  display: grid;
+  gap: 12px;
+}
+
+.path-progress {
+  margin: 0;
+  font-weight: 700;
+}
+
+.path-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.path-node-button {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 14px;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.path-node-order {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--accent);
+  font-weight: 800;
+}
+
+.path-node-body {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.path-node-body strong {
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.path-node-body small {
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+.path-node.is-current .path-node-button {
+  border-color: var(--math);
+  border-width: 2px;
+  box-shadow: var(--shadow-md);
+}
+
+.path-node.is-done .path-node-order {
+  background: var(--math);
+  color: #fff;
+}
+
+.path-node.is-locked .path-node-button {
+  opacity: 0.55;
+}
+
+.path-node-review {
+  font-size: 12px;
+  font-weight: 700;
+  font-style: normal;
+  color: #c2410c;
+}
