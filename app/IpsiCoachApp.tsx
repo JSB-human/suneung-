@@ -11,6 +11,7 @@ import MathKnowledgeMap, {
   type MathKnowledgeMapValue,
 } from "./MathKnowledgeMap";
 import PracticeRunner from "./practice/PracticeRunner";
+import ResourceLibrary from "./ResourceLibrary";
 import TodayPractice from "./practice/TodayPractice";
 import WrongNotes from "./practice/WrongNotes";
 import type { PracticeOutcomeReport } from "./practice/PracticeRunner";
@@ -1004,6 +1005,8 @@ export default function IpsiCoachApp() {
             today={todayKey}
             onOutcome={handlePracticeOutcome}
           />
+
+          <ResourceLibrary />
 
           <div className="dashboard-grid progress-dashboard">
             <article className="panel-block">
