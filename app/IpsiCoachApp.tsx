@@ -852,14 +852,14 @@ export default function IpsiCoachApp() {
                     <span style={{ fontWeight: 900, color: "var(--english)", fontSize: 13, flexShrink: 0 }}>
                       1단계 [단어]
                     </span>
-                    <span style={{ fontSize: 13, color: "var(--ink)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    <span style={{ fontSize: 13, color: "var(--ink)", lineHeight: 1.35 }}>
                       영단어장 5개 뜻 복습하기
                     </span>
                   </div>
                   <button
                     type="button"
                     className="primary-action"
-                    style={{ minHeight: 36, padding: "0 12px", fontSize: 12, flexShrink: 0 }}
+                    style={{ minHeight: 44, padding: "0 12px", fontSize: 12, flexShrink: 0 }}
                     onClick={() => switchTab("english")}
                   >
                     🔤 단어장 열기 →
@@ -882,14 +882,14 @@ export default function IpsiCoachApp() {
                     <span style={{ fontWeight: 900, color: "var(--korean)", fontSize: 13, flexShrink: 0 }}>
                       2단계 [개념]
                     </span>
-                    <span style={{ fontSize: 13, color: "var(--ink)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                    <span style={{ fontSize: 13, color: "var(--ink)", lineHeight: 1.35 }}>
                       국영수 핵심 노트 1개 읽기
                     </span>
                   </div>
                   <button
                     type="button"
                     className="primary-action"
-                    style={{ minHeight: 36, padding: "0 12px", fontSize: 12, background: "var(--korean)", borderColor: "var(--korean)", flexShrink: 0 }}
+                    style={{ minHeight: 44, padding: "0 12px", fontSize: 12, background: "var(--korean)", borderColor: "var(--korean)", flexShrink: 0 }}
                     onClick={() => switchTab("korean")}
                   >
                     📖 개념 읽기 →
@@ -920,7 +920,7 @@ export default function IpsiCoachApp() {
                   <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
                     <a
                       className="primary-action"
-                      style={{ minHeight: 34, padding: "0 10px", fontSize: 12, display: "inline-flex", alignItems: "center", textDecoration: "none", background: "#1d4ed8", borderColor: "#1d4ed8" }}
+                      style={{ minHeight: 44, padding: "0 10px", fontSize: 12, display: "inline-flex", alignItems: "center", textDecoration: "none", background: "#1d4ed8", borderColor: "#1d4ed8" }}
                       href="https://www.ebsi.co.kr"
                       target="_blank"
                       rel="noreferrer noopener"
@@ -929,7 +929,7 @@ export default function IpsiCoachApp() {
                     </a>
                     <a
                       className="primary-action"
-                      style={{ minHeight: 34, padding: "0 10px", fontSize: 12, display: "inline-flex", alignItems: "center", textDecoration: "none", background: "#dc2626", borderColor: "#dc2626" }}
+                      style={{ minHeight: 44, padding: "0 10px", fontSize: 12, display: "inline-flex", alignItems: "center", textDecoration: "none", background: "#dc2626", borderColor: "#dc2626" }}
                       href="https://www.youtube.com/@mathmath1"
                       target="_blank"
                       rel="noreferrer noopener"
