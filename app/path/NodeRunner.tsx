@@ -14,6 +14,10 @@ export type NodeRunnerProps = {
 
 type Stage = "read" | "check" | "done";
 
+// 생성기 칸은 문제가 무한하므로 최소 몇 문제를 풀어야 칸이 끝나는지 정한다.
+// 스펙의 "확인 3문제"와 같은 수다.
+const REQUIRED_GENERATOR_QUESTIONS = 3;
+
 export default function NodeRunner({
   nodeId,
   onComplete,
@@ -26,6 +30,14 @@ export default function NodeRunner({
   const [submitted, setSubmitted] = useState("");
   const [checked, setChecked] = useState(false);
   const [correctCount, setCorrectCount] = useState(0);
+  // 생성기가 붙은 칸은 PracticeRunner가 문제를 내므로 여기서 직접 센다.
+  const [generatorCorrect, setGeneratorCorrect] = useState(0);
+  const [generatorTotal, setGeneratorTotal] = useState(0);
+  // 완료 화면은 이 값을 보여 준다. 진행 중 상태를 그대로 쓰면 생성기 칸에서
+  // 방금 맞힌 문제가 0개로 표시된다.
+  const [finalScore, setFinalScore] = useState<{ correct: number; total: number } | null>(
+    null,
+  );
 
   if (!content) {
     return (
@@ -38,9 +50,19 @@ export default function NodeRunner({
   const questions = content.questions;
   const question = questions[questionIndex];
 
-  const finish = (finalCorrect: number) => {
+  const finish = (finalCorrect: number, finalTotal: number) => {
+    const total = Math.max(1, finalTotal);
+    setFinalScore({ correct: finalCorrect, total });
     setStage("done");
-    onComplete(finalCorrect, Math.max(1, questions.length));
+    onComplete(finalCorrect, total);
+  };
+
+  const handleGeneratorOutcome = (report: PracticeOutcomeReport) => {
+    setGeneratorTotal((previous) => previous + 1);
+    if (report.isCorrect) {
+      setGeneratorCorrect((previous) => previous + 1);
+    }
+    onOutcome?.(report);
   };
 
   const checkAnswer = () => {
@@ -55,7 +77,7 @@ export default function NodeRunner({
 
   const goNext = () => {
     if (questionIndex + 1 >= questions.length) {
-      finish(correctCount);
+      finish(correctCount, questions.length);
       return;
     }
     setQuestionIndex((previous) => previous + 1);
@@ -98,9 +120,16 @@ export default function NodeRunner({
 
       {stage === "check" && content.skillId ? (
         <>
-          <PracticeRunner skillId={content.skillId} onOutcome={onOutcome} />
-          <button type="button" className="practice-primary" onClick={() => finish(3)}>
-            이 칸 끝내기
+          <PracticeRunner skillId={content.skillId} onOutcome={handleGeneratorOutcome} />
+          <button
+            type="button"
+            className="practice-primary"
+            disabled={generatorTotal < REQUIRED_GENERATOR_QUESTIONS}
+            onClick={() => finish(generatorCorrect, generatorTotal)}
+          >
+            {generatorTotal < REQUIRED_GENERATOR_QUESTIONS
+              ? `이 칸 끝내기 (${generatorTotal}/${REQUIRED_GENERATOR_QUESTIONS})`
+              : "이 칸 끝내기"}
           </button>
         </>
       ) : null}
@@ -163,7 +192,7 @@ export default function NodeRunner({
         <div className="practice-result is-correct" role="status" aria-live="polite">
           <strong>이 칸 완료!</strong>
           <p>
-            맞힌 문제 {correctCount} / {Math.max(1, questions.length)}
+            맞힌 문제 {finalScore?.correct ?? 0} / {finalScore?.total ?? 1}
           </p>
           <button type="button" className="practice-primary" onClick={onClose}>
             길로 돌아가기
