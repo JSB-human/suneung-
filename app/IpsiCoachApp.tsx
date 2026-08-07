@@ -2,20 +2,17 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import EncouragementCoach from "./EncouragementCoach";
-import LanguageKnowledgeMap, {
+import {
   createEmptyLanguageKnowledgeMapValue,
   type LanguageKnowledgeMapValue,
 } from "./LanguageKnowledgeMap";
-import MathKnowledgeMap, {
+import {
   createEmptyMathKnowledgeMapValue,
   type MathKnowledgeMapValue,
 } from "./MathKnowledgeMap";
-import PracticeRunner from "./practice/PracticeRunner";
-import ResourceLibrary from "./ResourceLibrary";
-import TodayPractice from "./practice/TodayPractice";
 import WrongNotes from "./practice/WrongNotes";
 import type { PracticeOutcomeReport } from "./practice/PracticeRunner";
-import { getSkillEntry, getSkillsForConcept } from "./practice/skill-map";
+import { getSkillEntry } from "./practice/skill-map";
 import {
   EMPTY_PRACTICE_STATE,
   migrateVocabIntoReview,
@@ -23,22 +20,25 @@ import {
   recordOutcome,
   type PracticeState,
 } from "./practice/practice-state";
-import { LANGUAGE_KNOWLEDGE_CURRICULA, type LanguageSubject } from "./language-curriculum";
-import CoreNotes from "./CoreNotes";
-import RoadmapView from "./RoadmapView";
-import FoundationReference from "./FoundationReference";
+import type { LanguageSubject } from "./language-curriculum";
+import PathView from "./path/PathView";
+import { PATH_NODES } from "./path/path-nodes";
+import {
+  EMPTY_PATH_STATE,
+  completeNode,
+  getNextNode,
+  getSubjectProgress,
+  normalizePathState,
+  type PathState,
+} from "./path/path-state";
 import VocabTrainer, {
   type VocabTrainerState,
   type VocabWordProgress,
 } from "./VocabTrainer";
-import { MATH_KNOWLEDGE_CURRICULUM } from "./math-curriculum";
 import { VOCAB_WORDS } from "./vocab-data";
 import {
-  ROADMAPS,
   SUBJECT_GUIDES,
   SUBJECT_KEYS,
-  TODAY_TASKS,
-  type StudyTask,
   type SubjectKey,
 } from "./study-content";
 
@@ -50,7 +50,7 @@ const CSAT_2028_DATE = { year: 2027, monthIndex: 10, day: 18 } as const;
 type TabId = "today" | "korean" | "english" | "math" | "records";
 
 type AppState = {
-  schemaVersion: 3;
+  schemaVersion: 4;
   userName: string;
   dailyGoal: string;
   taskDate: string;
@@ -62,6 +62,7 @@ type AppState = {
   language: Record<LanguageSubject, LanguageKnowledgeMapValue>;
   math: MathKnowledgeMapValue;
   practice: PracticeState;
+  path: PathState;
 };
 
 type LegacyWordStatus = "unknown" | "fuzzy" | "mastered";
@@ -82,7 +83,7 @@ const EMPTY_VOCAB_STATE: VocabTrainerState = {
 };
 
 const DEFAULT_APP_STATE: AppState = {
-  schemaVersion: 3,
+  schemaVersion: 4,
   userName: "인1이",
   dailyGoal: "완벽보다 오늘의 한 칸",
   taskDate: "",
@@ -97,6 +98,7 @@ const DEFAULT_APP_STATE: AppState = {
   },
   math: createEmptyMathKnowledgeMapValue(),
   practice: EMPTY_PRACTICE_STATE,
+  path: EMPTY_PATH_STATE,
 };
 
 const NAV_ITEMS: Array<{ id: TabId; label: string }> = [
@@ -222,7 +224,7 @@ function normalizeStoredState(value: unknown, todayKey: string): AppState {
   const candidate = value as Partial<AppState>;
   const storedTaskDate = typeof candidate.taskDate === "string" ? candidate.taskDate : todayKey;
   return {
-    schemaVersion: 3,
+    schemaVersion: 4,
     userName: normalizeUserName(candidate.userName),
     dailyGoal:
       typeof candidate.dailyGoal === "string" ? candidate.dailyGoal : DEFAULT_APP_STATE.dailyGoal,
@@ -239,6 +241,8 @@ function normalizeStoredState(value: unknown, todayKey: string): AppState {
     vocab: normalizeVocabState(candidate.vocab),
     math: normalizeMathState(candidate.math),
     language: normalizeLanguageState(candidate.language),
+    // v3에는 길 진도가 없었다. 없으면 빈 길로 시작하고, 알 수 없는 칸 id는 버린다.
+    path: normalizePathState((candidate as { path?: unknown }).path),
     practice: (() => {
       const practice = normalizePracticeState(
         (candidate as { practice?: unknown }).practice,
@@ -288,7 +292,7 @@ function migrateLegacyState(value: LegacyState, todayKey: string): AppState {
 
   return {
     ...DEFAULT_APP_STATE,
-    schemaVersion: 3,
+    schemaVersion: 4,
     userName: normalizeUserName(value.userName),
     dailyGoal: typeof value.dailyGoal === "string" ? value.dailyGoal : DEFAULT_APP_STATE.dailyGoal,
     taskDate: todayKey,
@@ -342,37 +346,10 @@ function formatTimer(seconds: number): string {
   return `${String(minutes).padStart(2, "0")}:${String(remainingSeconds).padStart(2, "0")}`;
 }
 
-function getMathConceptCount(): number {
-  return MATH_KNOWLEDGE_CURRICULUM.chapters.reduce(
-    (chapterTotal, chapter) =>
-      chapterTotal +
-      chapter.units.reduce(
-        (unitTotal, unit) => unitTotal + unit.concepts.length,
-        0,
-      ),
-    0,
-  );
-}
-
-function getLanguageConceptCount(subject: LanguageSubject): number {
-  return LANGUAGE_KNOWLEDGE_CURRICULA[subject].chapters.reduce(
-    (chapterTotal, chapter) =>
-      chapterTotal +
-      chapter.units.reduce((unitTotal, unit) => unitTotal + unit.concepts.length, 0),
-    0,
-  );
-}
-
-const LANGUAGE_CONCEPT_COUNTS = {
-  korean: getLanguageConceptCount("korean"),
-  english: getLanguageConceptCount("english"),
-} as const;
-
 export default function IpsiCoachApp() {
   const todayKey = getLocalDateKey();
   const [, setCalendarRevision] = useState(0);
   const [activeTab, setActiveTab] = useState<TabId>("today");
-  const [roadmapSubject, setRoadmapSubject] = useState<SubjectKey>("korean");
   const [appState, setAppState] = useState<AppState>(() => ({
     ...DEFAULT_APP_STATE,
     taskDate: todayKey,
@@ -384,9 +361,6 @@ export default function IpsiCoachApp() {
   const [isTimerRunning, setIsTimerRunning] = useState(false);
   const [isTimerOpen, setIsTimerOpen] = useState(false);
   const [isMikuBgmOpen, setIsMikuBgmOpen] = useState(false);
-  const [koreanSubTab, setKoreanSubTab] = useState<"roadmap" | "foundation" | "notes" | "map">("roadmap");
-  const [englishSubTab, setEnglishSubTab] = useState<"vocab" | "foundation" | "roadmap" | "notes">("vocab");
-  const [mathSubTab, setMathSubTab] = useState<"roadmap" | "foundation" | "map" | "notes">("roadmap");
 
   const sheetRef = useRef<HTMLDivElement | null>(null);
   const previouslyFocusedElementRef = useRef<HTMLElement | null>(null);
@@ -399,10 +373,6 @@ export default function IpsiCoachApp() {
     records: useId(),
   };
 
-  const completedTaskCount = TODAY_TASKS.filter((task) =>
-    appState.completedTasks.includes(task.id),
-  ).length;
-  const todayProgress = Math.round((completedTaskCount / TODAY_TASKS.length) * 100);
   const displayName = appState.userName.trim() || "인1이";
   const displayGoal = appState.dailyGoal.trim() || "완벽보다 오늘의 한 칸";
   const weeklyStudy = getLastSevenDays().map((day) => ({
@@ -419,8 +389,8 @@ export default function IpsiCoachApp() {
     const progress = appState.vocab.progressById[word.id];
     return !progress || !progress.dueDate || progress.dueDate <= todayKey;
   }).length;
-  const mathConceptCount = getMathConceptCount();
   const dday = getDaysUntil2028Csat();
+  const completedNodeCount = appState.path.completedNodeIds.length;
   const completedLanguageConceptCount =
     appState.language.korean.completedConceptIds.length +
     appState.language.english.completedConceptIds.length;
@@ -436,41 +406,26 @@ export default function IpsiCoachApp() {
     appState.math.correctQuestionIds.length * 5 +
     completedLanguageConceptCount * 15 +
     correctLanguageQuestionCount * 5 +
-    vocabReviewCount * 3;
+    vocabReviewCount * 3 +
+    completedNodeCount * 20;
   const level = Math.floor(points / 100) + 1;
 
-  const subjectProgress = useMemo(() => ({
-    korean: {
-      completed:
-        ROADMAPS.korean.filter((unit) => appState.completedUnitIds.includes(unit.id)).length +
-        appState.language.korean.completedConceptIds.length,
-      total: ROADMAPS.korean.length + LANGUAGE_CONCEPT_COUNTS.korean,
-    },
-    english: {
-      completed:
-        ROADMAPS.english.filter((unit) => appState.completedUnitIds.includes(unit.id)).length +
-        appState.language.english.completedConceptIds.length,
-      total: ROADMAPS.english.length + LANGUAGE_CONCEPT_COUNTS.english,
-    },
-    math: {
-      completed: appState.math.completedConceptIds.length,
-      total: mathConceptCount,
-    },
-  }), [appState.completedUnitIds, appState.language.english.completedConceptIds.length, appState.language.korean.completedConceptIds.length, appState.math.completedConceptIds.length, mathConceptCount]);
+  // 과목별 위치는 이제 길 진도가 기준이다. 로드맵 단원·지식 지도 값은
+  // 동생 데이터 보존을 위해 저장소에 그대로 남지만 화면 계산에는 쓰지 않는다.
+  const subjectProgress = useMemo(
+    () => ({
+      korean: getSubjectProgress(appState.path, "korean"),
+      english: getSubjectProgress(appState.path, "english"),
+      math: getSubjectProgress(appState.path, "math"),
+    }),
+    [appState.path],
+  );
 
   const nextSubject = SUBJECT_KEYS.slice().sort((left, right) => {
-    const leftRatio = subjectProgress[left].completed / subjectProgress[left].total;
-    const rightRatio = subjectProgress[right].completed / subjectProgress[right].total;
+    const leftRatio = subjectProgress[left].done / subjectProgress[left].total;
+    const rightRatio = subjectProgress[right].done / subjectProgress[right].total;
     return leftRatio - rightRatio;
   })[0];
-
-  const selectedLanguageSubject: LanguageSubject = roadmapSubject === "english" ? "english" : "korean";
-
-  const nextRoadmapTitle =
-    nextSubject === "math"
-      ? "수와 연산부터 수학 지식 지도 열기"
-      : ROADMAPS[nextSubject].find((unit) => !appState.completedUnitIds.includes(unit.id))?.title ??
-        `${SUBJECT_GUIDES[nextSubject].label} 12주 복습`;
 
   useEffect(() => {
     const now = new Date();
@@ -608,66 +563,17 @@ export default function IpsiCoachApp() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const openRoadmap = (subject: SubjectKey) => {
-    setRoadmapSubject(subject);
-    switchTab(subject);
-  };
-
-  const startTask = (task: StudyTask) => {
-    setRoadmapSubject(task.subject);
-    switchTab(task.subject);
-    setStatusMessage(
-      task.destination === "vocab"
-        ? "오늘 복습할 단어부터 준비했습니다. 기억이 흐려도 괜찮아요."
-        : `${SUBJECT_GUIDES[task.subject].label} ${task.title} 학습을 열었습니다.`,
-    );
-  };
-
-  const toggleTask = (task: StudyTask) => {
+  // 칸 하나를 5분으로 세어 학습 기록과 연속 학습일에 반영한다.
+  const handleCompleteNode = (nodeId: string, correctCount: number, totalCount: number) => {
     const currentDateKey = getLocalDateKey();
-    const isComplete =
-      appState.taskDate === currentDateKey && appState.completedTasks.includes(task.id);
-    setAppState((previous) => {
-      const currentDayState =
-        previous.taskDate === currentDateKey
-          ? previous
-          : { ...previous, taskDate: currentDateKey, completedTasks: [] };
-      const next = {
-        ...currentDayState,
-        taskDate: currentDateKey,
-        completedTasks: isComplete
-          ? currentDayState.completedTasks.filter((id) => id !== task.id)
-          : [...currentDayState.completedTasks, task.id],
-      };
-      return addStudyMinutes(
-        next,
+    setAppState((previous) =>
+      addStudyMinutes(
+        { ...previous, path: completeNode(previous.path, nodeId, correctCount, totalCount) },
         currentDateKey,
-        isComplete ? -task.duration : task.duration,
-      );
-    });
-    setStatusMessage(isComplete ? `${task.title} 완료를 해제했습니다.` : `${task.title} 완료를 기록했습니다.`);
-  };
-
-  const toggleUnit = (unitId: string) => {
-    const isComplete = appState.completedUnitIds.includes(unitId);
-    setAppState((previous) => ({
-      ...previous,
-      completedUnitIds: isComplete
-        ? previous.completedUnitIds.filter((id) => id !== unitId)
-        : [...previous.completedUnitIds, unitId],
-    }));
-    setStatusMessage(isComplete ? "로드맵 단원을 다시 학습 상태로 바꿨습니다." : "로드맵 단원을 완료했습니다.");
-  };
-
-  const toggleBookmark = (noteId: string) => {
-    const isSaved = appState.bookmarkedNoteIds.includes(noteId);
-    setAppState((previous) => ({
-      ...previous,
-      bookmarkedNoteIds: isSaved
-        ? previous.bookmarkedNoteIds.filter((id) => id !== noteId)
-        : [...previous.bookmarkedNoteIds, noteId],
-    }));
-    setStatusMessage(isSaved ? "핵심 노트 저장을 해제했습니다." : "핵심 노트를 저장했습니다.");
+        5,
+      ),
+    );
+    setStatusMessage("한 칸을 끝냈어요. 다음 칸이 열렸습니다.");
   };
 
   // 문제 하나를 1분으로 세어 학습 기록과 연속 학습일에 반영한다.
@@ -770,219 +676,17 @@ export default function IpsiCoachApp() {
           aria-labelledby="tab-today"
           hidden={activeTab !== "today"}
         >
-          <article className="today-agenda">
-            <header className="agenda-header">
-              <div>
-                <span className="hero-kicker">고1 기초 · 2028학년도 통합형</span>
-                <h1>{displayName}님, 오늘은 딱 세 칸이에요.</h1>
-                <p>{displayGoal}. 어려우면 가장 쉬운 것부터 시작해도 충분합니다.</p>
-              </div>
-              <div className="agenda-meta" aria-label="수능과 학습 현황">
-                <span>수능 D-{Math.max(0, dday)}</span><span>{streak}일 연속</span><span>Lv.{level}</span>
-              </div>
-            </header>
-
-            <div className="hero-progress agenda-progress">
-              <strong>오늘의 60분 · {completedTaskCount}/{TODAY_TASKS.length} 완료</strong>
-              <span>{todayProgress}%</span>
-              <div className="progress-track" aria-hidden="true">
-                <div className="progress-fill" style={{ width: `${todayProgress}%` }} />
-              </div>
+          <div className="page-intro">
+            <div>
+              <p className="eyebrow">고1 기초 · 2028학년도 통합형</p>
+              <h1>{displayName}님, 오늘은 딱 한 칸만.</h1>
+              <p>{displayGoal}. 아래 순서대로 하나씩만 하면 됩니다.</p>
             </div>
-
-            <div className="agenda-task-list">
-              {TODAY_TASKS.map((task) => {
-                const isComplete = appState.completedTasks.includes(task.id);
-                return (
-                  <div key={task.id} className={`agenda-task ${SUBJECT_CLASS[task.subject]} ${isComplete ? "is-complete" : ""}`}>
-                    <button type="button" className="agenda-task-open" onClick={() => startTask(task)}>
-                      <span className="subject-badge">{SUBJECT_GUIDES[task.subject].shortLabel}</span>
-                      <span className="course-copy"><strong>{task.title}</strong><span>{task.description}</span></span>
-                      <span className="course-time">{task.duration}분</span>
-                    </button>
-                    <button
-                      type="button"
-                      className="agenda-task-check"
-                      aria-pressed={isComplete}
-                      aria-label={`${task.title} ${isComplete ? "완료 취소" : "완료 기록"}`}
-                      onClick={() => toggleTask(task)}
-                    >
-                      {isComplete ? "✓ 완료" : "완료"}
-                    </button>
-                  </div>
-                );
-              })}
-            </div>
-
-            <article
-              style={{
-                marginTop: 18,
-                padding: "18px 20px",
-                borderRadius: 20,
-                background: "var(--surface)",
-                border: "1px solid var(--line)",
-                boxShadow: "var(--shadow-sm)",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                <span style={{ fontSize: 22 }}>🎯</span>
-                <div>
-                  <h3 style={{ margin: 0, fontSize: 17, color: "var(--ink-strong)", fontWeight: 900 }}>
-                    오늘 뭐 하지? 5분 Quick 공부법
-                  </h3>
-                  <p style={{ margin: "2px 0 0", fontSize: 12, color: "var(--muted)" }}>
-                    어디서부터 시작할지 막막할 땐 아래 1-2-3 단계를 순서대로 클릭해 보세요!
-                  </p>
-                </div>
-              </div>
-
-              <div style={{ display: "grid", gap: 10 }}>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 12,
-                    padding: "12px 14px",
-                    borderRadius: 14,
-                    background: "var(--surface-soft)",
-                    border: "1px solid var(--line)",
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
-                    <span style={{ fontWeight: 900, color: "var(--english)", fontSize: 13, flexShrink: 0 }}>
-                      1단계 [단어]
-                    </span>
-                    <span style={{ fontSize: 13, color: "var(--ink)", lineHeight: 1.35 }}>
-                      영단어장 5개 뜻 복습하기
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    className="primary-action"
-                    style={{ minHeight: 44, padding: "0 12px", fontSize: 12, flexShrink: 0 }}
-                    onClick={() => switchTab("english")}
-                  >
-                    🔤 단어장 열기 →
-                  </button>
-                </div>
-
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 12,
-                    padding: "12px 14px",
-                    borderRadius: 14,
-                    background: "var(--surface-soft)",
-                    border: "1px solid var(--line)",
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
-                    <span style={{ fontWeight: 900, color: "var(--korean)", fontSize: 13, flexShrink: 0 }}>
-                      2단계 [개념]
-                    </span>
-                    <span style={{ fontSize: 13, color: "var(--ink)", lineHeight: 1.35 }}>
-                      국영수 핵심 노트 1개 읽기
-                    </span>
-                  </div>
-                  <button
-                    type="button"
-                    className="primary-action"
-                    style={{ minHeight: 44, padding: "0 12px", fontSize: 12, background: "var(--korean)", borderColor: "var(--korean)", flexShrink: 0 }}
-                    onClick={() => switchTab("korean")}
-                  >
-                    📖 개념 읽기 →
-                  </button>
-                </div>
-
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                    gap: 12,
-                    padding: "12px 14px",
-                    borderRadius: 14,
-                    background: "var(--surface-soft)",
-                    border: "1px solid var(--line)",
-                    flexWrap: "wrap",
-                  }}
-                >
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, minWidth: 0 }}>
-                    <span style={{ fontWeight: 900, color: "var(--math)", fontSize: 13, flexShrink: 0 }}>
-                      3단계 [강좌]
-                    </span>
-                    <span style={{ fontSize: 13, color: "var(--ink)", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
-                      EBSi 공식 강좌 또는 유튜브 인기 채널
-                    </span>
-                  </div>
-                  <div style={{ display: "flex", gap: 6, flexShrink: 0 }}>
-                    <a
-                      className="primary-action"
-                      style={{ minHeight: 44, padding: "0 10px", fontSize: 12, display: "inline-flex", alignItems: "center", textDecoration: "none", background: "#1d4ed8", borderColor: "#1d4ed8" }}
-                      href="https://www.ebsi.co.kr"
-                      target="_blank"
-                      rel="noreferrer noopener"
-                    >
-                      🎓 EBSi 공식 ↗
-                    </a>
-                    <a
-                      className="primary-action"
-                      style={{ minHeight: 44, padding: "0 10px", fontSize: 12, display: "inline-flex", alignItems: "center", textDecoration: "none", background: "#dc2626", borderColor: "#dc2626" }}
-                      href="https://www.youtube.com/@mathmath1"
-                      target="_blank"
-                      rel="noreferrer noopener"
-                    >
-                      📺 @mathmath1 ↗
-                    </a>
-                  </div>
-                </div>
-              </div>
-            </article>
-
-            <div className="hero-actions">
-              <button
-                type="button"
-                className="primary-action"
-                onClick={() => {
-                  const nextTask = TODAY_TASKS.find((task) => !appState.completedTasks.includes(task.id));
-                  if (nextTask) startTask(nextTask);
-                  else openRoadmap(nextSubject);
-                }}
-              >
-                {completedTaskCount === TODAY_TASKS.length ? "내일 로드맵 미리 보기" : "가장 쉬운 한 칸 시작"}
-              </button>
-              <button
-                type="button"
-                className="secondary-action"
-                onClick={() => {
-                  setTimerPreset(3);
-                  setIsTimerOpen(true);
-                }}
-              >
-                3분만 집중
-              </button>
-            </div>
-          </article>
-
-          <div className="dashboard-grid compact-dashboard">
-            <article className="panel-block next-step-card">
-              <div>
-                <p className="eyebrow">가장 비어 있는 과목</p>
-                <h3>{SUBJECT_GUIDES[nextSubject].label} 다음 칸</h3>
-                <p>{nextRoadmapTitle}</p>
-              </div>
-              <button type="button" className="secondary-action" onClick={() => openRoadmap(nextSubject)}>
-                전체 순서 확인
-              </button>
-            </article>
           </div>
 
           <EncouragementCoach
-            completedCount={completedTaskCount}
-            totalCount={TODAY_TASKS.length}
+            completedCount={completedNodeCount}
+            totalCount={PATH_NODES.length}
             streak={streak}
             dday={dday}
             points={points}
@@ -994,31 +698,54 @@ export default function IpsiCoachApp() {
                 "미쿠와 딱 3분만 시작해 봐요. 시작한 순간 이미 한 칸 전진했어요! 🎵",
               );
             }}
-            onOpenEasyStep={() => {
-              setRoadmapSubject(nextSubject);
-              switchTab(nextSubject);
-            }}
+            onOpenEasyStep={() => switchTab(nextSubject)}
           />
 
-          <TodayPractice
-            reviewById={appState.practice.reviewById}
-            today={todayKey}
-            onOutcome={handlePracticeOutcome}
-          />
+          <section className="today-next-list" aria-label="오늘의 다음 칸">
+            {SUBJECT_KEYS.map((subject) => {
+              const next = getNextNode(appState.path, subject);
+              if (!next) {
+                return null;
+              }
+              return (
+                <button
+                  key={subject}
+                  type="button"
+                  className={`today-next-node ${SUBJECT_CLASS[subject]}`}
+                  onClick={() => switchTab(subject)}
+                >
+                  <span className="practice-eyebrow">{SUBJECT_GUIDES[subject].label} 다음 칸</span>
+                  <strong>{next.title}</strong>
+                </button>
+              );
+            })}
+          </section>
 
-          <ResourceLibrary />
-
-          <div className="dashboard-grid progress-dashboard">
-            <article className="panel-block">
-              <div className="section-heading"><div><h2>지금까지 쌓인 것</h2><p>새로고침해도 이 기기에 남습니다.</p></div></div>
-              <div className="mini-stats">
-                <div className="mini-stat"><span>연속 학습</span><strong>{streak}일</strong></div>
-                <div className="mini-stat"><span>완료 단원</span><strong>{appState.completedUnitIds.length + appState.math.completedConceptIds.length + completedLanguageConceptCount}</strong></div>
-                <div className="mini-stat"><span>외운 단어</span><strong>{completedWords}</strong></div>
-                <div className="mini-stat"><span>성장 레벨</span><strong>Lv.{level}</strong></div>
+          <article
+            className="panel-block"
+            style={{ border: "2px solid var(--english-border)", background: "var(--surface)" }}
+          >
+            <div className="section-heading">
+              <div>
+                <h2>🔤 오늘의 단어</h2>
+                <p>단어는 길에 없어요. 매일 조금씩, 복습할 것만 골라 드립니다.</p>
               </div>
-            </article>
-          </div>
+            </div>
+            <VocabTrainer
+              value={appState.vocab}
+              onChange={(vocab) => setAppState((previous) => ({ ...previous, vocab }))}
+              onSessionComplete={(summary) => {
+                setAppState((previous) =>
+                  addStudyMinutes(
+                    previous,
+                    getLocalDateKey(),
+                    Math.max(5, summary.reviewedCount),
+                  ),
+                );
+                setStatusMessage(`${summary.reviewedCount}개 단어 복습을 완료했습니다.`);
+              }}
+            />
+          </article>
         </section>
 
         <section
@@ -1031,76 +758,17 @@ export default function IpsiCoachApp() {
           <div className="page-intro">
             <div>
               <p className="eyebrow">2028 수능 통합형 완벽 대비</p>
-              <h1>수능 국어 학습 전당</h1>
-              <p>기초 문장 성분부터 비문학 독서, 문학 개념어, 언어와 매체 오답 분석까지 학습합니다.</p>
+              <h1>국어 길</h1>
+              <p>기초 문장 성분부터 비문학 독서, 문학 개념어까지 한 칸씩 순서대로 열립니다.</p>
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: 6, marginBottom: 18, borderBottom: "1px solid var(--line)", paddingBottom: 10, overflowX: "auto" }}>
-            <button
-              type="button"
-              className={`primary-action ${koreanSubTab === "roadmap" ? "" : "secondary-action"}`}
-              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
-              onClick={() => setKoreanSubTab("roadmap")}
-            >
-              📍 12주 독해 로드맵
-            </button>
-            <button
-              type="button"
-              className={`primary-action ${koreanSubTab === "foundation" ? "" : "secondary-action"}`}
-              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
-              onClick={() => setKoreanSubTab("foundation")}
-            >
-              🌱 기초 도서관
-            </button>
-            <button
-              type="button"
-              className={`primary-action ${koreanSubTab === "notes" ? "" : "secondary-action"}`}
-              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
-              onClick={() => setKoreanSubTab("notes")}
-            >
-              📖 핵심 개념 노트
-            </button>
-            <button
-              type="button"
-              className={`primary-action ${koreanSubTab === "map" ? "" : "secondary-action"}`}
-              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
-              onClick={() => setKoreanSubTab("map")}
-            >
-              🗺️ 국어 지식 지도
-            </button>
-          </div>
-
-          {koreanSubTab === "roadmap" ? (
-            <RoadmapView
-              selectedSubject="korean"
-              onSelectSubject={setRoadmapSubject}
-              completedUnitIds={appState.completedUnitIds}
-              onToggleUnit={toggleUnit}
-              onOpenNotes={() => setKoreanSubTab("notes")}
-            />
-          ) : null}
-
-          {koreanSubTab === "foundation" ? (
-            <FoundationReference subject="korean" />
-          ) : null}
-
-          {koreanSubTab === "notes" ? (
-            <CoreNotes
-              subject="korean"
-              bookmarks={appState.bookmarkedNoteIds}
-              onToggleBookmark={toggleBookmark}
-            />
-          ) : null}
-
-          {koreanSubTab === "map" ? (
-            <LanguageKnowledgeMap
-              subject="korean"
-              value={appState.language.korean}
-              onChange={(languageValue) => setAppState((previous) => ({ ...previous, language: { ...previous.language, korean: languageValue } }))}
-              className="language-knowledge-map"
-            />
-          ) : null}
+          <PathView
+            subject="korean"
+            state={appState.path}
+            onCompleteNode={handleCompleteNode}
+            onOutcome={handlePracticeOutcome}
+          />
         </section>
 
         <section
@@ -1112,93 +780,18 @@ export default function IpsiCoachApp() {
         >
           <div className="page-intro">
             <div>
-              <p className="eyebrow">수능 필수 어휘 155+ & 구문 독해</p>
-              <h1>수능 영어 & 필수 단어장</h1>
-              <p>망각 곡선 SRS 영단어 암기와 12주 구문 독해 로드맵을 바로 학습하세요.</p>
+              <p className="eyebrow">어휘·발음부터 구문 독해까지</p>
+              <h1>영어 길</h1>
+              <p>단어는 오늘 탭에서, 문법과 구문 독해는 여기 길에서 한 칸씩 익힙니다.</p>
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: 6, marginBottom: 18, borderBottom: "1px solid var(--line)", paddingBottom: 10, overflowX: "auto" }}>
-            <button
-              type="button"
-              className={`primary-action ${englishSubTab === "vocab" ? "" : "secondary-action"}`}
-              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900, background: englishSubTab === "vocab" ? "var(--english)" : undefined, borderColor: "var(--english)" }}
-              onClick={() => setEnglishSubTab("vocab")}
-            >
-              🔤 수능 영단어장 (155+)
-            </button>
-            <button
-              type="button"
-              className={`primary-action ${englishSubTab === "foundation" ? "" : "secondary-action"}`}
-              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
-              onClick={() => setEnglishSubTab("foundation")}
-            >
-              🌱 기초 도서관
-            </button>
-            <button
-              type="button"
-              className={`primary-action ${englishSubTab === "roadmap" ? "" : "secondary-action"}`}
-              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
-              onClick={() => setEnglishSubTab("roadmap")}
-            >
-              📍 12주 구문 로드맵
-            </button>
-            <button
-              type="button"
-              className={`primary-action ${englishSubTab === "notes" ? "" : "secondary-action"}`}
-              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
-              onClick={() => setEnglishSubTab("notes")}
-            >
-              📖 핵심 구문 노트
-            </button>
-          </div>
-
-          {englishSubTab === "vocab" ? (
-            <article className="panel-block" style={{ border: "2px solid var(--english-border)", background: "var(--surface)" }}>
-              <div className="section-heading">
-                <div>
-                  <h2>🔤 수능 필수 영단어장 (155+ 단어)</h2>
-                  <p>망각 곡선 SRS 플래시카드 복습과 수능 예문·해석·태그 검색을 바로 이용하세요.</p>
-                </div>
-              </div>
-              <VocabTrainer
-                value={appState.vocab}
-                onChange={(vocab) => setAppState((previous) => ({ ...previous, vocab }))}
-                onSessionComplete={(summary) => {
-                  setAppState((previous) =>
-                    addStudyMinutes(
-                      previous,
-                      getLocalDateKey(),
-                      Math.max(5, summary.reviewedCount),
-                    ),
-                  );
-                  setStatusMessage(`${summary.reviewedCount}개 단어 복습을 완료했습니다.`);
-                }}
-              />
-            </article>
-          ) : null}
-
-          {englishSubTab === "foundation" ? (
-            <FoundationReference subject="english" />
-          ) : null}
-
-          {englishSubTab === "roadmap" ? (
-            <RoadmapView
-              selectedSubject="english"
-              onSelectSubject={setRoadmapSubject}
-              completedUnitIds={appState.completedUnitIds}
-              onToggleUnit={toggleUnit}
-              onOpenNotes={() => setEnglishSubTab("notes")}
-            />
-          ) : null}
-
-          {englishSubTab === "notes" ? (
-            <CoreNotes
-              subject="english"
-              bookmarks={appState.bookmarkedNoteIds}
-              onToggleBookmark={toggleBookmark}
-            />
-          ) : null}
+          <PathView
+            subject="english"
+            state={appState.path}
+            onCompleteNode={handleCompleteNode}
+            onOutcome={handlePracticeOutcome}
+          />
         </section>
 
         <section
@@ -1211,84 +804,17 @@ export default function IpsiCoachApp() {
           <div className="page-intro">
             <div>
               <p className="eyebrow">초·중등 계통부터 고등 수학까지</p>
-              <h1>수능 수학 & 50일 수학 지식 지도</h1>
+              <h1>수학 길</h1>
               <p>부호 계산, 일차방정식, 이차함수, 도형과 피타고라스 계통을 차근차근 익힙니다.</p>
             </div>
           </div>
 
-          <div style={{ display: "flex", gap: 6, marginBottom: 18, borderBottom: "1px solid var(--line)", paddingBottom: 10, overflowX: "auto" }}>
-            <button
-              type="button"
-              className={`primary-action ${mathSubTab === "roadmap" ? "" : "secondary-action"}`}
-              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
-              onClick={() => setMathSubTab("roadmap")}
-            >
-              📍 12주 수학 로드맵
-            </button>
-            <button
-              type="button"
-              className={`primary-action ${mathSubTab === "foundation" ? "" : "secondary-action"}`}
-              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
-              onClick={() => setMathSubTab("foundation")}
-            >
-              🌱 기초 도서관
-            </button>
-            <button
-              type="button"
-              className={`primary-action ${mathSubTab === "map" ? "" : "secondary-action"}`}
-              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900, background: mathSubTab === "map" ? "var(--math)" : undefined, borderColor: "var(--math)" }}
-              onClick={() => setMathSubTab("map")}
-            >
-              📐 50일수학 지식 지도
-            </button>
-            <button
-              type="button"
-              className={`primary-action ${mathSubTab === "notes" ? "" : "secondary-action"}`}
-              style={{ minHeight: 38, padding: "0 14px", fontSize: 13, fontWeight: 900 }}
-              onClick={() => setMathSubTab("notes")}
-            >
-              📖 핵심 수학 노트
-            </button>
-          </div>
-
-          {mathSubTab === "roadmap" ? (
-            <RoadmapView
-              selectedSubject="math"
-              onSelectSubject={setRoadmapSubject}
-              completedUnitIds={appState.completedUnitIds}
-              onToggleUnit={toggleUnit}
-              onOpenNotes={() => setMathSubTab("notes")}
-            />
-          ) : null}
-
-          {mathSubTab === "foundation" ? (
-            <FoundationReference subject="math" />
-          ) : null}
-
-          {mathSubTab === "map" ? (
-            <MathKnowledgeMap
-              className="math-knowledge-map"
-              value={appState.math}
-              onChange={(math) => setAppState((previous) => ({ ...previous, math }))}
-              renderConceptPractice={(conceptId) => {
-                const skillIds = getSkillsForConcept(conceptId);
-                if (skillIds.length === 0) {
-                  return null;
-                }
-                return skillIds.map((skillId) => (
-                  <PracticeRunner key={skillId} skillId={skillId} onOutcome={handlePracticeOutcome} />
-                ));
-              }}
-            />
-          ) : null}
-
-          {mathSubTab === "notes" ? (
-            <CoreNotes
-              subject="math"
-              bookmarks={appState.bookmarkedNoteIds}
-              onToggleBookmark={toggleBookmark}
-            />
-          ) : null}
+          <PathView
+            subject="math"
+            state={appState.path}
+            onCompleteNode={handleCompleteNode}
+            onOutcome={handlePracticeOutcome}
+          />
         </section>
 
         <section
@@ -1343,15 +869,15 @@ export default function IpsiCoachApp() {
           </section>
 
           <article className="panel-block" style={{ marginBottom: 14 }}>
-            <div className="section-heading"><div><h2>과목별 위치</h2><p>로드맵에서 완료한 단원 기준</p></div></div>
+            <div className="section-heading"><div><h2>과목별 위치</h2><p>길에서 끝낸 칸 기준</p></div></div>
             <div className="subject-progress-list">
               {SUBJECT_KEYS.map((subject) => {
                 const progress = subjectProgress[subject];
-                const percent = Math.round((progress.completed / progress.total) * 100);
+                const percent = Math.round((progress.done / progress.total) * 100);
                 return (
                   <article key={subject} className={`subject-progress-card ${SUBJECT_CLASS[subject]}`}>
                     <div className="section-heading">
-                      <div><h3>{SUBJECT_GUIDES[subject].label}</h3><p>{progress.completed}/{progress.total} 완료</p></div>
+                      <div><h3>{SUBJECT_GUIDES[subject].label}</h3><p>{progress.done}/{progress.total} 칸 완료</p></div>
                       <strong>{percent}%</strong>
                     </div>
                     <div className="progress-track" aria-hidden="true"><div className="progress-fill" style={{ width: `${percent}%` }} /></div>

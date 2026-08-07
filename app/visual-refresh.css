@@ -993,3 +993,36 @@
   font-style: normal;
   color: #c2410c;
 }
+
+.today-next-list {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.today-next-node {
+  display: grid;
+  gap: 4px;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 14px;
+  text-align: left;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: var(--surface);
+}
+
+.today-next-node strong {
+  font-size: 16px;
+  line-height: 1.35;
+}
+
+.trainer-library-summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  font-weight: 800;
+  cursor: pointer;
+  color: var(--ink-strong);
+}

@@ -26,25 +26,31 @@ test("server-renders the expanded mobile study coach", async () => {
   assert.match(html, /고1 기초 · 2028학년도 통합형/);
   assert.match(html, /수능人 파트너(?:<!-- -->)? · 하츠네 미쿠/);
   assert.match(html, /2028 수능 D-/);
-  assert.match(html, /3분만 집중/);
+  assert.match(html, /3분 집중/);
   assert.match(html, /가장 쉬운 한 칸/);
-  assert.match(html, /오늘의 60분/);
-  assert.match(html, /문장 뼈대 표시하기/);
-  assert.match(html, /오늘의 단어 복습/);
-  assert.match(html, /부호와 분수 계산/);
-  assert.match(html, /국어(?:<!-- -->)? 기초 12주/);
-  assert.match(html, /문장 성분과 중심 문장/);
+  // 오늘 탭은 미쿠 · 세 과목의 다음 칸 · 오늘의 단어 세 가지만 남는다.
+  for (const label of ["국어", "영어", "수학"]) {
+    assert.match(
+      html,
+      new RegExp(`${label}(?:<!-- -->)? 다음 칸`),
+      `오늘 탭에 ${label}의 다음 칸이 있어야 한다`,
+    );
+  }
+  assert.match(html, /오늘의 단어/);
   assert.match(html, /수능人 단어 트레이너/);
   assert.match(html, /10개 복습 시작/);
-  assert.match(html, /오늘의 연습/);
   assert.match(html, /새 단어/);
-  // 기초 도서관(FoundationReference)은 과목별 서브탭 뒤에 있으므로 캡슐 본문은 첫 렌더에 없다.
-  // 대신 국어·영어·수학 세 과목 모두에 진입 버튼이 있는지 확인한다.
-  assert.equal(
-    (html.match(/🌱 기초 도서관/g) ?? []).length,
-    3,
-    "국어·영어·수학 탭마다 기초 도서관 서브탭 버튼이 있어야 한다",
-  );
+  // 과목 탭은 서브탭 없이 길 하나만 보여 준다.
+  assert.match(html, /칸 완료/);
+  assert.match(html, /긴 문장도 주어·서술어부터/, "국어 길 1번 칸");
+  assert.match(html, /듣기 전 10초, 선택지로 예측/, "영어 길 1번 칸");
+  assert.match(html, /부호·분수·지수 연산/, "수학 길 1번 칸");
+  // 잠긴 칸도 제목이 렌더되어야 전체 그림이 보인다.
+  assert.match(html, /일차방정식에서 부등식과 좌표 해석으로/, "수학 길 마지막 칸");
+  // 서브탭은 완전히 사라졌다.
+  assert.doesNotMatch(html, /🌱 기초 도서관/);
+  assert.doesNotMatch(html, /12주 독해 로드맵/);
+  assert.doesNotMatch(html, /50일수학 지식 지도/);
   for (const tabLabel of ["오늘", "국어", "영어·단어", "수학", "기록"]) {
     assert.match(html, new RegExp(`>${tabLabel}<`));
   }
@@ -62,8 +68,16 @@ test("preserves and migrates local study state safely", async () => {
   assert.match(component, /first-step-study-v2/);
   assert.match(component, /first-step-study-v1/);
   assert.match(component, /migrateLegacyState/);
-  assert.match(component, /schemaVersion: 3/);
+  assert.match(component, /schemaVersion: 4/);
+  assert.match(component, /normalizePathState/, "v4 마이그레이션이 있어야 한다");
+  assert.match(component, /PathView/);
   assert.match(component, /migrateVocabIntoReview/, "v2 단어 진도가 복습 큐로 옮겨져야 한다");
+  // 서브탭 상태는 전부 사라졌다.
+  assert.doesNotMatch(component, /koreanSubTab|englishSubTab|mathSubTab/);
+  // 동생 데이터는 화면에서 빠져도 저장소에는 남아야 한다.
+  for (const field of ["completedTasks", "completedUnitIds", "bookmarkedNoteIds", "studyLog", "wrongNotes"]) {
+    assert.match(component, new RegExp(field), `${field}가 v4에서도 보존되어야 한다`);
+  }
   assert.match(component, /recordOutcome/);
   assert.match(component, /normalizeLanguageState/);
   assert.match(component, /getDaysUntil2028Csat/);
@@ -157,14 +171,18 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(foundationView, /기초 도서관/);
   assert.match(foundationView, /30초 확인/);
   assert.match(foundationView, /틀렸어도 괜찮아요/);
-  // 기초 도서관이 다시 끊기지 않도록: 앱이 FoundationReference를 세 과목 모두에 직접 렌더링해야 한다.
-  assert.match(app, /import FoundationReference from ".\/FoundationReference"/);
+  // 캡슐은 이제 서브탭이 아니라 길 위의 칸으로 나온다. 세 과목 모두 길이 걸려 있어야 한다.
+  assert.match(app, /import PathView from ".\/path\/PathView"/);
   for (const subject of ["korean", "english", "math"]) {
     assert.match(
       app,
-      new RegExp(`<FoundationReference subject="${subject}" />`),
-      `${subject} 탭에서 기초 도서관을 렌더링해야 한다`,
+      new RegExp(`subject="${subject}"[\\s\\S]{0,160}?onCompleteNode=\\{handleCompleteNode\\}`),
+      `${subject} 탭이 길을 렌더링해야 한다`,
     );
+  }
+  // 후속 계획이 다시 쓰므로 컴포넌트 파일 자체는 남아 있어야 한다.
+  for (const file of ["RoadmapView", "CoreNotes", "FoundationReference", "LanguageKnowledgeMap", "MathKnowledgeMap"]) {
+    await access(new URL(`../app/${file}.tsx`, import.meta.url));
   }
 
   const vocabularyCount = (vocabulary.match(/id: "[a-z-]+",/g) ?? []).length;
@@ -221,17 +239,20 @@ test("keeps Vercel and Sites build outputs isolated", async () => {
   assert.ok(!("outputDirectory" in vercelConfig));
 });
 
-test("wires the infinite practice engine into the math tab", async () => {
-  const [app, runner, safeGenerate, registry, skillMap] = await Promise.all([
-    readFile(new URL("../app/IpsiCoachApp.tsx", import.meta.url), "utf8"),
+test("wires the infinite practice engine into the math path", async () => {
+  const [nodeRunner, pathNodes, runner, safeGenerate, registry, skillMap] = await Promise.all([
+    readFile(new URL("../app/path/NodeRunner.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/path/path-nodes.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/practice/PracticeRunner.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/practice/safe-generate.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/practice/generators/registry.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/practice/skill-map.ts", import.meta.url), "utf8"),
   ]);
 
-  assert.match(app, /PracticeRunner/);
-  assert.match(app, /getSkillsForConcept/);
+  // 생성기가 붙은 칸은 서브탭이 아니라 칸 화면에서 PracticeRunner를 재사용한다.
+  assert.match(nodeRunner, /import PracticeRunner from "\.\.\/practice\/PracticeRunner"/);
+  assert.match(nodeRunner, /content\.skillId/);
+  assert.match(pathNodes, /SKILL_MAP/, "길 노드가 생성기 skillId를 이어받아야 한다");
   assert.match(runner, /개념 보기/);
   assert.match(runner, /힌트 보기/);
   assert.match(runner, /다음 문제/);

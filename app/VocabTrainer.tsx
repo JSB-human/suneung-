@@ -507,10 +507,11 @@ export function VocabTrainer({
         )}
       </section>
 
-      <section className="trainer-library" aria-label="내 단어장">
+      {/* 단어 목록 전체를 늘 펼쳐 두면 화면이 수십 배로 길어진다. 접어 둔다. */}
+      <details className="trainer-library">
+        <summary className="trainer-library-summary">내 단어장 전체 보기 · {words.length}개</summary>
         <div className="trainer-library-head">
           <div>
-            <h3>내 단어장</h3>
             <p>검색과 필터로 새 단어, 학습중, 복습예정, 완료 상태를 빠르게 확인합니다.</p>
           </div>
           <label className="trainer-search-field" htmlFor={searchId}>
@@ -592,7 +593,7 @@ export function VocabTrainer({
             </div>
           ) : null}
         </div>
-      </section>
+      </details>
     </section>
   );
 }
