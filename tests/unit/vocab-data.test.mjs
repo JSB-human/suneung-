@@ -177,10 +177,25 @@ test("meanings and translations are written in Korean", () => {
   }
 });
 
+const KNOWN_STAGES = [1, 2, 3];
+
 test("every entry is tagged with a known stage", () => {
   for (const entry of VOCAB_WORDS) {
-    assert.equal(entry.stage, 1, `${entry.id}: stage 1 단어만 실려 있어야 한다`);
+    assert.ok(
+      KNOWN_STAGES.includes(entry.stage),
+      `${entry.id}: stage는 1·2·3 중 하나여야 한다 (found ${JSON.stringify(entry.stage)})`,
+    );
   }
+});
+
+test("no two entries reuse the same example sentence", () => {
+  const examples = VOCAB_WORDS.map((entry) => entry.example.trim().toLowerCase());
+  const duplicates = examples.filter((example, index) => examples.indexOf(example) !== index);
+  assert.deepEqual(
+    [...new Set(duplicates)],
+    [],
+    `duplicate examples: ${[...new Set(duplicates)].join(" | ")}`,
+  );
 });
 
 // 1단계 목표는 500개이고, 이제 500개를 모두 채웠다.
@@ -189,6 +204,11 @@ test("every entry is tagged with a known stage", () => {
 // 다음 단어부터는 stage 2로 들어간다.
 const STAGE_ONE_TARGET = 500;
 const STAGE_ONE_CURRENT = 500;
+
+// 2단계 목표도 500개다. CURRENT는 지금까지 채운 만큼이고,
+// 한 묶음을 더 쓸 때마다 올린다. 내리는 일은 없어야 한다.
+const STAGE_TWO_TARGET = 500;
+const STAGE_TWO_CURRENT = 40;
 
 test("stage 1 does not lose words it already has", () => {
   const stageOne = VOCAB_WORDS.filter((entry) => entry.stage === 1);
@@ -199,5 +219,17 @@ test("stage 1 does not lose words it already has", () => {
   assert.ok(
     stageOne.length <= STAGE_ONE_TARGET,
     `stage 1 exceeded its target of ${STAGE_ONE_TARGET}; move the extras to stage 2`,
+  );
+});
+
+test("stage 2 does not lose words it already has", () => {
+  const stageTwo = VOCAB_WORDS.filter((entry) => entry.stage === 2);
+  assert.ok(
+    stageTwo.length >= STAGE_TWO_CURRENT,
+    `stage 2 regressed: expected at least ${STAGE_TWO_CURRENT}, found ${stageTwo.length}`,
+  );
+  assert.ok(
+    stageTwo.length <= STAGE_TWO_TARGET,
+    `stage 2 exceeded its target of ${STAGE_TWO_TARGET}; move the extras to stage 3`,
   );
 });
