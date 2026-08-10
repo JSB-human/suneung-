@@ -2,6 +2,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import ConceptSheet from "./ConceptSheet";
+import MikuPartner from "../miku/MikuPartner";
+import { pickMikuLine, type MikuEvent, type MikuLine } from "../miku/miku-lines.ts";
+import type { MikuMood } from "../miku/miku-mood.ts";
 import { resolveConceptSource } from "./concept-source.ts";
 import { gradeAnswer } from "./grading.ts";
 import { hasSkill } from "./generators/registry.ts";
@@ -24,13 +27,19 @@ export type PracticeRunnerProps = {
   level?: Level;
   initialSeed?: number;
   onOutcome?: (report: PracticeOutcomeReport) => void;
+  /** 미쿠 기분. 넘기지 않으면 무난한 기본값으로 반응한다. */
+  mood?: MikuMood;
 };
+
+/** 이만큼 연속으로 맞히면 미쿠가 다른 말을 한다. */
+const CORRECT_STREAK_EVENT_AT = 3;
 
 export default function PracticeRunner({
   skillId,
   level = 1,
   initialSeed,
   onOutcome,
+  mood = "encouraging",
 }: PracticeRunnerProps) {
   const entry = getSkillEntry(skillId);
   const supported = Boolean(entry) && hasSkill(skillId);
@@ -48,6 +57,28 @@ export default function PracticeRunner({
   // 이미 갱신되어 있다. useRef 초기화 인자에서 Date.now()를 바로 부르면
   // react-hooks/purity 규칙(렌더 중 impure 함수 호출 금지)에 걸린다.
   const startedAtRef = useRef<number>(0);
+
+  // 미쿠 반응. 대사를 고르는 일은 순수 모듈이 하고, 여기서는 언제 부를지만 정한다.
+  const [reaction, setReaction] = useState<MikuLine | null>(null);
+  const correctRunRef = useRef(0);
+  const wrongRunRef = useRef(0);
+  // 직전에 쓴 대사는 다시 뽑지 않는다. 렌더에 쓰이지 않는 값이라 ref로 둔다.
+  const lastLineIdRef = useRef<string | null>(null);
+
+  const react = useCallback(
+    (event: MikuEvent, mistakeTag: string | null = null) => {
+      const line = pickMikuLine({
+        event,
+        mood,
+        previousLineId: lastLineIdRef.current,
+        seed: Date.now(),
+        mistakeTag,
+      });
+      lastLineIdRef.current = line.id;
+      setReaction(line);
+    },
+    [mood],
+  );
 
   // 첫 문항은 마운트 후에 만든다. 시드가 무작위라 서버 렌더에서 만들면
   // 클라이언트와 다른 문제가 나와 하이드레이션이 어긋난다.
@@ -75,7 +106,16 @@ export default function PracticeRunner({
     setSelected(null);
     setChecked(false);
     setHintsShown(0);
+    setReaction(null);
   }, [level, skillId]);
+
+  const showHint = useCallback(() => {
+    if (hintsShown >= 3) {
+      return;
+    }
+    setHintsShown(hintsShown + 1);
+    react("hintUsed");
+  }, [hintsShown, react]);
 
   const check = useCallback(() => {
     if (!question || !selected || checked) {
@@ -86,6 +126,17 @@ export default function PracticeRunner({
     setAttemptCount((previous) => previous + 1);
     if (graded.isCorrect) {
       setSolvedCount((previous) => previous + 1);
+      correctRunRef.current += 1;
+      wrongRunRef.current = 0;
+      react(
+        correctRunRef.current >= CORRECT_STREAK_EVENT_AT ? "correctStreak3" : "correct",
+      );
+    } else {
+      wrongRunRef.current += 1;
+      correctRunRef.current = 0;
+      // 여기가 이 기능의 핵심이다. 고른 오답의 mistakeTag가 그대로 넘어가면
+      // "아쉽다"가 아니라 어디서 어긋났는지가 나온다.
+      react(wrongRunRef.current >= 2 ? "wrongTwice" : "wrong", graded.mistakeTag);
     }
     onOutcome?.({
       skillId: question.skillId,
@@ -96,7 +147,7 @@ export default function PracticeRunner({
       hintsUsed: hintsShown,
       elapsedSeconds: Math.max(0, Math.round((Date.now() - startedAtRef.current) / 1000)),
     });
-  }, [checked, hintsShown, onOutcome, question, selected]);
+  }, [checked, hintsShown, onOutcome, question, react, selected]);
 
   if (!supported || !entry) {
     return (
@@ -163,7 +214,7 @@ export default function PracticeRunner({
             type="button"
             className="practice-secondary"
             disabled={hintsShown >= 3}
-            onClick={() => setHintsShown((previous) => Math.min(3, previous + 1))}
+            onClick={showHint}
           >
             힌트 보기 ({hintsShown}/3)
           </button>
@@ -178,9 +229,12 @@ export default function PracticeRunner({
         </ol>
       ) : null}
 
+      {reaction ? (
+        <MikuPartner mood={mood} line={reaction} variant="compact" />
+      ) : null}
+
       {result ? (
         <div className={`practice-result ${result.isCorrect ? "is-correct" : "is-wrong"}`} role="status" aria-live="polite">
-          <strong>{result.isCorrect ? "정답이야!" : "아쉽다, 다시 보자"}</strong>
           <p>정답 · {question.acceptableAnswers[0]}</p>
           <ol className="practice-steps">
             {question.steps.map((step) => (

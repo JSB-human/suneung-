@@ -2,6 +2,9 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import EncouragementCoach from "./EncouragementCoach";
+import { pickMikuLine } from "./miku/miku-lines";
+import { hashString } from "./practice/rng";
+import { computeMikuMood, countActiveDaysLast7, resolveGreetingEvent } from "./miku/miku-mood";
 import {
   createEmptyLanguageKnowledgeMapValue,
   type LanguageKnowledgeMapValue,
@@ -24,7 +27,6 @@ import {
 } from "./practice/practice-state";
 import type { LanguageSubject } from "./language-curriculum";
 import PathView from "./path/PathView";
-import { PATH_NODES } from "./path/path-nodes";
 import {
   EMPTY_PATH_STATE,
   completeNode,
@@ -144,6 +146,23 @@ function getDaysUntil2028Csat(date = new Date()): number {
     CSAT_2028_DATE.day,
   );
   return Math.round((examDay - today) / 86_400_000);
+}
+
+/**
+ * 마지막으로 실제 공부한 날. 오늘은 빼고 본다.
+ *
+ * `taskDate`를 쓰면 안 된다 — 앱을 열 때마다 오늘로 덮어써지므로 항상 "오늘"이
+ * 되어 미쿠의 "오랜만이야" 인사가 영원히 뜨지 않는다. 학습 기록이 "마지막으로
+ * 공부한 날"이라는 의미에도 더 맞다.
+ */
+function findLastStudyDate(
+  studyLog: Record<string, number>,
+  todayKey: string,
+): string | null {
+  const days = Object.keys(studyLog)
+    .filter((key) => key < todayKey && (studyLog[key] ?? 0) > 0)
+    .sort();
+  return days.length > 0 ? days[days.length - 1] : null;
 }
 
 function isStringArray(value: unknown): value is string[] {
@@ -357,6 +376,9 @@ export default function IpsiCoachApp() {
     taskDate: todayKey,
   }));
   const [isReady, setIsReady] = useState(false);
+  // 지역 시각은 마운트 후에 읽는다. 렌더 중에 Date를 부르면 lint가 막고,
+  // 서버 렌더와 클라이언트 렌더가 달라져 하이드레이션도 어긋난다.
+  const [localHour, setLocalHour] = useState<number | null>(null);
   const [statusMessage, setStatusMessage] = useState("오늘의 첫 칸이 준비되었습니다.");
   const [focusMinutes, setFocusMinutes] = useState(DEFAULT_FOCUS_MINUTES);
   const [timerSeconds, setTimerSeconds] = useState(DEFAULT_FOCUS_MINUTES * 60);
@@ -384,6 +406,29 @@ export default function IpsiCoachApp() {
   const maxWeeklyMinutes = Math.max(...weeklyStudy.map((day) => day.minutes), 30);
   const weeklyTotal = weeklyStudy.reduce((sum, day) => sum + day.minutes, 0);
   const streak = getCurrentStreak(appState.studyLog);
+
+  // 시각을 아직 못 읽었으면 낮으로 둔다. 마운트 직후 한 프레임뿐이고,
+  // 이때 sleepy로 인사하면 낮에 들어온 학습자에게 엉뚱하다.
+  const mikuHour = localHour ?? 12;
+  const mikuMood = computeMikuMood({
+    hour: mikuHour,
+    activeDaysLast7: countActiveDaysLast7(appState.studyLog, todayKey),
+    // 오늘의 정답률은 아직 저장하지 않는다. 표본이 3문제 미만이면
+    // computeMikuMood가 정답률을 신호로 쓰지 않으므로, 기분은 지금
+    // 학습량·연속일·시각으로만 정해진다.
+    todayAnswered: 0,
+    todayCorrect: 0,
+    streakDays: streak,
+  });
+  const mikuGreeting = pickMikuLine({
+    event: resolveGreetingEvent({
+      todayKey,
+      lastSeenDate: findLastStudyDate(appState.studyLog, todayKey),
+      hour: mikuHour,
+    }),
+    mood: mikuMood,
+    seed: hashString(todayKey),
+  });
   const completedWords = Object.values(appState.vocab.progressById).filter(
     (progress) => progress.status === "completed",
   ).length;
@@ -455,6 +500,7 @@ export default function IpsiCoachApp() {
         if (current) {
           setAppState(normalizeStoredState(JSON.parse(current), todayKey));
           setIsReady(true);
+          setLocalHour(new Date().getHours());
           return;
         }
 
@@ -469,6 +515,7 @@ export default function IpsiCoachApp() {
         setStatusMessage("저장된 기록을 읽지 못해 새 학습 기록으로 시작합니다.");
       } finally {
         setIsReady(true);
+        setLocalHour(new Date().getHours());
       }
     }, 0);
 
@@ -688,8 +735,8 @@ export default function IpsiCoachApp() {
           </div>
 
           <EncouragementCoach
-            completedCount={completedNodeCount}
-            totalCount={PATH_NODES.length}
+            line={mikuGreeting}
+            mood={mikuMood}
             streak={streak}
             dday={dday}
             points={points}

@@ -1,8 +1,13 @@
 "use client";
 
+import MikuPartner from "./miku/MikuPartner";
+import type { MikuLine } from "./miku/miku-lines.ts";
+import type { MikuMood } from "./miku/miku-mood.ts";
+
 type EncouragementCoachProps = {
-  completedCount: number;
-  totalCount: number;
+  /** 미쿠가 지금 할 말. 고르는 일은 miku-lines.ts가 한다. */
+  line: MikuLine;
+  mood: MikuMood;
   streak: number;
   dday: number;
   points: number;
@@ -14,21 +19,11 @@ type EncouragementCoachProps = {
 
 const TOUCH_TARGET_STYLE = { minHeight: 44, minWidth: 44 };
 
-function getEncouragementLine(completedCount: number, totalCount: number): string {
-  if (totalCount <= 0 || completedCount <= 0) {
-    return "미쿠가 옆에서 항상 응원하고 있어! 🎵 아직 시작 전이어도 괜찮아, 가장 쉬운 것부터 3분만 해볼까? ✨";
-  }
-
-  if (completedCount < totalCount) {
-    return `우와, 벌써 ${completedCount}개나 완료했네! 🎵 다음 한 칸도 미쿠랑 같이 차근차근 해보자! 💖`;
-  }
-
-  return "오늘 목표를 완벽하게 다 채웠어! 🌟 정말 대단해! 미쿠가 최고로 칭찬해 줄게! 🎉🎵";
-}
+const EYEBROW = "🎵 수능人 파트너 · 하츠네 미쿠 (初音ミク)";
 
 function formatSuneungCountdown(dday: number): string {
   if (dday === 0) {
-    return "2028 수능 D-DAY 🎯";
+    return "2028 수능 D-DAY";
   }
 
   if (dday < 0) {
@@ -38,9 +33,20 @@ function formatSuneungCountdown(dday: number): string {
   return `2028 수능 D-${dday}`;
 }
 
+/** 연속 학습일 줄. 0일째에 "연속 0일"이라고 쓰면 시작하기 더 싫어진다. */
+function formatStreakLine(streak: number): string {
+  if (streak <= 0) {
+    return "오늘 한 칸만 하면 연속 기록이 다시 시작돼.";
+  }
+  if (streak === 1) {
+    return "오늘로 하루째. 내일 또 오면 이어져.";
+  }
+  return `연속 ${streak}일째. 이 줄을 끊지 않는 게 제일 큰 무기야.`;
+}
+
 export function EncouragementCoach({
-  completedCount,
-  totalCount,
+  line,
+  mood,
   streak,
   dday,
   points,
@@ -49,47 +55,29 @@ export function EncouragementCoach({
   onOpenEasyStep,
   className,
 }: EncouragementCoachProps) {
-  const message = getEncouragementLine(completedCount, totalCount);
-  const countdownLabel = formatSuneungCountdown(dday);
-
   return (
     <section
       className={className ? `encouragement-coach ${className}` : "encouragement-coach"}
       aria-label="하츠네 미쿠 학습 파트너"
     >
-      <div className="encouragement-card" style={{ background: "linear-gradient(135deg, #e6f9f8 0%, #ffffff 100%)", borderColor: "#a0ece7" }}>
-        <div className="encouragement-visual">
-          <div className="miku-avatar-box" style={{ width: 84, height: 84, borderRadius: "50%", position: "relative", flexShrink: 0 }}>
-            <img
-              src="/miku_avatar.jpg"
-              alt="하츠네 미쿠 학습 코치"
-              style={{ width: 84, height: 84, borderRadius: "50%", objectFit: "cover", border: "3px solid #39c5bb", boxShadow: "0 4px 12px rgba(57, 197, 187, 0.4)" }}
-            />
-            <span style={{ position: "absolute", bottom: -2, right: -2, background: "#ff7ebb", color: "#fff", fontSize: 10, fontWeight: 900, padding: "2px 6px", borderRadius: 10, boxShadow: "0 2px 4px rgba(0,0,0,0.15)" }}>Miku 🎵</span>
+      <div className="encouragement-card">
+        <MikuPartner mood={mood} line={line} eyebrow={EYEBROW}>
+          <div className="encouragement-meta" aria-label="학습 진행 정보">
+            <span>{formatSuneungCountdown(dday)}</span>
+            <span>Lv.{level}</span>
+            <span>성장 포인트 {points} P</span>
           </div>
-
-          <div className="encouragement-bubble" style={{ borderColor: "#a0ece7" }}>
-            <p className="encouragement-eyebrow" style={{ color: "#00a496" }}>🎵 수능人 파트너 · 하츠네 미쿠 (初音ミク)</p>
-            <h2 style={{ color: "#0f172a" }}>{message}</h2>
-            <div className="encouragement-meta" aria-label="학습 진행 정보">
-              <span style={{ borderColor: "#a0ece7", color: "#00a496", background: "#e6f9f8" }}>{countdownLabel}</span>
-              <span style={{ borderColor: "#ffb7d5", color: "#d946ef", background: "#fdf4ff" }}>Lv.{level}</span>
-              <span style={{ borderColor: "#a0ece7", color: "#00a496", background: "#e6f9f8" }}>성장 포인트 {points} P</span>
-            </div>
-            <p>
-              연속 학습 {streak}일째 달성 중! 🎵 매일 조금씩 쌓이면 미쿠랑 함께 목표 대학까지 갈 수 있어! ✨
-            </p>
-          </div>
-        </div>
+          <p className="miku-streak-line">{formatStreakLine(streak)}</p>
+        </MikuPartner>
 
         <div className="encouragement-actions">
           <button
             type="button"
             className="primary-action"
-            style={{ ...TOUCH_TARGET_STYLE, background: "#39c5bb", borderColor: "#00a496" }}
+            style={TOUCH_TARGET_STYLE}
             onClick={onStartThreeMinutes}
           >
-            🎵 미쿠와 3분 집중 시작
+            미쿠와 3분 집중 시작
           </button>
           <button
             type="button"
