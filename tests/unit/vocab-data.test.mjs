@@ -183,11 +183,12 @@ test("every entry is tagged with a known stage", () => {
   }
 });
 
-// 1단계 목표는 500개다. 아직 집필 중이라 현재 확보량을 하한으로 둔다.
-// 이 숫자는 단어를 추가할 때마다 올리고, 500에 도달하면 500으로 고정한다.
-// 하한을 두는 이유는 집필이 끝나서가 아니라 이미 쓴 것이 지워지지 않게 하기 위해서다.
+// 1단계 목표는 500개이고, 이제 500개를 모두 채웠다.
+// 하한과 목표가 같아졌으니 1단계는 더 늘지도 줄지도 않는다.
+// 하한을 남겨 두는 이유는 이미 쓴 단어가 지워지지 않게 하기 위해서다.
+// 다음 단어부터는 stage 2로 들어간다.
 const STAGE_ONE_TARGET = 500;
-const STAGE_ONE_CURRENT = 469;
+const STAGE_ONE_CURRENT = 500;
 
 test("stage 1 does not lose words it already has", () => {
   const stageOne = VOCAB_WORDS.filter((entry) => entry.stage === 1);
