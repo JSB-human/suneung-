@@ -110,7 +110,7 @@ test("math nodes are unaffected", () => {
   );
   assert.equal(
     mathCounts.reduce((sum, count) => sum + count, 0),
-    46,
+    52,
     "math question total changed",
   );
 });

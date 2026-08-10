@@ -1836,4 +1836,94 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
         "단어를 모두 알고도 who절이 어디서 끝나는지 못 봤다면 어휘가 아니라 구조에서 무너진 것입니다. 원인을 갈라 적어야 다음에 무엇을 훈련할지 정해집니다.",
     },
   ],
+
+  // ── 수학 캡슐 ──────────────────────────────────────────────
+  // 생성기(skillId)가 붙은 캡슐은 런타임에 문제가 무한히 나오므로 여기서 다루지 않는다.
+  // 거듭제곱은 생성기 출력과 같은 x^2 표기를 쓴다.
+  "capsule:ma-expressions": [
+    {
+      id: "ma-expressions-x1",
+      prompt: "5x - (2x - 4)를 간단히 하면?",
+      choices: [
+        { value: "3x+4", label: "3x + 4" },
+        { value: "3x-4", label: "3x - 4" },
+        { value: "7x-4", label: "7x - 4" },
+        { value: "7x+4", label: "7x + 4" },
+      ],
+      answer: "3x+4",
+      explanation:
+        "괄호 앞의 빼기는 괄호 안 모든 항의 부호를 바꿉니다. 5x - 2x + 4가 되므로 3x + 4입니다. -4를 그대로 두면 3x - 4가 되어 틀립니다.",
+    },
+    {
+      id: "ma-expressions-x2",
+      prompt: "x = -2일 때 3x^2 - x의 값은?",
+      choices: [
+        { value: "14", label: "14" },
+        { value: "10", label: "10" },
+        { value: "-10", label: "-10" },
+        { value: "38", label: "38" },
+      ],
+      answer: "14",
+      explanation:
+        "문자 자리에 괄호째 넣어 3 × (-2)^2 - (-2)로 씁니다. (-2)^2 = 4라서 12가 되고 -x는 +2가 되므로 12 + 2 = 14입니다.",
+    },
+  ],
+
+  "capsule:ma-inequalities": [
+    {
+      id: "ma-inequalities-x1",
+      prompt: "-3x + 1 > 7을 풀면?",
+      choices: [
+        { value: "lt-neg2", label: "x < -2" },
+        { value: "gt-neg2", label: "x > -2" },
+        { value: "gt-2", label: "x > 2" },
+        { value: "lt-2", label: "x < 2" },
+      ],
+      answer: "lt-neg2",
+      explanation:
+        "양변에서 1을 빼면 -3x > 6이고, 음수인 -3으로 나누므로 부등호 방향이 바뀌어 x < -2입니다. 방향을 그대로 두면 x > -2가 되어 틀립니다.",
+    },
+    {
+      id: "ma-inequalities-x2",
+      prompt: "x > -1과 x ≤ 2를 동시에 만족하는 x의 범위는?",
+      choices: [
+        { value: "open-closed", label: "-1 < x ≤ 2" },
+        { value: "closed-open", label: "-1 ≤ x < 2" },
+        { value: "gt-2", label: "x > 2" },
+        { value: "all", label: "모든 실수" },
+      ],
+      answer: "open-closed",
+      explanation:
+        "두 범위를 수직선에 그린 뒤 겹치는 부분만 남기면 됩니다. 등호는 원래 붙어 있던 2 쪽에만 남으므로 -1 < x ≤ 2입니다.",
+    },
+  ],
+
+  "capsule:ma-functions-graphs": [
+    {
+      id: "ma-functions-graphs-x1",
+      prompt: "f(x) = 2x + 1의 그래프가 점 (3, k)를 지날 때 k의 값은?",
+      choices: [
+        { value: "7", label: "7" },
+        { value: "6", label: "6" },
+        { value: "3", label: "3" },
+        { value: "1", label: "1" },
+      ],
+      answer: "7",
+      explanation:
+        "점 (3, k)가 그래프 위에 있다는 말은 f(3) = k라는 뜻입니다. x 자리에 3을 넣으면 2 × 3 + 1 = 7입니다.",
+    },
+    {
+      id: "ma-functions-graphs-x2",
+      prompt: "두 직선 y = x + 1과 y = 3x - 5가 만나는 점의 x좌표는?",
+      choices: [
+        { value: "3", label: "3" },
+        { value: "4", label: "4" },
+        { value: "-2", label: "-2" },
+        { value: "-3", label: "-3" },
+      ],
+      answer: "3",
+      explanation:
+        "교점은 두 식을 동시에 만족하는 점이므로 x + 1 = 3x - 5로 놓습니다. 정리하면 2x = 6이라 x = 3이고, 이때 y좌표는 4입니다.",
+    },
+  ],
 };
