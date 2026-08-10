@@ -187,7 +187,7 @@ test("every entry is tagged with a known stage", () => {
 // 이 숫자는 단어를 추가할 때마다 올리고, 500에 도달하면 500으로 고정한다.
 // 하한을 두는 이유는 집필이 끝나서가 아니라 이미 쓴 것이 지워지지 않게 하기 위해서다.
 const STAGE_ONE_TARGET = 500;
-const STAGE_ONE_CURRENT = 362;
+const STAGE_ONE_CURRENT = 402;
 
 test("stage 1 does not lose words it already has", () => {
   const stageOne = VOCAB_WORDS.filter((entry) => entry.stage === 1);
