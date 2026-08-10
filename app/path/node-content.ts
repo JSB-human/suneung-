@@ -2,6 +2,7 @@ import { FOUNDATION_REFERENCE } from "../foundation-reference.ts";
 import { LANGUAGE_KNOWLEDGE_CURRICULA } from "../language-curriculum.ts";
 import { MATH_KNOWLEDGE_CURRICULUM } from "../math-curriculum.ts";
 import { CORE_NOTES } from "../study-content.ts";
+import { NODE_QUESTIONS } from "./node-questions.ts";
 import { getNode } from "./path-nodes.ts";
 import type { NodeQuestion } from "./types.ts";
 
@@ -15,6 +16,16 @@ export type NodeContent = {
   questions: NodeQuestion[];
   skillId?: string;
 };
+
+// 칸의 확인 문제 = 원본 콘텐츠에 딸린 기본 문항 + node-questions.ts에서 집필한 추가 문항.
+// 순서를 유지해야 학습자가 늘 같은 문제부터 만난다.
+function withAuthoredQuestions(nodeId: string, builtIn: NodeQuestion[]): NodeQuestion[] {
+  const authored = NODE_QUESTIONS[nodeId];
+  if (!authored || authored.length === 0) {
+    return builtIn;
+  }
+  return [...builtIn, ...authored.map((question) => ({ ...question, choices: [...question.choices] }))];
+}
 
 function findCapsule(sourceId: string) {
   return FOUNDATION_REFERENCE.find((item) => item.id === sourceId);
@@ -78,7 +89,7 @@ export function resolveNodeContent(nodeId: string): NodeContent | null {
       keyPoints: base.keyPoints.length > 0 ? base.keyPoints : [...capsule.keyPoints],
       formula: base.formula ?? capsule.frame,
       mistake: base.mistake ?? capsule.commonTrap,
-      questions: [
+      questions: withAuthoredQuestions(nodeId, [
         {
           id: `${nodeId}:quick`,
           prompt: capsule.quickCheck.prompt,
@@ -86,7 +97,7 @@ export function resolveNodeContent(nodeId: string): NodeContent | null {
           answer: capsule.quickCheck.answer,
           explanation: capsule.quickCheck.explanation,
         },
-      ],
+      ]),
     };
   }
 
@@ -98,7 +109,7 @@ export function resolveNodeContent(nodeId: string): NodeContent | null {
       explanation: languageConcept.summary,
       keyPoints:
         base.keyPoints.length > 0 ? base.keyPoints : [...languageConcept.corePoints],
-      questions: [
+      questions: withAuthoredQuestions(nodeId, [
         {
           id: check.id,
           prompt: check.prompt,
@@ -106,7 +117,7 @@ export function resolveNodeContent(nodeId: string): NodeContent | null {
           answer: check.acceptableAnswers[0] ?? check.answer,
           explanation: check.explanation,
         },
-      ],
+      ]),
     };
   }
 
@@ -117,13 +128,16 @@ export function resolveNodeContent(nodeId: string): NodeContent | null {
       explanation: mathConcept.summary,
       keyPoints:
         base.keyPoints.length > 0 ? base.keyPoints : [...mathConcept.corePrinciples],
-      questions: mathConcept.practiceQuestions.map((question) => ({
-        id: question.id,
-        prompt: question.prompt,
-        choices: question.choices ? [...question.choices] : [],
-        answer: question.acceptableAnswers[0],
-        explanation: question.explanation,
-      })),
+      questions: withAuthoredQuestions(
+        nodeId,
+        mathConcept.practiceQuestions.map((question) => ({
+          id: question.id,
+          prompt: question.prompt,
+          choices: question.choices ? [...question.choices] : [],
+          answer: question.acceptableAnswers[0],
+          explanation: question.explanation,
+        })),
+      ),
     };
   }
 

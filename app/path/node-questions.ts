@@ -1,0 +1,915 @@
+import type { NodeQuestion } from "./types.ts";
+
+// 칸마다 확인 문제 3개를 채우기 위해 새로 집필한 고정 문항.
+// 원본 콘텐츠(FOUNDATION_REFERENCE의 quickCheck, 커리큘럼 개념의 selfCheckQuestion)는
+// 칸당 1문항뿐이므로 여기서 2문항씩 보탠다. 키는 path-nodes.ts의 노드 id다.
+//
+// 집필 원칙
+// - 그 칸이 방금 가르친 것만 묻는다. 옆 단원 지식은 묻지 않는다.
+// - 오답 선지는 특정 오해를 가진 학습자가 실제로 고를 만한 것으로 쓴다.
+// - 해설은 왜 그 답이 맞는지를 한두 문장으로 말한다.
+export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
+  // ── 국어 캡슐 ──────────────────────────────────────────────
+  "capsule:ko-sentence-skeleton": [
+    {
+      id: "ko-sentence-skeleton-x1",
+      prompt: "‘지난주에 새로 문을 연 도서관이 학생들에게 큰 인기를 끌었다.’의 뼈대는 무엇인가요?",
+      choices: [
+        { value: "library-popular", label: "도서관이 인기를 끌었다" },
+        { value: "lastweek-open", label: "지난주가 문을 열었다" },
+        { value: "students-popular", label: "학생들이 인기를 끌었다" },
+        { value: "library-open", label: "도서관이 문을 열었다" },
+      ],
+      answer: "library-popular",
+      explanation:
+        "서술어 ‘끌었다’를 먼저 찾고 ‘무엇이?’라고 물으면 주어는 ‘도서관이’입니다. ‘지난주에 새로 문을 연’은 도서관을 꾸미는 말이라 뼈대에서 빠집니다.",
+    },
+    {
+      id: "ko-sentence-skeleton-x2",
+      prompt: "‘어제 산 두꺼운 책이 생각보다 무겁다.’에서 잠시 괄호로 묶어도 뜻이 남는 부분은 어디인가요?",
+      choices: [
+        { value: "modifiers", label: "어제 산 두꺼운" },
+        { value: "subject", label: "책이" },
+        { value: "predicate", label: "무겁다" },
+        { value: "core", label: "책이 무겁다" },
+      ],
+      answer: "modifiers",
+      explanation:
+        "‘어제 산 두꺼운’은 책을 꾸미는 관형어라 묶어도 ‘책이 무겁다’라는 뼈대가 그대로 남습니다. 주어와 서술어를 묶으면 문장이 사라집니다.",
+    },
+  ],
+
+  "capsule:ko-fact-inference": [
+    {
+      id: "ko-fact-inference-x1",
+      prompt: "‘청소년의 수면 시간을 지금보다 늘릴 필요가 있다.’는 어디에 해당하나요?",
+      choices: [
+        { value: "claim", label: "주장 — 글쓴이의 판단이 들어 있다" },
+        { value: "fact", label: "사실 — 지문에서 참·거짓을 확인할 수 있다" },
+        { value: "example", label: "사례 — 구체적인 경우를 든 것이다" },
+        { value: "data", label: "자료 — 조사한 수치를 그대로 옮긴 것이다" },
+      ],
+      answer: "claim",
+      explanation:
+        "‘필요가 있다’는 관찰이 아니라 글쓴이가 옳다고 내세우는 판단입니다. 사실이라면 참·거짓을 확인할 수 있어야 합니다.",
+    },
+    {
+      id: "ko-fact-inference-x2",
+      prompt: "지문에 ‘이 약은 일부 환자에게 효과가 있었다’라고만 적혀 있습니다. 지문이 허용하는 말은 무엇인가요?",
+      choices: [
+        { value: "some-worked", label: "효과를 본 환자가 있었다" },
+        { value: "all-work", label: "이 약은 모든 환자에게 효과가 있다" },
+        { value: "always", label: "이 약은 반드시 효과를 낸다" },
+        { value: "none", label: "이 약은 어떤 환자에게도 효과가 없다" },
+      ],
+      answer: "some-worked",
+      explanation:
+        "‘일부’라는 범위 안에서만 말할 수 있습니다. ‘모든’이나 ‘반드시’로 바꾸면 근거가 허용한 범위를 넘습니다.",
+    },
+  ],
+
+  "capsule:ko-nonfiction-structure": [
+    {
+      id: "ko-nonfiction-structure-x1",
+      prompt: "‘고래는 포유류에 속한다. 포유류란 새끼에게 젖을 먹이는 동물이다.’의 설명 구조는 무엇인가요?",
+      choices: [
+        { value: "definition", label: "정의·분류" },
+        { value: "contrast", label: "비교·대조" },
+        { value: "cause", label: "원인·결과" },
+        { value: "process", label: "과정·원리" },
+      ],
+      answer: "definition",
+      explanation:
+        "‘A는 B에 속한다’로 갈래를 나누고 ‘B란 ~이다’로 뜻을 정해 주고 있습니다. 두 대상을 견주지도, 순서를 밟지도 않습니다.",
+    },
+    {
+      id: "ko-nonfiction-structure-x2",
+      prompt: "‘도시의 인구가 빠르게 늘면서 주택 부족이 심해졌다.’의 설명 구조는 무엇인가요?",
+      choices: [
+        { value: "cause", label: "원인·결과" },
+        { value: "problem", label: "문제·해결" },
+        { value: "contrast", label: "비교·대조" },
+        { value: "definition", label: "정의·분류" },
+      ],
+      answer: "cause",
+      explanation:
+        "인구 증가가 원인, 주택 부족이 결과로 이어져 있습니다. 주택 부족이 문제처럼 보여도 해결 방안이 나오지 않았으므로 문제·해결은 아닙니다.",
+    },
+  ],
+
+  "capsule:ko-reference-terms": [
+    {
+      id: "ko-reference-terms-x1",
+      prompt: "‘도시는 주변보다 기온이 높아지는 열섬 현상을 겪는다. 이 현상은 밤에도 기온을 잘 내려가지 못하게 한다.’에서 ‘이 현상’이 가리키는 것은?",
+      choices: [
+        { value: "heat-island", label: "도시의 기온이 주변보다 높아지는 열섬 현상" },
+        { value: "night-drop", label: "밤에 기온이 내려가는 일" },
+        { value: "city", label: "도시" },
+        { value: "temperature", label: "기온" },
+      ],
+      answer: "heat-island",
+      explanation:
+        "지시어는 앞 문장의 핵심 명사만이 아니라 그 명사가 맺은 관계까지 붙여 읽어야 합니다. 앞 문장이 정의한 것은 ‘기온이 높아지는 열섬 현상’입니다.",
+    },
+    {
+      id: "ko-reference-terms-x2",
+      prompt: "지문이 ‘균형’을 ‘두 힘의 크기가 같은 상태’라고 정의했는데, 내가 알던 뜻과 다릅니다. 어떻게 풀어야 하나요?",
+      choices: [
+        { value: "passage", label: "지문이 준 정의를 기준으로 푼다" },
+        { value: "dictionary", label: "사전에 실린 뜻을 기준으로 푼다" },
+        { value: "background", label: "평소 알던 배경지식을 기준으로 푼다" },
+        { value: "skip", label: "정의가 헷갈리므로 그 문단은 건너뛴다" },
+      ],
+      answer: "passage",
+      explanation:
+        "시험에서 판단 기준은 지문이 세운 정의입니다. 같은 단어라도 글이 새로 정의하면 그 정의가 우선합니다.",
+    },
+  ],
+
+  "capsule:ko-poetry": [
+    {
+      id: "ko-poetry-x1",
+      prompt: "시에 ‘나는 열두 살 소녀였다’라는 구절이 있습니다. 여기서 알 수 있는 것은 무엇인가요?",
+      choices: [
+        { value: "persona", label: "화자가 소녀로 설정되어 있다" },
+        { value: "author-gender", label: "작가가 여성이라는 사실" },
+        { value: "author-child", label: "작가가 실제로 겪은 열두 살의 일" },
+        { value: "written-year", label: "시가 쓰인 연도" },
+      ],
+      answer: "persona",
+      explanation:
+        "작품 속에서 말하는 이는 화자이고, 화자와 작가를 같다고 단정할 수 없습니다. 시가 알려 주는 것은 화자의 설정까지입니다.",
+    },
+    {
+      id: "ko-poetry-x2",
+      prompt: "‘돌아오지 않는 배를 하루 종일 바라본다’라는 구절에서 화자의 정서를 가장 잘 설명한 것은?",
+      choices: [
+        { value: "longing", label: "돌아오지 않는 배를 향한 기다림과 그리움" },
+        { value: "sea-love", label: "바다를 좋아하는 마음" },
+        { value: "ship-wish", label: "배를 직접 만들고 싶은 소망" },
+        { value: "biography", label: "작가가 어부였다는 사실" },
+      ],
+      answer: "longing",
+      explanation:
+        "정서는 대상과 근거를 함께 말해야 합니다. 대상은 ‘돌아오지 않는 배’이고, ‘하루 종일 바라본다’는 행동이 기다림의 근거가 됩니다.",
+    },
+  ],
+
+  "capsule:ko-fiction": [
+    {
+      id: "ko-fiction-x1",
+      prompt: "‘그는 사실을 밝혀야 한다고 생각하면서도 불이익이 두려워 끝내 망설였다.’에 나타난 갈등은?",
+      choices: [
+        { value: "internal", label: "내적 갈등 — 한 인물의 마음속 충돌" },
+        { value: "society", label: "인물과 사회의 갈등" },
+        { value: "person", label: "인물과 인물의 갈등" },
+        { value: "fate", label: "인물과 운명의 갈등" },
+      ],
+      answer: "internal",
+      explanation:
+        "부딪치는 두 마음이 모두 한 인물 안에 있습니다. 불이익이라는 바깥 사정이 언급되지만 장면에서 충돌하는 곳은 인물의 마음속입니다.",
+    },
+    {
+      id: "ko-fiction-x2",
+      prompt: "‘나는 그가 무슨 생각을 하는지 끝내 알 수 없었다.’라는 서술에서 알 수 있는 것은?",
+      choices: [
+        { value: "first-person", label: "‘나’가 보고 겪은 것만 전달하는 1인칭 시점이다" },
+        { value: "omniscient", label: "서술자가 모든 인물의 속마음을 아는 전지적 시점이다" },
+        { value: "he-narrator", label: "‘그’가 이야기를 전하는 서술자다" },
+        { value: "unknowable", label: "시점은 이 문장만으로 전혀 알 수 없다" },
+      ],
+      answer: "first-person",
+      explanation:
+        "서술자가 자신을 ‘나’라 부르고, 다른 인물의 속마음은 모른다고 말합니다. 시점이 전달할 수 있는 정보의 범위를 이렇게 제한합니다.",
+    },
+  ],
+
+  "capsule:ko-drama-essay": [
+    {
+      id: "ko-drama-essay-x1",
+      prompt: "‘영수: (창밖을 보며) 벌써 겨울이네.’에서 지시문에 해당하는 부분은?",
+      choices: [
+        { value: "stage", label: "(창밖을 보며)" },
+        { value: "line", label: "벌써 겨울이네." },
+        { value: "name", label: "영수" },
+        { value: "all", label: "문장 전체" },
+      ],
+      answer: "stage",
+      explanation:
+        "괄호 안은 배우의 동작과 말하는 방식을 알려 주는 지시문입니다. 인물이 소리 내어 하는 말은 ‘벌써 겨울이네.’뿐입니다.",
+    },
+    {
+      id: "ko-drama-essay-x2",
+      prompt: "수필에서 글쓴이가 낡은 손수건을 길게 묘사했습니다. 무엇을 중심으로 읽어야 하나요?",
+      choices: [
+        { value: "insight", label: "손수건이 불러낸 경험과 거기서 얻은 깨달음" },
+        { value: "object", label: "손수건의 재질과 값" },
+        { value: "plot", label: "손수건을 둘러싼 인물들의 갈등" },
+        { value: "rhythm", label: "묘사에 쓰인 문장의 운율" },
+      ],
+      answer: "insight",
+      explanation:
+        "수필의 중심은 소재 자체가 아니라 경험을 통해 글쓴이의 생각이 어떻게 달라졌는가입니다. 소재는 그 생각을 불러내는 통로입니다.",
+    },
+  ],
+
+  "capsule:ko-grammar-levels": [
+    {
+      id: "ko-grammar-levels-x1",
+      prompt: "‘밥’의 음운은 몇 개인가요?",
+      choices: [
+        { value: "three", label: "3개" },
+        { value: "one", label: "1개" },
+        { value: "two", label: "2개" },
+        { value: "four", label: "4개" },
+      ],
+      answer: "three",
+      explanation:
+        "음운은 뜻을 구별하는 가장 작은 소리 단위여서 ㅂ, ㅏ, ㅂ 세 개입니다. 글자 수 1개, 음절 수 1개와는 다릅니다.",
+    },
+    {
+      id: "ko-grammar-levels-x2",
+      prompt: "‘읽었다’를 형태소로 바르게 나눈 것은?",
+      choices: [
+        { value: "three-parts", label: "읽- / -었- / -다" },
+        { value: "two-a", label: "읽- / -었다" },
+        { value: "two-b", label: "읽었- / -다" },
+        { value: "one", label: "읽었다 (더 나눌 수 없다)" },
+      ],
+      answer: "three-parts",
+      explanation:
+        "‘읽-’은 뜻을, ‘-었-’은 과거를, ‘-다’는 문장을 끝맺는 기능을 각각 맡습니다. 뜻이나 기능을 가진 조각은 더 이상 나눌 수 없을 때까지 나눕니다.",
+    },
+  ],
+
+  "capsule:ko-media-literacy": [
+    {
+      id: "ko-media-literacy-x1",
+      prompt: "막대그래프의 세로축이 95부터 100까지만 그려져 두 막대의 차이가 아주 커 보입니다. 가장 먼저 할 판단은?",
+      choices: [
+        { value: "axis", label: "축 범위를 잘라 차이를 과장했을 수 있다" },
+        { value: "real-gap", label: "실제로 두 값의 차이가 아주 크다" },
+        { value: "sample", label: "표본이 충분히 크게 조사되었다" },
+        { value: "recent", label: "자료가 최근에 만들어졌다" },
+      ],
+      answer: "axis",
+      explanation:
+        "세로축이 0이 아니라 95에서 시작하면 5 안쪽의 차이가 화면 전체를 차지합니다. 편집이 인상을 바꾼 경우이므로 실제 값을 확인해야 합니다.",
+    },
+    {
+      id: "ko-media-literacy-x2",
+      prompt: "사진과 숫자가 잔뜩 들어간 건강 카드 뉴스가 있습니다. 그만큼 객관적이라고 볼 수 있나요?",
+      choices: [
+        { value: "check-source", label: "아니다 — 누가 어떤 원자료로 만들었고 무엇이 빠졌는지 확인해야 한다" },
+        { value: "numbers", label: "그렇다 — 숫자가 들어갔으면 검증된 자료다" },
+        { value: "photo", label: "그렇다 — 사진이 있으면 실제로 있었던 일이다" },
+        { value: "views", label: "그렇다 — 조회수가 높으면 믿을 만하다" },
+      ],
+      answer: "check-source",
+      explanation:
+        "사진과 숫자도 만든 사람이 목적에 맞게 골라 넣은 정보입니다. 출처와 원자료, 빠진 내용을 함께 봐야 신뢰도를 판단할 수 있습니다.",
+    },
+  ],
+
+  "capsule:ko-answer-evidence": [
+    {
+      id: "ko-answer-evidence-x1",
+      prompt: "지문은 ‘이 정책은 물가를 낮출 수 있다’인데 선택지는 ‘이 정책은 물가를 반드시 낮춘다’입니다. 무엇이 틀렸나요?",
+      choices: [
+        { value: "degree", label: "가능성을 확정으로 바꿔 정도를 과장했다" },
+        { value: "subject", label: "행동의 주체를 다른 대상으로 바꿨다" },
+        { value: "causal", label: "원인과 결과를 뒤집었다" },
+        { value: "new", label: "지문에 없는 대상을 새로 넣었다" },
+      ],
+      answer: "degree",
+      explanation:
+        "‘수 있다’는 가능성이고 ‘반드시’는 확정입니다. 주체도 대상도 그대로이므로 어긋난 곳은 정도뿐입니다.",
+    },
+    {
+      id: "ko-answer-evidence-x2",
+      prompt: "지문은 ‘수요가 늘어 가격이 올랐다’인데 선택지는 ‘가격이 올라 수요가 늘었다’입니다. 어떤 오답 유형인가요?",
+      choices: [
+        { value: "causal", label: "원인과 결과를 뒤집었다" },
+        { value: "range", label: "일부를 전체로 확대했다" },
+        { value: "subject", label: "주체를 바꿨다" },
+        { value: "degree", label: "정도를 과장했다" },
+      ],
+      answer: "causal",
+      explanation:
+        "쓰인 단어는 같지만 무엇이 원인이고 무엇이 결과인지가 반대로 바뀌었습니다. 단어만 훑으면 놓치기 쉬운 유형입니다.",
+    },
+  ],
+
+  // ── 국어 개념 · 읽기 기초와 독서 ────────────────────────────
+  "concept:korean-signal-reading": [
+    {
+      id: "korean-signal-reading-x1",
+      prompt: "‘값이 올랐다. 그러나 판매량은 줄지 않았다.’에서 ‘그러나’의 역할은 무엇인가요?",
+      choices: [
+        { value: "contrast", label: "앞말을 뒤집어 반대되는 내용을 잇는다" },
+        { value: "cause", label: "앞말을 원인, 뒷말을 결과로 잇는다" },
+        { value: "add", label: "앞말에 비슷한 내용을 덧붙인다" },
+        { value: "example", label: "앞말의 예를 든다" },
+      ],
+      answer: "contrast",
+      explanation:
+        "값이 올랐으면 보통 판매량이 줄 텐데 그러지 않았다고 말합니다. ‘그러나’는 이렇게 예상과 어긋나는 내용을 이어 줍니다.",
+    },
+    {
+      id: "korean-signal-reading-x2",
+      prompt: "‘동네 도서관이 갑자기 문을 닫았다. 이 소식에 학생들이 크게 아쉬워했다.’에서 ‘이 소식’이 가리키는 것은?",
+      choices: [
+        { value: "closed", label: "동네 도서관이 갑자기 문을 닫았다는 것" },
+        { value: "sad", label: "학생들이 아쉬워했다는 것" },
+        { value: "library", label: "동네 도서관" },
+        { value: "students", label: "학생들" },
+      ],
+      answer: "closed",
+      explanation:
+        "지시어는 바로 앞 문장이 말한 내용을 다시 가리킵니다. ‘도서관’이라는 낱말 하나가 아니라 ‘문을 닫았다’는 사건 전체를 받습니다.",
+    },
+  ],
+
+  "concept:korean-main-sentence": [
+    {
+      id: "korean-main-sentence-x1",
+      prompt: "① 규칙적인 운동은 기억력에 도움이 된다. ② 실제로 매일 걷는 학생의 시험 점수가 더 높았다는 조사가 있다. ③ 걷기는 특별한 장비도 필요 없다. — 중심 문장은?",
+      choices: [
+        { value: "s1", label: "①" },
+        { value: "s2", label: "②" },
+        { value: "s3", label: "③" },
+        { value: "all", label: "세 문장 모두" },
+      ],
+      answer: "s1",
+      explanation:
+        "②는 ①을 뒷받침하는 사례이고 ③은 덧붙인 설명입니다. 문단이 하고 싶은 말을 가장 압축한 문장은 ①입니다.",
+    },
+    {
+      id: "korean-main-sentence-x2",
+      prompt: "중심 문장을 찾을 때 첫 문장만 보면 안 되는 까닭은 무엇인가요?",
+      choices: [
+        { value: "last", label: "설명을 먼저 하고 마지막 문장에서 정리하는 문단도 있기 때문" },
+        { value: "long", label: "첫 문장이 대체로 가장 길기 때문" },
+        { value: "pointer", label: "첫 문장에는 지시어가 많이 나오기 때문" },
+        { value: "example", label: "문단은 반드시 예시로 시작하기 때문" },
+      ],
+      answer: "last",
+      explanation:
+        "중심 문장의 자리는 정해져 있지 않습니다. 뒷받침 문장을 먼저 늘어놓고 끝에서 결론을 말하는 문단이 흔하므로 마지막까지 확인해야 합니다.",
+    },
+  ],
+
+  "concept:korean-humanities-reading": [
+    {
+      id: "korean-humanities-reading-x1",
+      prompt: "인문 지문의 ‘자유란 남의 간섭을 받지 않는 상태를 말한다.’ 같은 문장이 하는 일은 무엇인가요?",
+      choices: [
+        { value: "boundary", label: "개념의 경계를 정해 준다" },
+        { value: "feeling", label: "글쓴이의 감정을 드러낸다" },
+        { value: "counter", label: "앞의 주장을 반박한다" },
+        { value: "case", label: "구체적인 사례를 든다" },
+      ],
+      answer: "boundary",
+      explanation:
+        "‘A란 B이다’는 정의 문장이라 그 글에서 A를 어디까지로 볼지 정해 줍니다. 이 경계를 놓치면 뒤 내용을 다르게 읽게 됩니다.",
+    },
+    {
+      id: "korean-humanities-reading-x2",
+      prompt: "두 학자의 관점이 나오는 인문 지문을 표로 정리할 때, 두 칸에 나란히 맞춰 적어야 할 항목은?",
+      choices: [
+        { value: "criteria", label: "각 관점의 기준·대상·결론" },
+        { value: "birth", label: "두 학자의 출생 연도" },
+        { value: "order", label: "두 관점이 지문에 나온 순서" },
+        { value: "length", label: "두 관점을 설명한 문단의 길이" },
+      ],
+      answer: "criteria",
+      explanation:
+        "비교는 같은 위치끼리 맞출 때 정확해집니다. 기준·대상·결론을 나란히 놓아야 두 관점이 어디서 갈라지는지 보입니다.",
+    },
+  ],
+
+  "concept:korean-social-reading": [
+    {
+      id: "korean-social-reading-x1",
+      prompt: "‘공급이 줄면 가격이 오른다. 실제로 지난여름 폭우로 채소 출하량이 줄자 값이 크게 뛰었다.’에서 뒤 문장이 하는 일은?",
+      choices: [
+        { value: "apply", label: "앞에서 제시한 원리가 실제로 적용된 장면을 보여 준다" },
+        { value: "new", label: "앞과 다른 새로운 원리를 세운다" },
+        { value: "refute", label: "앞의 원리를 반박한다" },
+        { value: "emotion", label: "글쓴이의 안타까운 심정을 드러낸다" },
+      ],
+      answer: "apply",
+      explanation:
+        "앞 문장은 원리, 뒤 문장은 그 원리가 들어맞은 사례입니다. 원리와 사례를 나누어 두면 보기 문제에서 무엇을 대조할지가 분명해집니다.",
+    },
+    {
+      id: "korean-social-reading-x2",
+      prompt: "사회 지문에서 ‘단, 다른 조건이 같을 때’ 같은 말을 반드시 표시해 두는 까닭은?",
+      choices: [
+        { value: "condition", label: "조건이 하나만 바뀌어도 사례 해석이 달라지기 때문" },
+        { value: "length", label: "그런 문장이 대체로 길어서 읽기 어렵기 때문" },
+        { value: "exam", label: "시험에 그 문장이 그대로 나오기 때문" },
+        { value: "polite", label: "글쓴이가 겸손하게 쓴 표현이기 때문" },
+      ],
+      answer: "condition",
+      explanation:
+        "원리는 조건 위에서만 성립합니다. 보기에서 조건 하나를 슬쩍 바꿔 놓으면 같은 원리라도 결론이 달라지므로 조건어를 놓치면 안 됩니다.",
+    },
+  ],
+
+  "concept:korean-science-tech-reading": [
+    {
+      id: "korean-science-tech-reading-x1",
+      prompt: "‘빛이 잎에 닿으면 엽록소가 이를 흡수하고, 흡수된 에너지가 물을 분해한다.’를 읽을 때 가장 먼저 정리할 것은?",
+      choices: [
+        { value: "steps", label: "빛 → 흡수 → 분해라는 단계의 순서" },
+        { value: "attitude", label: "글쓴이가 이 현상을 대하는 태도" },
+        { value: "origin", label: "‘엽록소’라는 말의 어원" },
+        { value: "rhythm", label: "문장의 길이와 리듬" },
+      ],
+      answer: "steps",
+      explanation:
+        "과정 설명은 순서가 뼈대입니다. 화살표로 단계만 이어 두면 용어가 낯설어도 문제에서 어느 단계를 묻는지 바로 찾을 수 있습니다.",
+    },
+    {
+      id: "korean-science-tech-reading-x2",
+      prompt: "실험 지문에 ‘온도를 5도씩 높였더니 반응 속도가 빨라졌다’라고 나왔습니다. 변수와 결과를 바르게 나눈 것은?",
+      choices: [
+        { value: "temp-speed", label: "변수는 온도, 결과는 반응 속도" },
+        { value: "speed-temp", label: "변수는 반응 속도, 결과는 온도" },
+        { value: "both-var", label: "온도와 반응 속도가 모두 변수" },
+        { value: "both-res", label: "온도와 반응 속도가 모두 결과" },
+      ],
+      answer: "temp-speed",
+      explanation:
+        "실험하는 사람이 일부러 바꾼 것이 변수, 그에 따라 달라진 것이 결과입니다. 여기서는 온도를 직접 높였고 반응 속도가 따라 달라졌습니다.",
+    },
+  ],
+
+  "concept:korean-integrated-reading": [
+    {
+      id: "korean-integrated-reading-x1",
+      prompt: "(가)와 (나)를 비교할 때 짝을 맞춰 놓아야 하는 것은 무엇인가요?",
+      choices: [
+        { value: "same-slot", label: "(가)의 결론과 (나)의 결론처럼 같은 위치끼리" },
+        { value: "mixed", label: "(가)의 결론과 (나)의 사례" },
+        { value: "edges", label: "(가)의 첫 문장과 (나)의 마지막 문장" },
+        { value: "length", label: "(가)의 길이와 (나)의 길이" },
+      ],
+      answer: "same-slot",
+      explanation:
+        "비교는 대상·관점·근거·결론처럼 같은 항목끼리 맞출 때만 뜻이 있습니다. 결론과 사례를 견주면 어긋난 비교가 됩니다.",
+    },
+    {
+      id: "korean-integrated-reading-x2",
+      prompt: "(가)에만 나온 내용을 근거로 (나)의 주장을 설명한 선택지가 있습니다. 어떻게 판단해야 하나요?",
+      choices: [
+        { value: "mixed", label: "두 지문의 정보가 섞였으므로 적절하지 않다" },
+        { value: "integrated", label: "두 지문을 잘 통합했으므로 적절하다" },
+        { value: "exists", label: "(가)에 실제로 있는 내용이므로 적절하다" },
+        { value: "unknown", label: "근거가 어느 지문에 있든 판단할 수 없다" },
+      ],
+      answer: "mixed",
+      explanation:
+        "통합 지문 문제는 어느 지문이 무엇을 말했는지를 구별하는지 봅니다. (나)가 말하지 않은 근거를 (나)의 것으로 쓰면 틀린 선택지입니다.",
+    },
+  ],
+
+  // ── 국어 개념 · 문학 ───────────────────────────────────────
+  "concept:korean-modern-poetry": [
+    {
+      id: "korean-modern-poetry-x1",
+      prompt: "‘창틀에 먼지가 뽀얗게 앉아 있다’는 무엇에 해당하나요?",
+      choices: [
+        { value: "image", label: "눈앞에 장면이 그려지는 이미지" },
+        { value: "emotion", label: "화자의 정서를 직접 말한 부분" },
+        { value: "theme", label: "시의 주제를 요약한 문장" },
+        { value: "speaker", label: "화자가 누구인지 밝힌 부분" },
+      ],
+      answer: "image",
+      explanation:
+        "‘뽀얗게 앉은 먼지’는 눈으로 보는 장면을 떠올리게 하는 이미지입니다. 정서는 이 장면을 근거로 삼아 따로 적어야 합니다.",
+    },
+    {
+      id: "korean-modern-poetry-x2",
+      prompt: "시어 하나의 뜻이 끝내 잡히지 않을 때 가장 안전한 방법은 무엇인가요?",
+      choices: [
+        { value: "whole", label: "반복되는 장면과 분위기를 묶어 전체 흐름으로 판단한다" },
+        { value: "dict", label: "그 시어의 사전 뜻을 그대로 넣어 해석한다" },
+        { value: "skip", label: "그 행을 빼고 나머지만 읽는다" },
+        { value: "author", label: "작가의 생애에서 답을 찾는다" },
+      ],
+      answer: "whole",
+      explanation:
+        "시는 낱말 하나로 결정되지 않습니다. 반복되는 장면과 분위기를 모으면 그 시어가 어느 쪽 정서에 놓였는지 드러납니다.",
+    },
+  ],
+
+  "concept:korean-modern-fiction": [
+    {
+      id: "korean-modern-fiction-x1",
+      prompt: "소설을 읽다가 ‘그로부터 삼 년 전, 그는 고향을 떠났다’라는 문장을 만났습니다. 타임라인에 어떻게 적어야 하나요?",
+      choices: [
+        { value: "before", label: "지금 장면보다 앞선 일이므로 앞쪽에 적는다" },
+        { value: "after", label: "지금 장면 다음에 일어난 일로 적는다" },
+        { value: "as-written", label: "문장이 나온 순서대로 맨 뒤에 적는다" },
+        { value: "drop", label: "회상이므로 타임라인에서 뺀다" },
+      ],
+      answer: "before",
+      explanation:
+        "소설은 사건을 일어난 순서대로만 들려주지 않습니다. ‘삼 년 전’은 회상이므로 서술된 자리가 아니라 실제 시간 순서에 맞춰 앞쪽에 놓아야 합니다.",
+    },
+    {
+      id: "korean-modern-fiction-x2",
+      prompt: "인물 A가 B에게 유독 차갑게 말하는 장면의 이유를 찾을 때 가장 먼저 볼 것은?",
+      choices: [
+        { value: "relation", label: "두 인물의 관계와 그 전에 있었던 사건" },
+        { value: "style", label: "그 대사에 쓰인 표현법" },
+        { value: "setting", label: "장면의 배경 묘사" },
+        { value: "year", label: "소설이 발표된 연도" },
+      ],
+      answer: "relation",
+      explanation:
+        "인물의 행동은 관계와 앞선 사건에서 나옵니다. 관계도를 먼저 그려 두면 ‘왜 저렇게 말했는가’를 근거 있게 설명할 수 있습니다.",
+    },
+  ],
+
+  "concept:korean-classical-poetry": [
+    {
+      id: "korean-classical-poetry-x1",
+      prompt: "고전시가에 ‘달’이 거듭 나옵니다. 가장 먼저 생각해 볼 것은 무엇인가요?",
+      choices: [
+        { value: "symbol", label: "화자의 정서나 태도를 비유하는 장치일 수 있다" },
+        { value: "night", label: "작품이 밤에 지어졌다는 사실" },
+        { value: "season", label: "계절이 겨울이라는 뜻" },
+        { value: "science", label: "그 시대의 천문 지식 수준" },
+      ],
+      answer: "symbol",
+      explanation:
+        "고전시가에서 자연물은 풍경 그 자체보다 화자의 마음을 담아내는 매개로 자주 쓰입니다. 달이 어떤 상황에서 나오는지 함께 보면 정서가 잡힙니다.",
+    },
+    {
+      id: "korean-classical-poetry-x2",
+      prompt: "‘님 그린 뜻이 갈수록 깊어라’를 현대어로 옮기면?",
+      choices: [
+        { value: "longing", label: "임을 그리워하는 마음이 갈수록 깊어진다" },
+        { value: "drawing", label: "임을 그린 그림이 깊숙이 걸려 있다" },
+        { value: "message", label: "임에게 내 뜻을 전하려 한다" },
+        { value: "road", label: "임이 떠난 길이 갈수록 깊어진다" },
+      ],
+      answer: "longing",
+      explanation:
+        "여기서 ‘그리다’는 그림을 그린다는 뜻이 아니라 그리워한다는 뜻입니다. 상황과 화자의 바람을 현대어로 바꿔 놓으면 낯선 표현이 훨씬 덜 부담스럽습니다.",
+    },
+  ],
+
+  "concept:korean-classical-fiction": [
+    {
+      id: "korean-classical-fiction-x1",
+      prompt: "고전소설에서 주인공이 시련을 겪고, 도와주는 인물을 만나고, 문제를 해결하는 흐름이 자주 보입니다. 이를 어떻게 활용하면 좋을까요?",
+      choices: [
+        { value: "pattern", label: "반복되는 사건 구조로 보고 다음 전개를 예상하며 읽는다" },
+        { value: "same-author", label: "작가가 모두 같은 사람이라는 근거로 삼는다" },
+        { value: "chance", label: "우연이므로 특별히 신경 쓰지 않는다" },
+        { value: "short", label: "원문이 짧다는 뜻으로 받아들인다" },
+      ],
+      answer: "pattern",
+      explanation:
+        "고전소설은 시련·조력·해결 같은 구조가 되풀이됩니다. 이 전형을 알고 있으면 낯선 작품도 어느 단계인지 짚으며 빠르게 읽을 수 있습니다.",
+    },
+    {
+      id: "korean-classical-fiction-x2",
+      prompt: "고전소설에서 어떤 인물이 긍정적으로 그려졌는지 판단하려면 무엇을 함께 봐야 하나요?",
+      choices: [
+        { value: "both", label: "서술자의 설명과 인물의 실제 행동을 함께 본다" },
+        { value: "name", label: "인물 이름의 뜻만 본다" },
+        { value: "count", label: "인물이 등장한 횟수만 센다" },
+        { value: "line-length", label: "인물의 대사 길이만 잰다" },
+      ],
+      answer: "both",
+      explanation:
+        "고전소설은 서술자가 인물을 대놓고 평하기도 하고, 행동으로 보여 주기도 합니다. 둘을 같이 봐야 작품이 어떤 가치를 옳다고 보는지 읽힙니다.",
+    },
+  ],
+
+  "concept:korean-drama-essay": [
+    {
+      id: "korean-drama-essay-x1",
+      prompt: "희곡에서 인물들의 갈등이 가장 잘 드러나는 곳은 어디인가요?",
+      choices: [
+        { value: "clash", label: "서로 맞부딪치는 대사와 그때의 장면 지시" },
+        { value: "cast", label: "맨 앞의 등장인물 목록" },
+        { value: "acts", label: "막과 장의 개수" },
+        { value: "theater", label: "작품이 공연된 극장 이름" },
+      ],
+      answer: "clash",
+      explanation:
+        "극에는 서술자의 설명이 없어서 인물의 말과 행동이 갈등을 직접 보여 줍니다. 대사와 함께 붙은 지시문이 그때의 태도까지 알려 줍니다.",
+    },
+    {
+      id: "korean-drama-essay-x2",
+      prompt: "수필에서 ‘그날 이후 나는 서두르지 않기로 했다’ 같은 문장이 중요한 까닭은?",
+      choices: [
+        { value: "attitude", label: "경험을 바라보는 글쓴이의 태도와 변화가 드러나기 때문" },
+        { value: "time", label: "사건이 일어난 시간 순서를 알려 주기 때문" },
+        { value: "conflict", label: "등장인물 사이의 갈등을 보여 주기 때문" },
+        { value: "stage", label: "무대 지시문에 해당하기 때문" },
+      ],
+      answer: "attitude",
+      explanation:
+        "수필의 중심은 사건 자체가 아니라 그 경험에서 글쓴이가 무엇을 얻었는가입니다. 태도가 달라지는 문장이 곧 글의 핵심입니다.",
+    },
+  ],
+
+  // ── 국어 개념 · 문법 ───────────────────────────────────────
+  "concept:korean-phonology": [
+    {
+      id: "korean-phonology-x1",
+      prompt: "‘물’과 ‘불’의 뜻이 달라지는 까닭은 무엇인가요?",
+      choices: [
+        { value: "phoneme", label: "첫소리 ㅁ과 ㅂ이 뜻을 구별하는 음운이기 때문" },
+        { value: "shape", label: "글자의 생김새가 다르기 때문" },
+        { value: "syllable", label: "음절 수가 서로 다르기 때문" },
+        { value: "pos", label: "두 단어의 품사가 다르기 때문" },
+      ],
+      answer: "phoneme",
+      explanation:
+        "두 낱말은 첫소리 하나만 다른데 뜻이 완전히 갈립니다. 이렇게 뜻을 가르는 가장 작은 소리 단위가 음운입니다.",
+    },
+    {
+      id: "korean-phonology-x2",
+      prompt: "‘신라’를 소리 내어 읽으면 [실라]가 됩니다. 여기서 확인해야 할 것은 무엇인가요?",
+      choices: [
+        { value: "sound-change", label: "적는 글자와 달리 실제 소리가 이어지며 바뀌었다는 점" },
+        { value: "wrong", label: "‘신라’라는 표기가 맞춤법에 어긋난다는 점" },
+        { value: "meaning", label: "발음이 바뀌면서 뜻도 달라졌다는 점" },
+        { value: "morpheme", label: "형태소가 하나 늘어났다는 점" },
+      ],
+      answer: "sound-change",
+      explanation:
+        "발음 변화는 소리가 편하게 이어지려고 일어나는 일이라 표기와 어긋날 수 있습니다. 표기는 그대로 ‘신라’이고 뜻도 바뀌지 않습니다.",
+    },
+  ],
+
+  "concept:korean-morpheme": [
+    {
+      id: "korean-morpheme-x1",
+      prompt: "형태소를 가장 정확하게 설명한 것은 무엇인가요?",
+      choices: [
+        { value: "morpheme", label: "뜻이나 문법 기능을 가진 가장 작은 단위" },
+        { value: "phoneme", label: "뜻을 구별하는 가장 작은 소리" },
+        { value: "syllable", label: "한 번에 소리 나는 덩어리" },
+        { value: "word", label: "혼자 쓸 수 있는 가장 작은 단위" },
+      ],
+      answer: "morpheme",
+      explanation:
+        "형태소의 기준은 소리가 아니라 뜻과 기능입니다. 소리 기준은 음운·음절이고, 혼자 쓸 수 있느냐는 단어의 기준입니다.",
+    },
+    {
+      id: "korean-morpheme-x2",
+      prompt: "다음 중 형태소를 둘 이상으로 나눌 수 있는 말은 무엇인가요?",
+      choices: [
+        { value: "high", label: "높였다" },
+        { value: "sea", label: "바다" },
+        { value: "cloud", label: "구름" },
+        { value: "stone", label: "돌" },
+      ],
+      answer: "high",
+      explanation:
+        "‘높였다’는 뜻 조각 ‘높-’에 문법 조각들이 붙은 말이라 더 나눌 수 있습니다. ‘바다·구름·돌’은 쪼개는 순간 뜻이 사라집니다.",
+    },
+  ],
+
+  "concept:korean-parts-of-speech": [
+    {
+      id: "korean-parts-of-speech-x1",
+      prompt: "‘예쁜 꽃이 활짝 피었다’에서 ‘활짝’의 품사는 무엇인가요?",
+      choices: [
+        { value: "adverb", label: "부사" },
+        { value: "adjective", label: "형용사" },
+        { value: "noun", label: "명사" },
+        { value: "verb", label: "동사" },
+      ],
+      answer: "adverb",
+      explanation:
+        "‘활짝’은 ‘피었다’라는 움직임이 어떻게 일어났는지를 꾸며 줍니다. 이렇게 용언을 꾸미는 말이 부사입니다.",
+    },
+    {
+      id: "korean-parts-of-speech-x2",
+      prompt: "‘민수가 빠르게 달린다’에서 ‘달린다’의 품사는 무엇인가요?",
+      choices: [
+        { value: "verb", label: "동사" },
+        { value: "adjective", label: "형용사" },
+        { value: "noun", label: "명사" },
+        { value: "adverb", label: "부사" },
+      ],
+      answer: "verb",
+      explanation:
+        "움직임을 나타내면 동사, 성질이나 상태를 나타내면 형용사입니다. ‘달린다’는 하는 동작이므로 동사입니다.",
+    },
+  ],
+
+  "concept:korean-sentence": [
+    {
+      id: "korean-sentence-x1",
+      prompt: "‘동생이 새 신발을 신었다’에서 목적어는 무엇인가요?",
+      choices: [
+        { value: "object", label: "신발을" },
+        { value: "subject", label: "동생이" },
+        { value: "modifier", label: "새" },
+        { value: "predicate", label: "신었다" },
+      ],
+      answer: "object",
+      explanation:
+        "서술어 ‘신었다’에 ‘무엇을?’이라고 물으면 ‘신발을’이 나옵니다. ‘새’는 신발을 꾸미는 관형어라 목적어에 들어가지 않습니다.",
+    },
+    {
+      id: "korean-sentence-x2",
+      prompt: "‘내가 하고 싶은 말은 약속을 꼭 지켜야 한다.’가 어색한 까닭은 무엇인가요?",
+      choices: [
+        { value: "agreement", label: "주어 ‘말은’과 서술어가 짝을 이루지 못했다" },
+        { value: "no-object", label: "목적어가 빠져 있다" },
+        { value: "long-modifier", label: "관형어가 너무 길다" },
+        { value: "no-adverb", label: "부사어가 빠져 있다" },
+      ],
+      answer: "agreement",
+      explanation:
+        "주어가 ‘말은’이면 서술어도 ‘~것이다’처럼 받아야 합니다. ‘지켜야 한다’는 사람이 주어일 때 쓰는 말이라 호응이 어긋났습니다.",
+    },
+  ],
+
+  "concept:korean-norms": [
+    {
+      id: "korean-norms-x1",
+      prompt: "다음 중 표기가 바른 것은 무엇인가요?",
+      choices: [
+        { value: "wen", label: "웬일이야" },
+        { value: "waen", label: "왠일이야" },
+        { value: "wen-space", label: "웬 일이야" },
+        { value: "waen-space", label: "왠 일이야" },
+      ],
+      answer: "wen",
+      explanation:
+        "‘어찌 된’이라는 뜻일 때는 ‘웬’을 쓰고, ‘왠’은 ‘왠지’에서만 씁니다. ‘웬일’은 한 단어라 붙여 적습니다.",
+    },
+    {
+      id: "korean-norms-x2",
+      prompt: "‘꽃이’를 [꼬치]로 읽으면서도 ‘꼬치’라고 적지 않는 까닭은 무엇인가요?",
+      choices: [
+        { value: "form", label: "소리 나는 대로가 아니라 원래 형태를 밝혀 적기 때문" },
+        { value: "old", label: "옛날 사람들이 그렇게 읽었기 때문" },
+        { value: "count", label: "글자 수를 맞추기 위해서" },
+        { value: "space", label: "띄어쓰기를 쉽게 하기 위해서" },
+      ],
+      answer: "form",
+      explanation:
+        "맞춤법은 뜻을 알아보기 쉽도록 기본 형태 ‘꽃’을 살려 적습니다. 그래서 ‘꽃’, ‘꽃이’, ‘꽃밭’이 발음은 달라도 표기는 한 형태로 이어집니다.",
+    },
+  ],
+
+  // ── 국어 개념 · 화법·작문·매체와 마무리 ──────────────────────
+  "concept:korean-speech": [
+    {
+      id: "korean-speech-x1",
+      prompt: "‘이 부분은 조금 더 설명해 주실 수 있을까요?’의 발화 의도로 알맞은 것은?",
+      choices: [
+        { value: "request", label: "요청 — 추가 설명을 부탁한다" },
+        { value: "refute", label: "반박 — 앞말이 틀렸다고 지적한다" },
+        { value: "persuade", label: "설득 — 상대의 생각을 바꾸려 한다" },
+        { value: "praise", label: "칭찬 — 설명이 좋았다고 평가한다" },
+      ],
+      answer: "request",
+      explanation:
+        "‘~해 주실 수 있을까요?’는 질문 모양이지만 실제로는 부탁입니다. 화법은 문장의 형태보다 그 말로 무엇을 하려는지를 봅니다.",
+    },
+    {
+      id: "korean-speech-x2",
+      prompt: "‘내일 발표 자료를 미리 보내 주실 수 있나요?’에 대한 반응으로 가장 적절한 것은?",
+      choices: [
+        { value: "answer", label: "보낼 수 있는지와 언제 보낼지를 답한다" },
+        { value: "topic", label: "발표 주제가 흥미롭다고 말한다" },
+        { value: "font", label: "자료의 글꼴이 마음에 들지 않는다고 말한다" },
+        { value: "story", label: "자신의 지난 발표 경험을 길게 이야기한다" },
+      ],
+      answer: "answer",
+      explanation:
+        "적절한 반응은 앞말의 의도와 조건을 그대로 이어받아야 합니다. 여기서 의도는 요청이고 조건은 ‘내일’과 ‘미리’이므로 가능 여부와 시점을 답해야 합니다.",
+    },
+  ],
+
+  "concept:korean-writing": [
+    {
+      id: "korean-writing-x1",
+      prompt: "같은 주제로 글을 써도 독자가 ‘같은 학교 학생’일 때와 ‘학교 밖 어른’일 때 달라지는 것은?",
+      choices: [
+        { value: "content", label: "어떤 내용을 고르고 어디까지 설명할지" },
+        { value: "topic", label: "글의 주제 자체" },
+        { value: "name", label: "글쓴이의 이름" },
+        { value: "rules", label: "적용되는 맞춤법 규칙" },
+      ],
+      answer: "content",
+      explanation:
+        "독자가 이미 아는 것이 다르면 설명할 범위와 예시가 달라집니다. 주제나 맞춤법은 독자에 따라 바뀌지 않습니다.",
+    },
+    {
+      id: "korean-writing-x2",
+      prompt: "주장하는 글에 넣을 자료를 고르는 기준으로 가장 알맞은 것은?",
+      choices: [
+        { value: "support", label: "그 자료가 내 주장을 실제로 뒷받침하는가" },
+        { value: "many", label: "자료를 많이 넣을수록 좋다" },
+        { value: "new", label: "최신 자료면 내용과 상관없이 좋다" },
+        { value: "chart", label: "그래프 모양이면 무조건 좋다" },
+      ],
+      answer: "support",
+      explanation:
+        "자료는 개수나 모양이 아니라 주장과의 연결로 값이 정해집니다. 주장과 이어지지 않는 자료는 글의 초점을 흐립니다.",
+    },
+  ],
+
+  "concept:korean-media": [
+    {
+      id: "korean-media-x1",
+      prompt: "같은 통계를 한 자료는 큰 빨간 글씨로 맨 위에, 다른 자료는 표 구석에 작게 넣었습니다. 달라지는 것은?",
+      choices: [
+        { value: "emphasis", label: "독자가 받는 강조와 인상" },
+        { value: "value", label: "통계 값 자체" },
+        { value: "source", label: "자료의 출처" },
+        { value: "method", label: "조사한 방법" },
+      ],
+      answer: "emphasis",
+      explanation:
+        "매체는 같은 정보라도 어디에 어떻게 놓느냐로 의미를 만듭니다. 숫자는 그대로지만 무엇이 중요해 보이는지가 바뀝니다.",
+    },
+    {
+      id: "korean-media-x2",
+      prompt: "매체 자료의 신뢰도를 판단할 때 함께 봐야 할 세 가지로 알맞은 것은?",
+      choices: [
+        { value: "core", label: "출처, 목적, 편집 방식" },
+        { value: "look", label: "글자 크기, 색, 배경 음악" },
+        { value: "popular", label: "조회수, 좋아요 수, 댓글 수" },
+        { value: "amount", label: "사진 개수, 표 개수, 영상 길이" },
+      ],
+      answer: "core",
+      explanation:
+        "누가 만들었고 무엇을 노렸으며 어떻게 잘라 붙였는지가 신뢰도를 정합니다. 보기 좋은 정도나 인기는 내용이 맞다는 증거가 아닙니다.",
+    },
+  ],
+
+  "concept:korean-problem-application": [
+    {
+      id: "korean-problem-application-x1",
+      prompt: "‘윗글의 서술상 특징으로 적절한 것은?’이라는 문항은 무엇을 묻고 있나요?",
+      choices: [
+        { value: "how", label: "글이 내용을 서술한 방식" },
+        { value: "claim", label: "글쓴이의 주장" },
+        { value: "word", label: "낯선 용어의 뜻" },
+        { value: "order", label: "사건이 일어난 순서" },
+      ],
+      answer: "how",
+      explanation:
+        "‘서술상 특징’은 무엇을 말했는가가 아니라 어떻게 말했는가를 묻습니다. 문항이 요구하는 기능을 먼저 분류하면 지문에서 볼 곳이 달라집니다.",
+    },
+    {
+      id: "korean-problem-application-x2",
+      prompt: "틀린 문제를 다시 볼 때 효과가 가장 큰 일은 무엇인가요?",
+      choices: [
+        { value: "evidence", label: "어떤 근거를 잘못 보고 골랐는지 찾기" },
+        { value: "number", label: "정답 번호만 다시 외우기" },
+        { value: "dict", label: "모르는 단어를 전부 사전에서 찾기" },
+        { value: "again", label: "같은 문제를 그냥 한 번 더 풀기" },
+      ],
+      answer: "evidence",
+      explanation:
+        "국어 오답은 몰라서보다 근거를 잘못 짚어서 생기는 경우가 많습니다. 어디를 잘못 봤는지 한 줄로 적어 두면 같은 실수가 줄어듭니다.",
+    },
+  ],
+
+  "concept:korean-ebs-linkage": [
+    {
+      id: "korean-ebs-linkage-x1",
+      prompt: "EBS 강의를 켜기 전에 하면 가장 좋은 일은 무엇인가요?",
+      choices: [
+        { value: "structure", label: "지문을 먼저 읽고 구조를 표시해 두기" },
+        { value: "answer", label: "해설을 먼저 보고 정답을 외워 두기" },
+        { value: "copy", label: "강의 필기를 미리 옮겨 적어 두기" },
+        { value: "title", label: "작품 제목만 외워 두기" },
+      ],
+      answer: "structure",
+      explanation:
+        "내가 먼저 표시해 둔 구조가 있어야 강의에서 무엇이 새 정보인지 알 수 있습니다. 아무 표시 없이 들으면 강의가 지나간 뒤 남는 것이 없습니다.",
+    },
+    {
+      id: "korean-ebs-linkage-x2",
+      prompt: "연계 지문을 공부한 뒤 남겨야 할 것으로 가장 알맞은 것은?",
+      choices: [
+        { value: "process", label: "그 지문에 적용한 읽기 절차와 글의 구조" },
+        { value: "titles", label: "공부한 작품과 지문의 제목 목록" },
+        { value: "answers", label: "문항별 정답 번호와 배점" },
+        { value: "notes", label: "강의 필기를 예쁘게 옮긴 노트" },
+      ],
+      answer: "process",
+      explanation:
+        "수능에는 같은 지문이 그대로 나오지 않습니다. 남겨야 할 것은 제목이나 답이 아니라 다음 지문에도 쓸 수 있는 읽는 절차입니다.",
+    },
+  ],
+};
