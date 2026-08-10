@@ -1268,4 +1268,185 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
         "글자 이름은 그 글자를 부르는 말이고, 단어 안에서 나는 소리는 따로 익혀야 합니다. 같은 C라도 city에서는 /s/로 소리 납니다.",
     },
   ],
+
+  "concept:english-vocab-chunks": [
+    {
+      id: "english-vocab-chunks-x1",
+      prompt: "‘사진을 찍다’를 영어 청크로 옮긴 것으로 알맞은 것은?",
+      choices: [
+        { value: "take", label: "take a photo" },
+        { value: "make", label: "make a photo" },
+        { value: "do", label: "do a photo" },
+        { value: "bring", label: "bring a photo" },
+      ],
+      answer: "take",
+      explanation:
+        "photo는 take와 짝을 이루어 다니는 말입니다. 한국어 ‘찍다’를 사전에서 하나씩 옮기면 문법은 맞아 보여도 영어에서 쓰지 않는 조합이 됩니다.",
+    },
+    {
+      id: "english-vocab-chunks-x2",
+      prompt: "영어에서는 ‘make friends’라고 쓰고 ‘do friends’라고는 쓰지 않습니다. 이 사실이 알려 주는 것은?",
+      choices: [
+        { value: "pair", label: "단어는 같이 붙어 다니는 짝까지 함께 익혀야 한다" },
+        { value: "do", label: "동사 do는 영어에서 거의 쓰이지 않는다" },
+        { value: "only", label: "friends는 어떤 문장에서도 make하고만 쓰인다" },
+        { value: "grammar", label: "문법 규칙만 알면 어떤 동사든 넣어 쓸 수 있다" },
+      ],
+      answer: "pair",
+      explanation:
+        "뜻이 비슷한 동사라도 명사마다 함께 쓰는 짝이 정해져 있습니다. 그래서 단어를 낱개로 외우는 대신 짧은 덩어리로 묶어 두어야 실제 문장에서 꺼내 쓸 수 있습니다.",
+    },
+  ],
+
+  // ── 영어 개념 · 듣기 ────────────────────────────────────────
+  "concept:english-listening-purpose-relation": [
+    {
+      id: "english-listening-purpose-relation-x1",
+      prompt:
+        "대화입니다. M: Hello, I ordered a jacket last week, but the size is too small. Can I change it? / W: Sure. May I have your order number? — 남자가 전화한 목적은?",
+      choices: [
+        { value: "exchange", label: "산 옷을 다른 크기로 바꾸려고" },
+        { value: "order", label: "새 옷을 주문하려고" },
+        { value: "delay", label: "배송이 늦어 항의하려고" },
+        { value: "location", label: "가게 위치를 물어보려고" },
+      ],
+      answer: "exchange",
+      explanation:
+        "too small과 Can I change it?이 목적을 그대로 말해 줍니다. ordered라는 말이 나오지만 새로 주문하려는 것이 아니라 이미 산 물건을 바꾸려는 것입니다.",
+    },
+    {
+      id: "english-listening-purpose-relation-x2",
+      prompt:
+        "대화입니다. W: Your homework was late again. Please bring it tomorrow. / M: I am sorry, Ms. Kim. I will. — 두 사람의 관계는?",
+      choices: [
+        { value: "teacher", label: "선생님과 학생" },
+        { value: "doctor", label: "의사와 환자" },
+        { value: "clerk", label: "점원과 손님" },
+        { value: "coach", label: "감독과 선수" },
+      ],
+      answer: "teacher",
+      explanation:
+        "homework라는 해야 할 일과 Ms. Kim이라는 호칭이 함께 관계를 가리킵니다. 관계는 낱말 하나가 아니라 호칭·장소·할 일 단서를 모아서 정합니다.",
+    },
+  ],
+
+  "concept:english-listening-number-detail": [
+    {
+      id: "english-listening-number-detail-x1",
+      prompt:
+        "대화입니다. W: How much is this cap? / M: It is twenty dollars, but today everything is five dollars off. / W: Then I will take one. — 여자가 낼 돈은?",
+      choices: [
+        { value: "15", label: "15달러" },
+        { value: "20", label: "20달러" },
+        { value: "5", label: "5달러" },
+        { value: "25", label: "25달러" },
+      ],
+      answer: "15",
+      explanation:
+        "처음 들린 twenty에서 멈추면 안 되고 five dollars off라는 조건까지 반영해야 합니다. 숫자 문제는 마지막으로 확정된 값을 적는 것이 원칙입니다.",
+    },
+    {
+      id: "english-listening-number-detail-x2",
+      prompt: "선택지가 3:00, 3:30, 4:00, 4:30이라면 듣기 전에 무엇을 정해 두어야 하나요?",
+      choices: [
+        { value: "time", label: "시각을 묻는 문항이므로 시간 표현과 시간을 바꾸는 말을 기다린다" },
+        { value: "price", label: "가격 표현이 나올 때마다 받아 적는다" },
+        { value: "people", label: "등장하는 사람 수를 세며 듣는다" },
+        { value: "place", label: "장소 이름이 나오기를 기다린다" },
+      ],
+      answer: "time",
+      explanation:
+        "선택지가 모두 시각이므로 이 문항이 묻는 축은 시간입니다. 무엇을 기다릴지 먼저 정해 두면 다른 숫자가 섞여 나와도 흔들리지 않습니다.",
+    },
+  ],
+
+  "concept:english-listening-inference": [
+    {
+      id: "english-listening-inference-x1",
+      prompt:
+        "대화입니다. M: Do you want to go hiking tomorrow? / W: Well, the weather report says it will rain all day. — 여자의 말이 뜻하는 것은?",
+      choices: [
+        { value: "refuse", label: "등산은 어렵겠다는 완곡한 거절" },
+        { value: "like-rain", label: "비 오는 날 등산을 더 좋아한다는 뜻" },
+        { value: "ask", label: "날씨를 대신 알아봐 달라는 부탁" },
+        { value: "forget", label: "내일 약속을 잊고 있었다는 뜻" },
+      ],
+      answer: "refuse",
+      explanation:
+        "여자는 거절한다고 직접 말하지 않고 비가 온다는 사실만 말합니다. 들은 근거인 rain all day와 등산이라는 상황을 합치면 거절로 읽히는 것이 자연스럽습니다.",
+    },
+    {
+      id: "english-listening-inference-x2",
+      prompt: "남자가 대화에서 ‘I have to study tonight.’이라고만 말했습니다. 들은 근거 안에서 할 수 있는 판단은?",
+      choices: [
+        { value: "busy", label: "오늘 밤에는 다른 일을 하기 어렵다" },
+        { value: "score", label: "남자는 시험에서 좋은 점수를 받을 것이다" },
+        { value: "hate", label: "남자는 공부를 싫어한다" },
+        { value: "tomorrow", label: "남자는 내일도 공부할 것이다" },
+      ],
+      answer: "busy",
+      explanation:
+        "이 문장이 보장하는 범위는 오늘 밤 해야 할 일까지입니다. 성적이나 감정, 내일 계획은 듣지 않은 내용을 덧붙인 추측이라 근거를 넘어섭니다.",
+    },
+  ],
+
+  "concept:english-listening-long-dialogue": [
+    {
+      id: "english-listening-long-dialogue-x1",
+      prompt:
+        "대화입니다. W: Let us plan the school festival. First, we should decide the date. / M: How about May 10? Then we can book the hall. / W: Good. After that, we will tell the club leaders. — 두 사람이 할 일의 순서는?",
+      choices: [
+        { value: "date-hall-club", label: "날짜 정하기 → 강당 예약 → 동아리 대표에게 알리기" },
+        { value: "hall-date-club", label: "강당 예약 → 날짜 정하기 → 동아리 대표에게 알리기" },
+        { value: "club-date-hall", label: "동아리 대표에게 알리기 → 날짜 정하기 → 강당 예약" },
+        { value: "date-club-hall", label: "날짜 정하기 → 동아리 대표에게 알리기 → 강당 예약" },
+      ],
+      answer: "date-hall-club",
+      explanation:
+        "First, Then, After that가 순서를 그대로 표시해 줍니다. 긴 대화는 문장을 다 붙잡는 대신 이런 순서 신호와 키워드만 남겨도 흐름이 유지됩니다.",
+    },
+    {
+      id: "english-listening-long-dialogue-x2",
+      prompt: "긴 대화를 듣다가 가운데 두 문장을 놓쳤습니다. 어떻게 해야 하나요?",
+      choices: [
+        { value: "recover", label: "놓친 부분은 두고 이어지는 말에서 주제와 할 일을 다시 잡는다" },
+        { value: "stop", label: "놓친 부분을 떠올릴 때까지 잠시 멈춘다" },
+        { value: "guess", label: "남은 부분은 듣지 않고 답을 찍는다" },
+        { value: "rewrite", label: "처음부터 다시 떠올리며 문장을 받아쓴다" },
+      ],
+      answer: "recover",
+      explanation:
+        "놓친 곳에 매달리는 동안 뒤에 나오는 문장까지 함께 놓치게 됩니다. 대화의 주제와 마지막 할 일만 다시 이어 붙이면 대부분 회복할 수 있습니다.",
+    },
+  ],
+
+  // ── 영어 개념 · 문장 문법 ───────────────────────────────────
+  "concept:english-parts-of-speech": [
+    {
+      id: "english-parts-of-speech-x1",
+      prompt: "‘This is a fast car.’와 ‘The student runs fast.’에서 fast의 품사는 각각 무엇인가요?",
+      choices: [
+        { value: "adj-adv", label: "앞은 형용사, 뒤는 부사" },
+        { value: "adv-adj", label: "앞은 부사, 뒤는 형용사" },
+        { value: "both-adj", label: "둘 다 형용사" },
+        { value: "both-adv", label: "둘 다 부사" },
+      ],
+      answer: "adj-adv",
+      explanation:
+        "앞 문장의 fast는 명사 car를 꾸미고, 뒤 문장의 fast는 동사 runs를 꾸밉니다. 같은 단어라도 품사는 자리와 무엇을 꾸미는지로 정해집니다.",
+    },
+    {
+      id: "english-parts-of-speech-x2",
+      prompt: "‘The very old tree fell down.’에서 very가 꾸미는 말은 무엇인가요?",
+      choices: [
+        { value: "old", label: "old" },
+        { value: "tree", label: "tree" },
+        { value: "fell", label: "fell" },
+        { value: "down", label: "down" },
+      ],
+      answer: "old",
+      explanation:
+        "very는 바로 뒤 형용사 old의 정도를 키워 줍니다. 부사는 동사만 꾸미는 것이 아니라 형용사와 다른 부사도 꾸밀 수 있습니다.",
+    },
+  ],
 };
