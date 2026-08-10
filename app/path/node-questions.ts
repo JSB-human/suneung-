@@ -1449,4 +1449,181 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
         "very는 바로 뒤 형용사 old의 정도를 키워 줍니다. 부사는 동사만 꾸미는 것이 아니라 형용사와 다른 부사도 꾸밀 수 있습니다.",
     },
   ],
+
+  "concept:english-svo": [
+    {
+      id: "english-svo-x1",
+      prompt: "‘The children in the park played soccer.’에서 수식어를 걷어 낸 뼈대는 무엇인가요?",
+      choices: [
+        { value: "children-played", label: "The children played soccer" },
+        { value: "park-played", label: "The park played soccer" },
+        { value: "children-park", label: "The children in the park" },
+        { value: "played-park", label: "played soccer in the park" },
+      ],
+      answer: "children-played",
+      explanation:
+        "in the park는 아이들이 어디에 있는지를 더해 주는 덩어리라 걷어 낼 수 있습니다. 남는 누가-한다-무엇을이 이 문장의 뼈대입니다.",
+    },
+    {
+      id: "english-svo-x2",
+      prompt: "‘My sister sings beautifully.’에 목적어(O)가 있나요?",
+      choices: [
+        { value: "no", label: "없다 — beautifully는 어떻게 노래하는지를 꾸미는 말이다" },
+        { value: "yes-adv", label: "있다 — beautifully가 목적어다" },
+        { value: "yes-subj", label: "있다 — My sister가 목적어다" },
+        { value: "unknown", label: "동사만 보고는 알 수 없다" },
+      ],
+      answer: "no",
+      explanation:
+        "목적어는 동작을 받는 대상이 되는 명사 자리입니다. beautifully는 노래하는 방식을 꾸미는 부사라 목적어가 될 수 없고, 이 문장은 S+V로 끝납니다.",
+    },
+  ],
+
+  "concept:english-tense-voice": [
+    {
+      id: "english-tense-voice-x1",
+      prompt: "‘I ____ to Busan last summer.’의 빈칸에 알맞은 것은?",
+      choices: [
+        { value: "went", label: "went" },
+        { value: "go", label: "go" },
+        { value: "will-go", label: "will go" },
+        { value: "am-going", label: "am going" },
+      ],
+      answer: "went",
+      explanation:
+        "last summer가 이미 지나간 때를 못 박아 줍니다. 시간 단서와 동사 형태는 늘 같이 봐야 하므로 과거형 went가 맞습니다.",
+    },
+    {
+      id: "english-tense-voice-x2",
+      prompt: "‘편지는 남동생이 썼다’는 뜻이 되도록 ‘The letter ____ by my brother.’를 채우면?",
+      choices: [
+        { value: "was-written", label: "was written" },
+        { value: "wrote", label: "wrote" },
+        { value: "was-writing", label: "was writing" },
+        { value: "writes", label: "writes" },
+      ],
+      answer: "was-written",
+      explanation:
+        "주어 The letter는 쓰는 쪽이 아니라 쓰이는 쪽이므로 be + p.p. 형태가 필요합니다. wrote를 넣으면 편지가 무언가를 썼다는 뜻이 되어 버립니다.",
+    },
+  ],
+
+  "concept:english-nonfinite": [
+    {
+      id: "english-nonfinite-x1",
+      prompt: "‘Swimming is good exercise.’와 ‘The swimming boy is my brother.’에서 swimming의 역할은?",
+      choices: [
+        { value: "noun-adj", label: "앞은 명사 역할(주어), 뒤는 형용사 역할(명사 꾸밈)" },
+        { value: "adj-noun", label: "앞은 형용사 역할, 뒤는 명사 역할" },
+        { value: "both-noun", label: "둘 다 명사 역할" },
+        { value: "both-verb", label: "둘 다 문장의 중심 동사" },
+      ],
+      answer: "noun-adj",
+      explanation:
+        "앞 문장에서는 is의 주어 자리를 차지하고, 뒤 문장에서는 boy 앞에서 어떤 소년인지 설명합니다. 같은 -ing라도 이름보다 문장에서 맡은 역할로 갈립니다.",
+    },
+    {
+      id: "english-nonfinite-x2",
+      prompt: "‘I have a lot of work to do.’에서 to do의 역할은 무엇인가요?",
+      choices: [
+        { value: "adjective", label: "앞의 명사 work를 꾸민다 — 해야 할 일" },
+        { value: "subject", label: "문장의 주어다" },
+        { value: "purpose", label: "일하는 목적을 말한다" },
+        { value: "main", label: "문장의 중심 동사다" },
+      ],
+      answer: "adjective",
+      explanation:
+        "to do가 바로 앞 명사 work 뒤에 붙어 어떤 일인지를 좁혀 줍니다. 중심 동사는 이미 have가 맡고 있어 to do가 그 자리를 대신할 수 없습니다.",
+    },
+  ],
+
+  "concept:english-clauses": [
+    {
+      id: "english-clauses-x1",
+      prompt: "‘The man who lives next door has a big dog.’에서 who lives next door가 꾸미는 말은?",
+      choices: [
+        { value: "man", label: "The man" },
+        { value: "door", label: "next door" },
+        { value: "dog", label: "a big dog" },
+        { value: "has", label: "has" },
+      ],
+      answer: "man",
+      explanation:
+        "관계사절은 바로 앞의 명사를 설명합니다. 이 절을 괄호로 묶으면 The man has a big dog라는 뼈대가 그대로 남습니다.",
+    },
+    {
+      id: "english-clauses-x2",
+      prompt: "‘The song that we heard yesterday was beautiful.’의 중심 동사는 무엇인가요?",
+      choices: [
+        { value: "was", label: "was" },
+        { value: "heard", label: "heard" },
+        { value: "song", label: "song" },
+        { value: "beautiful", label: "beautiful" },
+      ],
+      answer: "was",
+      explanation:
+        "heard는 that we heard yesterday라는 관계사절 안의 동사입니다. 그 절을 괄호로 묶으면 The song was beautiful이 남고, 남은 was가 문장 전체의 동사입니다.",
+    },
+  ],
+
+  // ── 영어 개념 · 구문 독해 ───────────────────────────────────
+  "concept:english-chunking": [
+    {
+      id: "english-chunking-x1",
+      prompt: "‘I saw a boy who was running in the park.’를 끊어 읽을 때 가장 알맞은 자리는?",
+      choices: [
+        { value: "before-who", label: "I saw a boy / who was running in the park." },
+        { value: "after-a", label: "I saw a / boy who was running in the park." },
+        { value: "after-who", label: "I saw a boy who / was running in the park." },
+        { value: "after-was", label: "I saw a boy who was / running in the park." },
+      ],
+      answer: "before-who",
+      explanation:
+        "who부터 앞의 boy를 설명하는 새 덩어리가 시작됩니다. 관사와 명사 사이나 주어와 동사 사이를 자르면 한 덩어리가 반으로 쪼개집니다.",
+    },
+    {
+      id: "english-chunking-x2",
+      prompt: "‘The book on the table / is mine.’처럼 끊었습니다. 이 자리를 고른 근거는 무엇인가요?",
+      choices: [
+        { value: "chunk-end", label: "on the table까지가 주어 덩어리이고 그 뒤부터 동사가 시작되기 때문" },
+        { value: "half", label: "문장을 길이가 비슷하게 반으로 나누면 읽기 쉽기 때문" },
+        { value: "count", label: "단어 다섯 개마다 끊는 것이 규칙이기 때문" },
+        { value: "prep", label: "전치사 앞에서는 언제나 끊어야 하기 때문" },
+      ],
+      answer: "chunk-end",
+      explanation:
+        "끊는 자리는 글자 수가 아니라 덩어리가 끝나는 곳으로 정합니다. 여기서는 주어 덩어리 The book on the table이 끝나고 동사 is가 시작됩니다.",
+    },
+  ],
+
+  "concept:english-connectors": [
+    {
+      id: "english-connectors-x1",
+      prompt:
+        "‘Some students study late at night. For example, my brother reads until two.’에서 For example이 하는 일은?",
+      choices: [
+        { value: "case", label: "앞 문장의 내용을 구체적인 경우로 보여 준다" },
+        { value: "turn", label: "앞 문장의 내용을 뒤집는다" },
+        { value: "result", label: "앞 문장의 결과를 말한다" },
+        { value: "new", label: "앞과 상관없는 새 주제를 시작한다" },
+      ],
+      answer: "case",
+      explanation:
+        "뒤 문장은 앞 문장이 말한 ‘늦게까지 공부하는 학생’에 들어맞는 한 사람을 듭니다. 예시는 앞의 주장을 바꾸지 않고 뒷받침만 합니다.",
+    },
+    {
+      id: "english-connectors-x2",
+      prompt:
+        "‘Buses, subways, and trains are all useful. These help many people move every day.’에서 These가 가리키는 것은?",
+      choices: [
+        { value: "vehicles", label: "버스, 지하철, 기차" },
+        { value: "people", label: "많은 사람" },
+        { value: "day", label: "매일" },
+        { value: "help", label: "도움이 되는 일" },
+      ],
+      answer: "vehicles",
+      explanation:
+        "these는 앞 문장에서 나열한 대상을 한 번에 받아 옵니다. 지시어가 나오면 앞으로 되돌아가 무엇을 묶어 받았는지 표시해 두어야 흐름이 끊기지 않습니다.",
+    },
+  ],
 };
