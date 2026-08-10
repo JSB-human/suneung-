@@ -912,4 +912,183 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
         "수능에는 같은 지문이 그대로 나오지 않습니다. 남겨야 할 것은 제목이나 답이 아니라 다음 지문에도 쓸 수 있는 읽는 절차입니다.",
     },
   ],
+
+  // ── 영어 캡슐 ──────────────────────────────────────────────
+  "capsule:en-vocabulary": [
+    {
+      id: "en-vocabulary-x1",
+      prompt: "‘decide’와 한 가족인 말로 ‘She made a ____.’의 빈칸에 알맞은 것은?",
+      choices: [
+        { value: "decision", label: "decision" },
+        { value: "decide", label: "decide" },
+        { value: "decisive", label: "decisive" },
+        { value: "decided", label: "decided" },
+      ],
+      answer: "decision",
+      explanation:
+        "관사 a 뒤이자 made의 목적어 자리이므로 명사가 와야 합니다. decide는 동사, decisive는 형용사라 이 자리에 들어갈 수 없습니다.",
+    },
+    {
+      id: "en-vocabulary-x2",
+      prompt: "‘Water the plants every day.’에서 water의 품사는 무엇인가요?",
+      choices: [
+        { value: "verb", label: "동사 — 물을 주다" },
+        { value: "noun", label: "명사 — 물" },
+        { value: "adjective", label: "형용사 — 물의" },
+        { value: "adverb", label: "부사 — 물처럼" },
+      ],
+      answer: "verb",
+      explanation:
+        "문장 맨 앞에서 the plants라는 목적어를 데리고 명령하는 자리이므로 동사입니다. 외운 첫 번째 뜻 ‘물’만 떠올리면 문장이 풀리지 않습니다.",
+    },
+  ],
+
+  "capsule:en-sv-skeleton": [
+    {
+      id: "en-sv-skeleton-x1",
+      prompt: "‘The boy standing near the door opened the window.’의 중심 동사(V)는 무엇인가요?",
+      choices: [
+        { value: "opened", label: "opened" },
+        { value: "standing", label: "standing" },
+        { value: "near", label: "near" },
+        { value: "window", label: "window" },
+      ],
+      answer: "opened",
+      explanation:
+        "시제가 표시된 동사는 opened 하나뿐입니다. standing은 시제 표시가 없는 -ing 형태라 The boy를 꾸미는 덩어리에 들어갑니다.",
+    },
+    {
+      id: "en-sv-skeleton-x2",
+      prompt: "‘My father gave me a book.’의 뼈대 구조로 알맞은 것은?",
+      choices: [
+        { value: "svoo", label: "S + V + O + O" },
+        { value: "svoc", label: "S + V + O + C" },
+        { value: "svo", label: "S + V + O" },
+        { value: "svc", label: "S + V + C" },
+      ],
+      answer: "svoo",
+      explanation:
+        "me(누구에게)와 a book(무엇을)이 각각 다른 대상이라 목적어가 둘입니다. me가 a book의 정체를 설명하는 것이 아니므로 보어(C)가 아닙니다.",
+    },
+  ],
+
+  "capsule:en-listening-preview": [
+    {
+      id: "en-listening-preview-x1",
+      prompt:
+        "그림 문제의 선택지가 ‘A boy is reading a book.’과 ‘A boy is closing a book.’처럼 나옵니다. 듣기 전에 표시해 둘 곳은?",
+      choices: [
+        { value: "verbs", label: "서로 다른 동사 reading과 closing" },
+        { value: "same", label: "두 문장에 똑같이 나오는 A boy" },
+        { value: "length", label: "두 문장의 길이 차이" },
+        { value: "article", label: "관사 a가 몇 번 나오는지" },
+      ],
+      answer: "verbs",
+      explanation:
+        "같은 부분은 어느 쪽을 골라도 맞으니 들을 필요가 없습니다. 선택지가 갈리는 지점, 곧 동사만 기다리면 들을 정보의 양이 크게 줄어듭니다.",
+    },
+    {
+      id: "en-listening-preview-x2",
+      prompt:
+        "선택지가 ‘a doctor and a patient’, ‘a teacher and a student’, ‘a waiter and a customer’처럼 나왔습니다. 무엇을 기다리며 들어야 할까요?",
+      choices: [
+        { value: "relation", label: "관계를 알려 주는 호칭·장소·해야 할 일 표현" },
+        { value: "numbers", label: "대화에 나오는 시각과 가격" },
+        { value: "tense", label: "문장에 쓰인 시제" },
+        { value: "speed", label: "말하는 사람의 속도" },
+      ],
+      answer: "relation",
+      explanation:
+        "선택지가 모두 두 사람의 관계이므로 이 문항이 묻는 축은 관계입니다. menu나 order 같은 낱말 하나가 곧바로 식당의 종업원과 손님을 가리켜 줍니다.",
+    },
+  ],
+
+  "capsule:en-listening-flow": [
+    {
+      id: "en-listening-flow-x1",
+      prompt:
+        "대화입니다. M: Let’s meet at six. / W: Actually, I have a class until six thirty. Can we make it seven? / M: Sure, seven works. — 두 사람이 만나기로 한 시각은?",
+      choices: [
+        { value: "seven", label: "7시" },
+        { value: "six", label: "6시" },
+        { value: "sixthirty", label: "6시 30분" },
+        { value: "none", label: "아직 정해지지 않았다" },
+      ],
+      answer: "seven",
+      explanation:
+        "Actually 뒤에서 처음 말한 six가 취소되고 seven이 새 제안으로 나옵니다. 마지막 Sure까지 확인해야 합의된 시각이 확정됩니다.",
+    },
+    {
+      id: "en-listening-flow-x2",
+      prompt:
+        "대화입니다. W: How about taking the bus? / M: I’d love to, but the bus doesn’t come on Sundays. Let’s take a taxi. / W: Okay. — 두 사람이 이용할 교통수단은?",
+      choices: [
+        { value: "taxi", label: "택시" },
+        { value: "bus", label: "버스" },
+        { value: "subway", label: "지하철" },
+        { value: "walk", label: "걸어서" },
+      ],
+      answer: "taxi",
+      explanation:
+        "I’d love to, but은 겉으로는 긍정이지만 실제로는 거절입니다. 거절 뒤에 나온 새 제안 a taxi를 상대가 Okay로 받아들여 최종 행동이 됩니다.",
+    },
+  ],
+
+  "capsule:en-modifiers": [
+    {
+      id: "en-modifiers-x1",
+      prompt: "‘I went to the store to buy milk.’에서 to buy는 어떤 뜻으로 읽어야 하나요?",
+      choices: [
+        { value: "purpose", label: "우유를 사기 위해 — 간 이유를 더한다" },
+        { value: "subject", label: "우유를 사는 것 — 문장의 주어다" },
+        { value: "adjective", label: "살 우유 — 앞의 명사를 꾸민다" },
+        { value: "main", label: "우유를 샀다 — 문장의 중심 동사다" },
+      ],
+      answer: "purpose",
+      explanation:
+        "문장에는 이미 중심 동사 went가 있고 주어 자리도 I가 채우고 있습니다. 남은 자리는 문장 전체를 꾸미는 부사 자리라 ‘~하기 위해’로 읽습니다.",
+    },
+    {
+      id: "en-modifiers-x2",
+      prompt: "‘She is good at ____ English.’의 빈칸에 알맞은 것은?",
+      choices: [
+        { value: "speaking", label: "speaking" },
+        { value: "to-speak", label: "to speak" },
+        { value: "speak", label: "speak" },
+        { value: "spoke", label: "spoke" },
+      ],
+      answer: "speaking",
+      explanation:
+        "at은 전치사라 뒤에 명사 자리가 옵니다. 동사를 그 자리에 넣으려면 명사 노릇을 하는 동명사 speaking으로 바꿔야 하고, to부정사는 전치사 뒤에 오지 못합니다.",
+    },
+  ],
+
+  "capsule:en-clauses": [
+    {
+      id: "en-clauses-x1",
+      prompt: "‘We stayed home ____ it was raining.’의 빈칸에 알맞은 것은?",
+      choices: [
+        { value: "because", label: "because" },
+        { value: "because-of", label: "because of" },
+        { value: "although", label: "although" },
+        { value: "so", label: "so" },
+      ],
+      answer: "because",
+      explanation:
+        "빈칸 뒤에 it was라는 주어+동사가 있으므로 절을 이끄는 because가 맞습니다. because of 뒤에는 the rain 같은 명사 덩어리만 올 수 있습니다.",
+    },
+    {
+      id: "en-clauses-x2",
+      prompt: "‘If it rains tomorrow, we will stay inside.’에서 If가 이끄는 논리는 무엇인가요?",
+      choices: [
+        { value: "condition", label: "조건 — 그런 경우라면" },
+        { value: "time", label: "시간 — 그때가 되면" },
+        { value: "reason", label: "이유 — 그렇기 때문에" },
+        { value: "contrast", label: "대조 — 그런데도" },
+      ],
+      answer: "condition",
+      explanation:
+        "비가 올지 안 올지 아직 모르는 상태에서 ‘비가 오는 경우에만’ 안에 머문다고 말합니다. when이라면 비가 온다는 사실을 전제로 그 시점을 가리키게 됩니다.",
+    },
+  ],
 };
