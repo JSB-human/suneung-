@@ -65,16 +65,21 @@ test("prompts and explanations are written, not stubbed", () => {
   }
 });
 
-test("every Korean and English node ends up with at least 3 check questions", () => {
-  for (const subject of ["korean", "english"]) {
-    for (const node of getNodesForSubject(subject)) {
-      const content = resolveNodeContent(node.id);
-      assert.ok(
-        content.questions.length >= 3,
-        `${node.id} has only ${content.questions.length} question(s)`,
-      );
+// 설계 기준은 칸마다 확인 문제 3개다. 국어·영어·수학을 따로 세지 않고 한 번에 확인한다.
+// 예외는 생성기(skillId)가 붙은 칸뿐이다. 그 칸은 런타임에 문제를 무한히 만들어 내므로
+// 고정 문항을 3개까지 채워 둘 필요가 없다.
+test("every node reaches 3 check questions unless a generator backs it", () => {
+  const short = [];
+  for (const node of PATH_NODES) {
+    const content = resolveNodeContent(node.id);
+    if (content.skillId) {
+      continue;
+    }
+    if (content.questions.length < 3) {
+      short.push(`${node.id} (${content.questions.length})`);
     }
   }
+  assert.deepEqual(short, [], `칸당 3문항을 채우지 못한 노드: ${short.join(", ")}`);
 });
 
 test("English nodes quote real English in at least one authored question", () => {
@@ -104,13 +109,15 @@ test("authored questions are appended after the built-in question", () => {
   }
 });
 
-test("math nodes are unaffected", () => {
+// 생성기 칸 3개는 quickCheck 1문항만 고정으로 들고 있으므로 합계가 22×3이 되지 않는다.
+// 12개 개념 칸(3) + 7개 캡슐 칸(3) + 3개 생성기 캡슐 칸(1) = 60.
+test("math nodes carry 60 fixed questions in total", () => {
   const mathCounts = getNodesForSubject("math").map(
     (node) => resolveNodeContent(node.id).questions.length,
   );
   assert.equal(
     mathCounts.reduce((sum, count) => sum + count, 0),
-    58,
+    60,
     "math question total changed",
   );
 });

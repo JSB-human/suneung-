@@ -2013,4 +2013,33 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
         "1부터 10까지 중 3의 배수는 3, 6, 9로 3개입니다. 카드마다 뽑힐 가능성이 같으므로 확률은 원하는 경우 3을 전체 경우 10으로 나눈 3/10입니다.",
     },
   ],
+
+  "capsule:ma-matrices": [
+    {
+      id: "ma-matrices-x1",
+      prompt: "행렬 A = [1 0 2 ; 3 1 4]는 몇 × 몇 행렬인가요? (세미콜론이 행이 바뀌는 자리입니다.)",
+      choices: [
+        { value: "2x3", label: "2 × 3 행렬" },
+        { value: "3x2", label: "3 × 2 행렬" },
+        { value: "2x2", label: "2 × 2 행렬" },
+        { value: "6x1", label: "6 × 1 행렬" },
+      ],
+      answer: "2x3",
+      explanation:
+        "가로 줄이 행, 세로 줄이 열입니다. 1 0 2와 3 1 4로 행이 2개이고 각 행에 수가 3개씩 있으므로 2 × 3 행렬입니다.",
+    },
+    {
+      id: "ma-matrices-x2",
+      prompt: "[1 2 ; 3 4] + [5 0 ; -1 2]를 계산하면?",
+      choices: [
+        { value: "6-2-2-6", label: "[6 2 ; 2 6]" },
+        { value: "5-0-neg3-8", label: "[5 0 ; -3 8]" },
+        { value: "6-2-4-6", label: "[6 2 ; 4 6]" },
+        { value: "neg4-2-4-2", label: "[-4 2 ; 4 2]" },
+      ],
+      answer: "6-2-2-6",
+      explanation:
+        "행렬의 덧셈은 같은 자리의 수끼리만 더합니다. 1+5=6, 2+0=2, 3+(-1)=2, 4+2=6이므로 [6 2 ; 2 6]입니다.",
+    },
+  ],
 };
