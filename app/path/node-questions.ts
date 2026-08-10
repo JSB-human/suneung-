@@ -1926,4 +1926,91 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
         "교점은 두 식을 동시에 만족하는 점이므로 x + 1 = 3x - 5로 놓습니다. 정리하면 2x = 6이라 x = 3이고, 이때 y좌표는 4입니다.",
     },
   ],
+
+  "capsule:ma-coordinate-geometry": [
+    {
+      id: "ma-coordinate-geometry-x1",
+      prompt: "원 (x + 1)^2 + (y - 3)^2 = 16의 중심과 반지름은?",
+      choices: [
+        { value: "center-neg1-3-r4", label: "중심 (-1, 3), 반지름 4" },
+        { value: "center-1-neg3-r4", label: "중심 (1, -3), 반지름 4" },
+        { value: "center-neg1-3-r16", label: "중심 (-1, 3), 반지름 16" },
+        { value: "center-1-neg3-r16", label: "중심 (1, -3), 반지름 16" },
+      ],
+      answer: "center-neg1-3-r4",
+      explanation:
+        "(x - a)^2 + (y - b)^2 = r^2와 맞춰 보면 (x + 1)^2은 a = -1, (y - 3)^2은 b = 3입니다. 오른쪽 16은 r^2이므로 반지름은 4입니다.",
+    },
+    {
+      id: "ma-coordinate-geometry-x2",
+      prompt: "두 점 (-2, 1)과 (2, 4) 사이의 거리는?",
+      choices: [
+        { value: "5", label: "5" },
+        { value: "3", label: "3" },
+        { value: "7", label: "7" },
+        { value: "25", label: "25" },
+      ],
+      answer: "5",
+      explanation:
+        "x좌표 차이는 2 - (-2) = 4, y좌표 차이는 4 - 1 = 3입니다. 피타고라스 정리로 √(4^2 + 3^2) = √25 = 5이며, 두 차이를 그냥 더한 7이 아닙니다.",
+    },
+  ],
+
+  "capsule:ma-sets-propositions": [
+    {
+      id: "ma-sets-propositions-x1",
+      prompt: "A = {1, 2, 3, 4}, B = {3, 4, 5}일 때 A∪B의 원소는 몇 개인가요?",
+      choices: [
+        { value: "5", label: "5개" },
+        { value: "7", label: "7개" },
+        { value: "6", label: "6개" },
+        { value: "2", label: "2개" },
+      ],
+      answer: "5",
+      explanation:
+        "합집합은 둘 중 하나에라도 속한 원소를 모은 {1, 2, 3, 4, 5}라 5개입니다. 4 + 3 = 7로 세면 겹치는 3과 4를 두 번 세게 됩니다.",
+    },
+    {
+      id: "ma-sets-propositions-x2",
+      prompt: "‘x = 2이면 x^2 = 4이다’의 대우는?",
+      choices: [
+        { value: "contrapositive", label: "x^2 ≠ 4이면 x ≠ 2이다" },
+        { value: "converse", label: "x^2 = 4이면 x = 2이다" },
+        { value: "inverse", label: "x ≠ 2이면 x^2 ≠ 4이다" },
+        { value: "mixed", label: "x^2 = 4이면 x ≠ 2이다" },
+      ],
+      answer: "contrapositive",
+      explanation:
+        "대우는 가정과 결론의 자리를 바꾸고 둘 다 부정한 문장이라 ‘x^2 ≠ 4이면 x ≠ 2’입니다. 자리만 바꾼 역 ‘x^2 = 4이면 x = 2’는 x = -2라는 반례가 있어 참이 아닙니다.",
+    },
+  ],
+
+  "capsule:ma-counting-probability": [
+    {
+      id: "ma-counting-probability-x1",
+      prompt: "티셔츠 4종류와 바지 3종류 중에서 하나씩 골라 입는 방법의 수는?",
+      choices: [
+        { value: "12", label: "12가지" },
+        { value: "7", label: "7가지" },
+        { value: "24", label: "24가지" },
+        { value: "4", label: "4가지" },
+      ],
+      answer: "12",
+      explanation:
+        "티셔츠를 고르고 이어서 바지를 고르므로 곱의 법칙을 씁니다. 티셔츠 4가지마다 바지 3가지가 따라붙어 4 × 3 = 12가지입니다.",
+    },
+    {
+      id: "ma-counting-probability-x2",
+      prompt: "1부터 10까지 적힌 카드 10장 중 한 장을 뽑을 때 3의 배수가 나올 확률은?",
+      choices: [
+        { value: "3/10", label: "3/10" },
+        { value: "1/3", label: "1/3" },
+        { value: "7/10", label: "7/10" },
+        { value: "1/10", label: "1/10" },
+      ],
+      answer: "3/10",
+      explanation:
+        "1부터 10까지 중 3의 배수는 3, 6, 9로 3개입니다. 카드마다 뽑힐 가능성이 같으므로 확률은 원하는 경우 3을 전체 경우 10으로 나눈 3/10입니다.",
+    },
+  ],
 };
