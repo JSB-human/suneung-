@@ -1091,4 +1091,181 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
         "비가 올지 안 올지 아직 모르는 상태에서 ‘비가 오는 경우에만’ 안에 머문다고 말합니다. when이라면 비가 온다는 사실을 전제로 그 시점을 가리키게 됩니다.",
     },
   ],
+
+  "capsule:en-participles": [
+    {
+      id: "en-participles-x1",
+      prompt: "‘She showed me a photo ____ by her father.’의 빈칸에 알맞은 것은?",
+      choices: [
+        { value: "taken", label: "taken" },
+        { value: "taking", label: "taking" },
+        { value: "took", label: "took" },
+        { value: "to-take", label: "to take" },
+      ],
+      answer: "taken",
+      explanation:
+        "photo는 사진을 찍는 주체가 아니라 찍히는 대상입니다. 꾸밈을 받는 명사가 행동을 당하면 p.p.를 쓰고, 뒤의 by her father가 그 수동 관계를 다시 확인해 줍니다.",
+    },
+    {
+      id: "en-participles-x2",
+      prompt: "‘영화가 사람들을 지루하게 만들었다’는 뜻이 되도록 ‘The movie was very ____.’를 채우면?",
+      choices: [
+        { value: "boring", label: "boring" },
+        { value: "bored", label: "bored" },
+        { value: "bore", label: "bore" },
+        { value: "to-bore", label: "to bore" },
+      ],
+      answer: "boring",
+      explanation:
+        "지루하게 만드는 쪽이 영화이므로 능동 관계라 -ing를 씁니다. bored는 그 감정을 받는 쪽에 쓰는 말이라 ‘I was bored.’처럼 사람이 주어일 때 맞습니다.",
+    },
+  ],
+
+  "capsule:en-relatives": [
+    {
+      id: "en-relatives-x1",
+      prompt: "‘I have a friend ____ lives in Busan.’의 빈칸에 알맞은 것은?",
+      choices: [
+        { value: "who", label: "who" },
+        { value: "whom", label: "whom" },
+        { value: "which", label: "which" },
+        { value: "whose", label: "whose" },
+      ],
+      answer: "who",
+      explanation:
+        "빈칸 뒤 lives 앞에 주어가 비어 있고 선행사 a friend는 사람입니다. 사람 선행사의 주어 자리를 채우는 관계대명사는 who이고, whom은 목적어가 빈 자리에 씁니다.",
+    },
+    {
+      id: "en-relatives-x2",
+      prompt: "‘This is the house ____ my grandmother built.’의 빈칸에 알맞은 것은?",
+      choices: [
+        { value: "which", label: "which" },
+        { value: "where", label: "where" },
+        { value: "who", label: "who" },
+        { value: "when", label: "when" },
+      ],
+      answer: "which",
+      explanation:
+        "선행사가 장소여도 built 뒤에 목적어가 비어 있으므로 그 자리를 메우는 관계대명사 which가 필요합니다. where 뒤에는 빠진 성분이 없는 완전한 절이 와야 합니다.",
+    },
+  ],
+
+  "capsule:en-reading-logic": [
+    {
+      id: "en-reading-logic-x1",
+      prompt:
+        "‘Many people want to save money. ____, they still buy things they do not need.’의 빈칸에 알맞은 연결어는?",
+      choices: [
+        { value: "however", label: "However" },
+        { value: "therefore", label: "Therefore" },
+        { value: "for-example", label: "For example" },
+        { value: "moreover", label: "Moreover" },
+      ],
+      answer: "however",
+      explanation:
+        "돈을 아끼고 싶다는 앞 내용과 필요 없는 물건을 산다는 뒤 내용이 서로 어긋납니다. 이렇게 방향이 꺾일 때 쓰는 신호가 however입니다.",
+    },
+    {
+      id: "en-reading-logic-x2",
+      prompt: "‘The team practiced every morning for a year. This helped them win.’에서 This가 가리키는 것은?",
+      choices: [
+        { value: "practice", label: "팀이 일 년 동안 매일 아침 연습한 일" },
+        { value: "team", label: "the team" },
+        { value: "morning", label: "every morning" },
+        { value: "year", label: "a year" },
+      ],
+      answer: "practice",
+      explanation:
+        "this는 앞 문장의 명사 하나가 아니라 그 문장이 말한 사건 전체를 짧게 받을 수 있습니다. 도움이 된 것은 팀 자체가 아니라 매일 연습했다는 사실입니다.",
+    },
+  ],
+
+  "capsule:en-question-types": [
+    {
+      id: "en-question-types-x1",
+      prompt: "삽입할 문장이 ‘But this idea has a problem.’입니다. 어디에 넣어야 할까요?",
+      choices: [
+        { value: "after-idea", label: "어떤 생각(idea)이 소개된 바로 뒤" },
+        { value: "first", label: "글의 맨 첫 문장 자리" },
+        { value: "last", label: "결론이 끝난 맨 마지막" },
+        { value: "any", label: "뜻만 통하면 어느 자리든 괜찮다" },
+      ],
+      answer: "after-idea",
+      explanation:
+        "this idea는 앞에 이미 나온 생각을 받고, But은 그 생각을 뒤집습니다. 두 신호가 모두 앞에 생각을 소개한 문장이 있어야 한다고 가리킵니다.",
+    },
+    {
+      id: "en-question-types-x2",
+      prompt:
+        "지문이 sleep을 되풀이해 다루고 마지막에 ‘충분한 잠이 학습에 도움이 된다’로 끝납니다. 주제로 가장 알맞은 것은?",
+      choices: [
+        { value: "sleep-learning", label: "충분한 잠이 학습에 주는 도움" },
+        { value: "hours", label: "잠은 하루에 몇 시간이 좋은가" },
+        { value: "health", label: "건강하게 사는 여러 가지 방법" },
+        { value: "grades", label: "시험 성적을 올리는 여러 방법" },
+      ],
+      answer: "sleep-learning",
+      explanation:
+        "주제는 반복되는 대상(sleep)과 글쓴이의 핵심 평가(학습에 도움이 된다)를 합친 것입니다. 시간만 다루면 너무 좁고, 건강 전반이나 성적 향상 전반은 글이 다루지 않은 범위까지 넓힌 것입니다.",
+    },
+  ],
+
+  "capsule:en-grammar-check": [
+    {
+      id: "en-grammar-check-x1",
+      prompt: "‘The students in the classroom ____ waiting.’의 빈칸에 알맞은 것은?",
+      choices: [
+        { value: "are", label: "are" },
+        { value: "is", label: "is" },
+        { value: "was", label: "was" },
+        { value: "has", label: "has" },
+      ],
+      answer: "are",
+      explanation:
+        "중심 주어는 복수인 The students이고 in the classroom은 주어를 꾸미는 덩어리입니다. 동사 바로 앞의 classroom을 주어로 착각하면 단수 is를 고르게 됩니다.",
+    },
+    {
+      id: "en-grammar-check-x2",
+      prompt: "‘The teacher gave a ____ explanation.’의 빈칸에 알맞은 것은?",
+      choices: [
+        { value: "simple", label: "simple" },
+        { value: "simply", label: "simply" },
+        { value: "simplicity", label: "simplicity" },
+        { value: "simplify", label: "simplify" },
+      ],
+      answer: "simple",
+      explanation:
+        "관사 a와 명사 explanation 사이는 명사를 꾸미는 형용사 자리입니다. simply는 부사, simplicity는 명사, simplify는 동사라 이 자리에 들어갈 수 없습니다.",
+    },
+  ],
+
+  // ── 영어 개념 · 어휘/발음 ───────────────────────────────────
+  "concept:english-sound-symbol": [
+    {
+      id: "english-sound-symbol-x1",
+      prompt: "cat, map, bag를 한 묶음으로 소리 내 읽는 연습이 도움이 되는 까닭은 무엇인가요?",
+      choices: [
+        { value: "same-vowel", label: "가운데 모음 소리를 셋이 똑같이 나눠 가지기 때문" },
+        { value: "meaning", label: "세 단어의 뜻이 서로 비슷하기 때문" },
+        { value: "letters", label: "세 단어가 모두 세 글자이기 때문" },
+        { value: "verbs", label: "세 단어가 모두 동사로 쓰이기 때문" },
+      ],
+      answer: "same-vowel",
+      explanation:
+        "같은 소리 조각을 가진 단어를 묶으면 하나를 익힐 때 나머지도 함께 읽히게 됩니다. 글자 수가 같다는 점은 소리와 상관이 없습니다.",
+    },
+    {
+      id: "english-sound-symbol-x2",
+      prompt: "알파벳 C의 이름은 ‘씨’인데 cat에서는 /k/ 소리가 납니다. 여기서 알 수 있는 것은?",
+      choices: [
+        { value: "name-sound", label: "글자의 이름과 단어 속 소리는 다를 수 있다" },
+        { value: "always-k", label: "C는 어느 단어에서나 /k/로만 소리 난다" },
+        { value: "wrong", label: "cat의 철자가 잘못 적혀 있다" },
+        { value: "skip-name", label: "알파벳 이름은 배울 필요가 없다" },
+      ],
+      answer: "name-sound",
+      explanation:
+        "글자 이름은 그 글자를 부르는 말이고, 단어 안에서 나는 소리는 따로 익혀야 합니다. 같은 C라도 city에서는 /s/로 소리 납니다.",
+    },
+  ],
 };
