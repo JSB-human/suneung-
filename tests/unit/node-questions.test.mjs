@@ -68,8 +68,6 @@ test("prompts and explanations are written, not stubbed", () => {
 test("every Korean and English node ends up with at least 3 check questions", () => {
   for (const subject of ["korean", "english"]) {
     for (const node of getNodesForSubject(subject)) {
-      // 집필 진행 중: 아직 손대지 않은 영어 칸은 다음 배치에서 채운다.
-      if (subject === "english" && !NODE_QUESTIONS[node.id]) continue;
       const content = resolveNodeContent(node.id);
       assert.ok(
         content.questions.length >= 3,
@@ -81,9 +79,7 @@ test("every Korean and English node ends up with at least 3 check questions", ()
 
 test("English nodes quote real English in at least one authored question", () => {
   for (const node of getNodesForSubject("english")) {
-    const authored = NODE_QUESTIONS[node.id];
-    // 집필 진행 중: 아직 손대지 않은 영어 칸은 다음 배치에서 채운다.
-    if (!authored) continue;
+    const authored = NODE_QUESTIONS[node.id] ?? [];
     assert.ok(authored.length >= 2, `${node.id}: expected 2 authored questions`);
     const hasEnglish = authored.some((question) =>
       /[A-Za-z]{3,}[^가-힣]*\s+[A-Za-z]{2,}/.test(question.prompt),

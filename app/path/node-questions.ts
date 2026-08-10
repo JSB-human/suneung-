@@ -1626,4 +1626,214 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
         "these는 앞 문장에서 나열한 대상을 한 번에 받아 옵니다. 지시어가 나오면 앞으로 되돌아가 무엇을 묶어 받았는지 표시해 두어야 흐름이 끊기지 않습니다.",
     },
   ],
+
+  // ── 영어 개념 · 독해 유형과 마무리 ──────────────────────────
+  "concept:english-main-idea": [
+    {
+      id: "english-main-idea-x1",
+      prompt:
+        "‘Walking is a simple exercise. It needs no special tools. Anyone can start it today. So walking is a good way to stay healthy.’의 주제로 알맞은 것은?",
+      choices: [
+        { value: "walking-health", label: "걷기가 건강을 지키는 쉬운 방법이라는 것" },
+        { value: "tools", label: "운동에 필요한 도구를 고르는 방법" },
+        { value: "today", label: "오늘 당장 시작할 수 있는 여러 가지 일" },
+        { value: "routine", label: "건강한 사람들의 하루 일과" },
+      ],
+      answer: "walking-health",
+      explanation:
+        "walking이 처음과 끝에 되풀이되고 So로 시작하는 마지막 문장이 결론을 말합니다. 반복 대상과 결론 문장을 합치면 주제가 그대로 나옵니다.",
+    },
+    {
+      id: "english-main-idea-x2",
+      prompt: "주제를 찾을 때 So, Thus, In short로 시작하는 문장을 눈여겨봐야 하는 까닭은?",
+      choices: [
+        { value: "conclusion", label: "앞의 내용을 하나로 묶어 정리하는 결론 문장일 때가 많기 때문" },
+        { value: "hard", label: "그런 문장에 어려운 단어가 많이 들어 있기 때문" },
+        { value: "long", label: "그런 문장이 대체로 가장 길기 때문" },
+        { value: "first", label: "그런 문장이 언제나 글의 첫 문장이기 때문" },
+      ],
+      answer: "conclusion",
+      explanation:
+        "이런 말은 앞에서 늘어놓은 설명을 받아 한 문장으로 묶겠다는 신호입니다. 결론 문장은 반복 핵심어와 함께 주제를 가장 빠르게 알려 줍니다.",
+    },
+  ],
+
+  "concept:english-gap": [
+    {
+      id: "english-gap-x1",
+      prompt:
+        "‘Many people think that talent decides everything. However, most experts say that ____ matters more. Even the best players train for many hours every day.’의 빈칸에 알맞은 것은?",
+      choices: [
+        { value: "practice", label: "practice" },
+        { value: "talent", label: "talent" },
+        { value: "luck", label: "luck" },
+        { value: "money", label: "money" },
+      ],
+      answer: "practice",
+      explanation:
+        "However가 앞의 talent를 뒤집으므로 빈칸에는 talent와 맞서는 말이 와야 합니다. 뒤 문장의 train for many hours가 그 말이 연습임을 확인해 줍니다.",
+    },
+    {
+      id: "english-gap-x2",
+      prompt: "빈칸 앞 문장이 어떤 장점을 말했고, 빈칸이 들어 있는 문장이 However로 시작합니다. 빈칸의 방향은?",
+      choices: [
+        { value: "against", label: "앞에서 말한 장점과 어긋나는 쪽" },
+        { value: "same", label: "앞의 장점을 더 강하게 되풀이하는 쪽" },
+        { value: "new", label: "앞과 상관없는 새 화제를 여는 쪽" },
+        { value: "alone", label: "빈칸이 든 문장 하나만 보고 정하면 되는 쪽" },
+      ],
+      answer: "against",
+      explanation:
+        "빈칸은 그 문장 하나가 아니라 앞뒤 관계가 정합니다. However가 방향을 꺾었으니 빈칸에도 앞의 장점과 반대되는 내용이 들어가야 합니다.",
+    },
+  ],
+
+  "concept:english-order-insertion": [
+    {
+      id: "english-order-insertion-x1",
+      prompt:
+        "(A) He was very hungry after the long walk. (B) A boy found a small shop on the street. (C) So he bought a sandwich there. — 알맞은 순서는?",
+      choices: [
+        { value: "bac", label: "(B) - (A) - (C)" },
+        { value: "abc", label: "(A) - (B) - (C)" },
+        { value: "bca", label: "(B) - (C) - (A)" },
+        { value: "cab", label: "(C) - (A) - (B)" },
+      ],
+      answer: "bac",
+      explanation:
+        "(A)의 He와 (C)의 there는 앞에 소년과 가게가 먼저 나와야 가리킬 수 있으므로 (B)가 맨 앞입니다. 배가 고팠다는 이유를 받아 So가 붙은 (C)가 마지막입니다.",
+    },
+    {
+      id: "english-order-insertion-x2",
+      prompt: "순서 문제에서 첫 번째 자리에 올 수 없는 문단을 빠르게 거르는 방법은?",
+      choices: [
+        { value: "pronoun", label: "it, this, However처럼 앞을 받는 말로 시작하는 문단을 뺀다" },
+        { value: "short", label: "가장 짧은 문단을 뺀다" },
+        { value: "hard", label: "모르는 단어가 많은 문단을 뺀다" },
+        { value: "period", label: "마침표로 끝나는 문단을 뺀다" },
+      ],
+      answer: "pronoun",
+      explanation:
+        "지시어와 연결어는 앞에 받을 내용이 있어야 쓸 수 있는 말입니다. 그런 말로 시작하는 문단은 받을 앞 내용이 없는 첫 자리에 놓일 수 없습니다.",
+    },
+  ],
+
+  "concept:english-vocab-grammar": [
+    {
+      id: "english-vocab-grammar-x1",
+      prompt: "‘The old bridge is dangerous, so the city decided to ____ it.’의 빈칸에 알맞은 것은?",
+      choices: [
+        { value: "repair", label: "repair" },
+        { value: "ignore", label: "ignore" },
+        { value: "praise", label: "praise" },
+        { value: "borrow", label: "borrow" },
+      ],
+      answer: "repair",
+      explanation:
+        "네 단어 모두 문법상으로는 그 자리에 들어갑니다. 위험하다는 앞 내용이 뒤에 올 행동의 방향을 정하므로 문맥에 맞는 것은 repair뿐입니다.",
+    },
+    {
+      id: "english-vocab-grammar-x2",
+      prompt: "‘Each of the students ____ a name tag.’의 빈칸에 알맞은 것은?",
+      choices: [
+        { value: "has", label: "has" },
+        { value: "have", label: "have" },
+        { value: "are", label: "are" },
+        { value: "were", label: "were" },
+      ],
+      answer: "has",
+      explanation:
+        "주어의 중심은 Each 하나이고 of the students는 그것을 꾸미는 덩어리라 단수로 받습니다. 동사 바로 앞의 students에 끌리면 have를 고르게 됩니다.",
+    },
+  ],
+
+  "concept:english-long-passage": [
+    {
+      id: "english-long-passage-x1",
+      prompt:
+        "장문의 한 문단이 ‘For example, in one school, students planted trees in the yard.’로 시작합니다. 이 문단의 역할은?",
+      choices: [
+        { value: "example", label: "앞 문단의 주장을 받쳐 주는 사례" },
+        { value: "problem", label: "글 전체의 문제 제기" },
+        { value: "counter", label: "앞 문단을 반박하는 부분" },
+        { value: "conclusion", label: "글 전체를 정리하는 결론" },
+      ],
+      answer: "example",
+      explanation:
+        "For example과 한 학교의 구체적인 이야기가 앞 문단이 말한 내용을 받쳐 줍니다. 문단마다 이런 역할을 한 단어로 붙여 두면 긴 글도 짧아집니다.",
+    },
+    {
+      id: "english-long-passage-x2",
+      prompt: "장문을 읽다가 한 문장이 전혀 해석되지 않습니다. 가장 좋은 방법은?",
+      choices: [
+        { value: "move-on", label: "표시만 해 두고 넘어가 문단 역할과 연결사로 흐름을 잇는다" },
+        { value: "dictionary", label: "그 문장이 풀릴 때까지 단어를 하나씩 찾아본다" },
+        { value: "skip-para", label: "그 문단 전체를 건너뛴다" },
+        { value: "restart", label: "글의 처음으로 돌아가 다시 읽는다" },
+      ],
+      answer: "move-on",
+      explanation:
+        "장문에서는 멈춤보다 진행이 중요합니다. 문단 역할과 연결사가 남아 있으면 문장 하나를 놓쳐도 큰 흐름은 무너지지 않습니다.",
+    },
+  ],
+
+  "concept:english-ebs-linkage": [
+    {
+      id: "english-ebs-linkage-x1",
+      prompt:
+        "EBS 듣기 지문에서 ‘Actually, I have to work late.’를 만났고 강의로 확인했습니다. 노트에 남겨야 할 것은?",
+      choices: [
+        { value: "procedure", label: "Actually가 나오면 앞의 계획을 지운다는 절차" },
+        { value: "translation", label: "그 문장의 한국어 번역 한 줄" },
+        { value: "number", label: "그 문장이 몇 번 문항에 나왔는지" },
+        { value: "board", label: "강사가 판서에 쓴 색깔과 기호" },
+      ],
+      answer: "procedure",
+      explanation:
+        "수능에는 같은 지문이 그대로 나오지 않습니다. 남겨야 할 것은 이 지문의 번역이 아니라 다음 듣기에도 그대로 쓸 수 있는 절차입니다.",
+    },
+    {
+      id: "english-ebs-linkage-x2",
+      prompt: "듣기에서 숫자 문제를 자주 틀립니다. EBS를 어떻게 쓰는 것이 좋을까요?",
+      choices: [
+        { value: "type", label: "숫자 유형만 모아 단위 확인 → 바뀌는 말 기다리기 절차를 되풀이한다" },
+        { value: "all", label: "강좌를 1강부터 끝까지 순서대로 모두 듣는다" },
+        { value: "reading", label: "독해 강좌를 먼저 다 끝낸 뒤에 듣기로 넘어간다" },
+        { value: "copy", label: "강의 필기를 그대로 옮겨 적어 둔다" },
+      ],
+      answer: "type",
+      explanation:
+        "EBS는 많이 보는 것보다 약한 유형 하나를 정해 같은 절차를 반복할 때 효과가 납니다. 강좌를 순서대로 훑으면 약점은 그대로 남습니다.",
+    },
+  ],
+
+  "concept:english-practical": [
+    {
+      id: "english-practical-x1",
+      prompt: "실전에서 빈칸 문제 하나에 5분 넘게 막혔습니다. 가장 좋은 선택은?",
+      choices: [
+        { value: "mark", label: "표시해 두고 다음 문항으로 넘어간 뒤 시간이 남으면 돌아온다" },
+        { value: "hold", label: "풀릴 때까지 그 문항을 계속 붙잡는다" },
+        { value: "guess", label: "아무 번호나 찍고 다시 보지 않는다" },
+        { value: "skip-all", label: "남은 문항을 모두 건너뛰고 채점한다" },
+      ],
+      answer: "mark",
+      explanation:
+        "한 문항에 머무는 동안 풀 수 있었던 뒤 문항까지 함께 잃습니다. 회수 가능한 문항을 먼저 챙기고 남은 시간에 돌아오는 편이 점수를 지킵니다.",
+    },
+    {
+      id: "english-practical-x2",
+      prompt:
+        "‘The man who was standing near the gate waved at us.’에서 단어는 다 아는데 어디서 끊을지 몰라 틀렸습니다. 오답 원인은?",
+      choices: [
+        { value: "structure", label: "구조 — 절과 수식 덩어리를 나누지 못했다" },
+        { value: "word", label: "단어 — 어휘가 부족했다" },
+        { value: "time", label: "시간 — 시간이 모자랐다" },
+        { value: "mark", label: "실수 — 답을 잘못 옮겨 적었다" },
+      ],
+      answer: "structure",
+      explanation:
+        "단어를 모두 알고도 who절이 어디서 끝나는지 못 봤다면 어휘가 아니라 구조에서 무너진 것입니다. 원인을 갈라 적어야 다음에 무엇을 훈련할지 정해집니다.",
+    },
+  ],
 };
