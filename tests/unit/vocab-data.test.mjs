@@ -211,6 +211,11 @@ const STAGE_ONE_CURRENT = 500;
 const STAGE_TWO_TARGET = 500;
 const STAGE_TWO_CURRENT = 500;
 
+// 3단계 목표도 500개다. CURRENT는 지금까지 실제로 채운 수이고,
+// 배치를 넣을 때마다 새 실제 개수로 올린다. 그래야 이미 쓴 단어가 지워지지 않는다.
+const STAGE_THREE_TARGET = 500;
+const STAGE_THREE_CURRENT = 40;
+
 test("stage 1 does not lose words it already has", () => {
   const stageOne = VOCAB_WORDS.filter((entry) => entry.stage === 1);
   assert.ok(
@@ -232,5 +237,17 @@ test("stage 2 does not lose words it already has", () => {
   assert.ok(
     stageTwo.length <= STAGE_TWO_TARGET,
     `stage 2 exceeded its target of ${STAGE_TWO_TARGET}; move the extras to stage 3`,
+  );
+});
+
+test("stage 3 does not lose words it already has", () => {
+  const stageThree = VOCAB_WORDS.filter((entry) => entry.stage === 3);
+  assert.ok(
+    stageThree.length >= STAGE_THREE_CURRENT,
+    `stage 3 regressed: expected at least ${STAGE_THREE_CURRENT}, found ${stageThree.length}`,
+  );
+  assert.ok(
+    stageThree.length <= STAGE_THREE_TARGET,
+    `stage 3 exceeded its target of ${STAGE_THREE_TARGET}`,
   );
 });
