@@ -208,7 +208,7 @@ const STAGE_ONE_CURRENT = 500;
 // 2단계 목표도 500개다. CURRENT는 지금까지 채운 만큼이고,
 // 한 묶음을 더 쓸 때마다 올린다. 내리는 일은 없어야 한다.
 const STAGE_TWO_TARGET = 500;
-const STAGE_TWO_CURRENT = 240;
+const STAGE_TWO_CURRENT = 280;
 
 test("stage 1 does not lose words it already has", () => {
   const stageOne = VOCAB_WORDS.filter((entry) => entry.stage === 1);
