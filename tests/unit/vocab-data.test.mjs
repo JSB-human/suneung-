@@ -211,10 +211,11 @@ const STAGE_ONE_CURRENT = 500;
 const STAGE_TWO_TARGET = 500;
 const STAGE_TWO_CURRENT = 500;
 
-// 3단계 목표도 500개다. CURRENT는 지금까지 실제로 채운 수이고,
-// 배치를 넣을 때마다 새 실제 개수로 올린다. 그래야 이미 쓴 단어가 지워지지 않는다.
+// 3단계 목표도 500개이고, 이제 500개를 모두 채웠다.
+// 앞선 두 단계와 마찬가지로 하한과 목표가 같아졌으니 더 늘지도 줄지도 않는다.
+// 이로써 1500단어가 모두 채워졌다.
 const STAGE_THREE_TARGET = 500;
-const STAGE_THREE_CURRENT = 480;
+const STAGE_THREE_CURRENT = 500;
 
 test("stage 1 does not lose words it already has", () => {
   const stageOne = VOCAB_WORDS.filter((entry) => entry.stage === 1);
