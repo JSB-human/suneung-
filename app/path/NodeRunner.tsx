@@ -188,6 +188,22 @@ export default function NodeRunner({
         </div>
       ) : null}
 
+      {content.links.length > 0 ? (
+        <details className="node-links">
+          <summary>더 보기 · 강의와 자료 {content.links.length}개</summary>
+          <ul>
+            {content.links.map((link) => (
+              <li key={link.href}>
+                <a href={link.href} target="_blank" rel="noreferrer noopener">
+                  {link.title}
+                </a>
+                {link.note ? <small>{link.note}</small> : null}
+              </li>
+            ))}
+          </ul>
+        </details>
+      ) : null}
+
       {stage === "done" ? (
         <div className="practice-result is-correct" role="status" aria-live="polite">
           <strong>이 칸 완료!</strong>

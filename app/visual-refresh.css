@@ -1545,3 +1545,50 @@
     font-size: 14px;
   }
 }
+
+/* 칸 맨 아래 접혀 있는 강의·자료 링크. 기본은 닫힌 상태로 둬서 학습 흐름을 가리지 않는다. */
+.node-links {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.node-links > summary {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.node-links ul {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0 14px 14px;
+  list-style: none;
+}
+
+.node-links li {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.node-links a {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+  line-height: 1.4;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.node-links small {
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0.75;
+}

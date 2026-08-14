@@ -1,10 +1,48 @@
 import { FOUNDATION_REFERENCE } from "../foundation-reference.ts";
 import { LANGUAGE_KNOWLEDGE_CURRICULA } from "../language-curriculum.ts";
 import { MATH_KNOWLEDGE_CURRICULUM } from "../math-curriculum.ts";
-import { CORE_NOTES } from "../study-content.ts";
+import { CORE_NOTES, SUBJECT_MEDIA_LINKS } from "../study-content.ts";
 import { NODE_QUESTIONS } from "./node-questions.ts";
 import { getNode } from "./path-nodes.ts";
+import type { Subject } from "../practice/types.ts";
 import type { NodeQuestion } from "./types.ts";
+
+export type NodeLink = {
+  title: string;
+  href: string;
+  note?: string;
+};
+
+/**
+ * 과목 단위 강좌·채널 링크. 기초 캡슐 칸에는 자기 링크가 없으므로 이것만 붙는다.
+ *
+ * `CORE_NOTES`의 `ebsUrl`·`youtubeChannelUrl`은 타입에만 선언돼 있고 값이 하나도
+ * 채워져 있지 않아 쓸 수 없다. 실제 링크는 여기와 커리큘럼의 `resources`에 있다.
+ */
+function subjectLinks(subject: Subject): NodeLink[] {
+  const media = SUBJECT_MEDIA_LINKS[subject];
+  if (!media) {
+    return [];
+  }
+  return [
+    { title: media.ebsTitle, href: media.ebsUrl, note: "EBSi 공식 강좌" },
+    { title: media.youtubeChannelTitle, href: media.youtubeChannelUrl, note: "유튜브 강의" },
+  ];
+}
+
+/** 커리큘럼 개념에 붙은 링크를 과목 링크 앞에 놓는다. 더 정확한 자료가 먼저 보여야 한다. */
+function withConceptLinks(
+  resources: ReadonlyArray<{ title: string; href: string; note?: string }> | undefined,
+  fallback: NodeLink[],
+): NodeLink[] {
+  const own = (resources ?? []).map((item) => ({
+    title: item.title,
+    href: item.href,
+    note: item.note,
+  }));
+  const seen = new Set(own.map((item) => item.href));
+  return [...own, ...fallback.filter((item) => !seen.has(item.href))];
+}
 
 export type NodeContent = {
   nodeId: string;
@@ -15,6 +53,8 @@ export type NodeContent = {
   mistake?: string;
   questions: NodeQuestion[];
   skillId?: string;
+  /** 칸 맨 아래 "더 보기"에 접어 두는 EBS·유튜브 링크. */
+  links: NodeLink[];
 };
 
 // 칸의 확인 문제 = 원본 콘텐츠에 딸린 기본 문항 + node-questions.ts에서 집필한 추가 문항.
@@ -76,6 +116,7 @@ export function resolveNodeContent(nodeId: string): NodeContent | null {
     formula: note?.formula,
     mistake: note?.mistake,
     skillId: node.skillId,
+    links: subjectLinks(node.subject),
   };
 
   if (node.kind === "capsule") {
@@ -107,6 +148,7 @@ export function resolveNodeContent(nodeId: string): NodeContent | null {
     return {
       ...base,
       explanation: languageConcept.summary,
+      links: withConceptLinks(languageConcept.resources, base.links),
       keyPoints:
         base.keyPoints.length > 0 ? base.keyPoints : [...languageConcept.corePoints],
       questions: withAuthoredQuestions(nodeId, [
@@ -126,6 +168,7 @@ export function resolveNodeContent(nodeId: string): NodeContent | null {
     return {
       ...base,
       explanation: mathConcept.summary,
+      links: withConceptLinks(mathConcept.resources, base.links),
       keyPoints:
         base.keyPoints.length > 0 ? base.keyPoints : [...mathConcept.corePrinciples],
       questions: withAuthoredQuestions(

@@ -49,3 +49,33 @@ test("nodes with a formula mapping expose formula text", () => {
     assert.ok(content.keyPoints.length > 0, `${node.id} has a note but no key points`);
   }
 });
+
+test("every node surfaces at least one study link", () => {
+  for (const node of PATH_NODES) {
+    const content = resolveNodeContent(node.id);
+    assert.ok(content.links.length > 0, `${node.id} has no links`);
+  }
+});
+
+test("every link has a title and an https href", () => {
+  for (const node of PATH_NODES) {
+    for (const link of resolveNodeContent(node.id).links) {
+      assert.ok(link.title.trim(), `${node.id}: link without a title`);
+      assert.match(link.href, /^https:\/\//, `${node.id}: ${link.href} is not https`);
+    }
+  }
+});
+
+test("a node never lists the same link twice", () => {
+  for (const node of PATH_NODES) {
+    const hrefs = resolveNodeContent(node.id).links.map((link) => link.href);
+    assert.equal(new Set(hrefs).size, hrefs.length, `${node.id} repeats a link`);
+  }
+});
+
+test("concept nodes put their own resources before the subject-wide ones", () => {
+  // 개념에 딸린 자료가 과목 전체 링크보다 정확하므로 먼저 나와야 한다.
+  const content = resolveNodeContent("concept:linear-equations");
+  assert.ok(content.links.length > 2, "expected concept resources on top of the subject links");
+  assert.doesNotMatch(content.links[0].note ?? "", /^EBSi 공식 강좌$/);
+});
