@@ -125,7 +125,7 @@ test("preserves and migrates local study state safely", async () => {
 });
 
 test("ships detailed curricula, practice, SRS vocabulary, and official EBS links", async () => {
-  const [app, content, mathData, mathMap, languageData, languageMap, trainer, vocabulary, notes, roadmap, css, coachCss, foundation, foundationView, visualCss] = await Promise.all([
+  const [app, content, mathData, mathMap, languageData, languageMap, trainer, vocabulary, nodeRunner, css, coachCss, foundation, nodeContent, visualCss] = await Promise.all([
     readFile(new URL("../app/IpsiCoachApp.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/study-content.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/math-curriculum.ts", import.meta.url), "utf8"),
@@ -134,12 +134,11 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
     readFile(new URL("../app/LanguageKnowledgeMap.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/VocabTrainer.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/vocab-data.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/CoreNotes.tsx", import.meta.url), "utf8"),
-    readFile(new URL("../app/RoadmapView.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/path/NodeRunner.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/globals.css", import.meta.url), "utf8"),
     readFile(new URL("../app/coach.css", import.meta.url), "utf8"),
     readFile(new URL("../app/foundation-reference.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/FoundationReference.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/path/node-content.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/visual-refresh.css", import.meta.url), "utf8"),
   ]);
 
@@ -169,8 +168,6 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(languageMap, /completedConceptIds/);
   assert.match(languageMap, /correctQuestionIds/);
   assert.match(languageMap, /괜찮아요\. 지금 발견해서 이득이에요/);
-  assert.match(roadmap, /개념 학습실에서 시작/);
-  assert.doesNotMatch(roadmap, /languageContent|mathContent/);
 
   const capsuleCounts = {
     korean: (foundation.match(/subject: "korean"/g) ?? []).length,
@@ -182,9 +179,11 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
     assert.match(foundation, new RegExp(field));
   }
   assert.match(foundation, /대수·미적분Ⅰ·확률과 통계/);
-  assert.match(foundationView, /기초 도서관/);
-  assert.match(foundationView, /30초 확인/);
-  assert.match(foundationView, /틀렸어도 괜찮아요/);
+  // 기초 도서관 화면은 없어졌지만 캡슐 31개는 길의 첫 칸들로 살아 있다.
+  // 화면이 아니라 콘텐츠가 실렸는지를 검사한다.
+  assert.match(nodeContent, /findCapsule/);
+  assert.match(nodeContent, /beginnerExplanation/);
+  assert.match(nodeContent, /quickCheck/);
   // 캡슐은 이제 서브탭이 아니라 길 위의 칸으로 나온다. 세 과목 모두 길이 걸려 있어야 한다.
   assert.match(app, /import PathView from ".\/path\/PathView"/);
   for (const subject of ["korean", "english", "math"]) {
@@ -194,8 +193,8 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
       `${subject} 탭이 길을 렌더링해야 한다`,
     );
   }
-  // 후속 계획이 다시 쓰므로 컴포넌트 파일 자체는 남아 있어야 한다.
-  for (const file of ["RoadmapView", "CoreNotes", "FoundationReference", "LanguageKnowledgeMap", "MathKnowledgeMap"]) {
+  // 아직 렌더링되는 컴포넌트는 남아 있어야 한다.
+  for (const file of ["LanguageKnowledgeMap", "MathKnowledgeMap"]) {
     await access(new URL(`../app/${file}.tsx`, import.meta.url));
   }
 
@@ -219,9 +218,10 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(content, officialEbsPattern);
   assert.match(mathData, officialEbsPattern);
   assert.match(languageData, /https:\/\/(?:cloud-www\.)?ebsi\.co\.kr\/ebs\//);
-  assert.match(notes, /target="_blank"/);
-  assert.match(notes, /rel="noreferrer noopener"/);
-  assert.match(roadmap, /다음 단계 조건/);
+  // 외부 링크 규약은 핵심 노트 화면이 아니라 칸의 "더 보기"로 옮겨졌다.
+  assert.match(nodeRunner, /target="_blank"/);
+  assert.match(nodeRunner, /rel="noreferrer noopener"/);
+  assert.match(nodeRunner, /더 보기/, "EBS·유튜브 링크가 칸 안에 있어야 한다");
 
   assert.match(css, /--korean:/);
   assert.match(css, /--english:/);
