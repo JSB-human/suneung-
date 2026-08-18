@@ -57,6 +57,9 @@ export default function PracticeRunner({
   // 이미 갱신되어 있다. useRef 초기화 인자에서 Date.now()를 바로 부르면
   // react-hooks/purity 규칙(렌더 중 impure 함수 호출 금지)에 걸린다.
   const startedAtRef = useRef<number>(0);
+  // 채점 직후 결과로 포커스를 옮긴다. 안 그러면 눌렀던 버튼이 사라지면서
+  // 포커스가 body로 떨어져, 키보드 사용자는 매 문제마다 처음부터 Tab을 눌러야 한다.
+  const resultRef = useRef<HTMLDivElement | null>(null);
 
   // 미쿠 반응. 대사를 고르는 일은 순수 모듈이 하고, 여기서는 언제 부를지만 정한다.
   const [reaction, setReaction] = useState<MikuLine | null>(null);
@@ -94,6 +97,13 @@ export default function PracticeRunner({
     setChecked(false);
     setHintsShown(0);
   }, [initialSeed, level, skillId, supported]);
+
+  // 채점되면 결과로 포커스를 옮긴다.
+  useEffect(() => {
+    if (checked) {
+      resultRef.current?.focus();
+    }
+  }, [checked]);
 
   const result = useMemo(
     () => (question && checked && selected ? gradeAnswer(question, selected) : null),
@@ -195,12 +205,23 @@ export default function PracticeRunner({
           <button
             key={choice.value}
             type="button"
-            className="practice-choice"
+            className={`practice-choice${
+              checked && question.acceptableAnswers.includes(choice.value)
+                ? " is-answer"
+                : checked && selected === choice.value
+                  ? " is-picked-wrong"
+                  : ""
+            }`}
             aria-pressed={selected === choice.value}
             disabled={checked}
             onClick={() => setSelected(choice.value)}
           >
             {choice.label}
+            {checked && question.acceptableAnswers.includes(choice.value) ? (
+              <span className="choice-mark" aria-label="정답">
+                정답
+              </span>
+            ) : null}
           </button>
         ))}
       </div>
@@ -234,7 +255,13 @@ export default function PracticeRunner({
       ) : null}
 
       {result ? (
-        <div className={`practice-result ${result.isCorrect ? "is-correct" : "is-wrong"}`} role="status" aria-live="polite">
+        <div
+          ref={resultRef}
+          tabIndex={-1}
+          className={`practice-result ${result.isCorrect ? "is-correct" : "is-wrong"}`}
+          role="status"
+          aria-live="polite"
+        >
           <p>정답 · {question.acceptableAnswers[0]}</p>
           <ol className="practice-steps">
             {question.steps.map((step) => (

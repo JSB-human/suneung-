@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import PracticeRunner from "../practice/PracticeRunner";
 import type { PracticeOutcomeReport } from "../practice/PracticeRunner";
 import { createRng, hashString } from "../practice/rng.ts";
@@ -53,6 +53,17 @@ export default function NodeRunner({
   // 틀린 문제는 해설만 읽고 넘어가면 다음에 또 틀린다.
   // 해설을 본 뒤 스스로 다시 풀어야 넘어갈 수 있게 한다.
   const [retryRound, setRetryRound] = useState(0);
+  // 채점 직후 결과로 포커스를 옮긴다. 눌렀던 버튼이 사라지면 포커스가
+  // body로 떨어져 키보드 사용자는 매번 처음부터 Tab을 눌러야 한다.
+  const resultRef = useRef<HTMLDivElement | null>(null);
+
+  // 훅은 조기 반환보다 위에 있어야 한다. 아래로 내려가면 content가 없을 때
+  // 훅 호출 순서가 달라져 React가 상태를 잘못 짝짓는다.
+  useEffect(() => {
+    if (checked) {
+      resultRef.current?.focus();
+    }
+  }, [checked]);
 
   if (!content) {
     return (
@@ -184,12 +195,23 @@ export default function NodeRunner({
                 <button
                   key={choice.value}
                   type="button"
-                  className="practice-choice"
+                  className={`practice-choice${
+                    checked && choice.value === question.answer
+                      ? " is-answer"
+                      : checked && submitted === choice.value
+                        ? " is-picked-wrong"
+                        : ""
+                  }`}
                   aria-pressed={submitted === choice.value}
                   disabled={checked}
                   onClick={() => setSubmitted(choice.value)}
                 >
                   {choice.label}
+                  {checked && choice.value === question.answer ? (
+                    <span className="choice-mark" aria-label="정답">
+                      정답
+                    </span>
+                  ) : null}
                 </button>
               ))}
             </div>
@@ -215,6 +237,8 @@ export default function NodeRunner({
             </button>
           ) : (
             <div
+              ref={resultRef}
+              tabIndex={-1}
               className={`practice-result ${isSubmissionCorrect ? "is-correct" : "is-wrong"}`}
               role="status"
               aria-live="polite"

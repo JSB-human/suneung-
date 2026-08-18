@@ -235,6 +235,11 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(nodeRunner, /target="_blank"/);
   assert.match(nodeRunner, /rel="noreferrer noopener"/);
   assert.match(nodeRunner, /더 보기/, "EBS·유튜브 링크가 칸 안에 있어야 한다");
+  // 채점 뒤 어느 선지가 정답이었는지 보여야 한다. 텍스트만으로는 목록에서 다시 찾아야 한다.
+  assert.match(nodeRunner, /is-answer/, "정답 선지를 표시해야 한다");
+  assert.match(nodeRunner, /is-picked-wrong/, "내가 고른 오답도 표시해야 한다");
+  // 채점 뒤 포커스가 body로 떨어지면 키보드 사용자는 매번 처음부터 Tab을 눌러야 한다.
+  assert.match(nodeRunner, /resultRef/, "채점 결과로 포커스를 옮겨야 한다");
 
   assert.match(css, /--korean:/);
   assert.match(css, /--english:/);
@@ -245,6 +250,8 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.match(css, /--primary: #1d4ed8/);
   assert.match(css, /--accent: #dbeafe/);
   assert.match(visualCss, /\.today-agenda/);
+  assert.match(visualCss, /\.practice-result\.is-wrong/, "오답 상태에 시각 표시가 있어야 한다");
+  assert.match(visualCss, /--space-1/, "간격 체계가 토큰으로 있어야 한다");
   assert.match(css, /--topbar-bg: rgba\(248, 250, 252, 0\.88\)/);
   assert.match(coachCss, /\.coach-mascot/);
   assert.match(coachCss, /\.encouragement-bubble/);

@@ -1852,3 +1852,51 @@
     transition: border-color 150ms ease, background-color 150ms ease;
   }
 }
+
+/* --- 채점 결과 -------------------------------------------------------- */
+/* 어느 선지가 정답이었는지 보여 준다. 아래 텍스트의 정답을 목록에서
+   눈으로 다시 찾게 하면 그만큼 학습이 끊긴다. */
+
+.practice-choice.is-answer {
+  border-color: var(--success);
+  border-width: 2px;
+  background: var(--success-soft);
+  font-weight: 700;
+}
+
+.practice-choice.is-picked-wrong {
+  border-color: var(--warning);
+  border-width: 2px;
+  background: var(--warning-soft);
+}
+
+.choice-mark {
+  margin-left: var(--space-2);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  background: var(--success);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+/* 비활성이어도 정답 표시는 읽혀야 한다. 기본 disabled 흐림을 되돌린다. */
+.practice-choice:disabled {
+  opacity: 1;
+}
+
+.practice-result.is-wrong {
+  border-color: var(--warning);
+  background: var(--warning-soft);
+}
+
+.practice-result.is-correct {
+  border-color: var(--success);
+  background: var(--success-soft);
+}
+
+/* 채점 후 결과로 포커스가 옮겨간다. 어디로 갔는지 보이게 한다. */
+.practice-result:focus-visible {
+  outline: 2px solid var(--miku-teal-dark);
+  outline-offset: 2px;
+}
