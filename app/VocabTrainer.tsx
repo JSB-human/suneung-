@@ -417,7 +417,7 @@ export function VocabTrainer({
         <div>
           <p className="trainer-eyebrow">수능人 영어</p>
           <h2 id={headingId}>{title}</h2>
-          <p>듀오링고식 10개 복습 세션으로 새 단어, 학습중, 복습예정, 완료 단계를 관리합니다.</p>
+          <p>하루 10개씩, 오늘 볼 것만 골라 드립니다.</p>
         </div>
         <button
           type="button"
@@ -452,10 +452,11 @@ export function VocabTrainer({
         </article>
       </div>
 
+      {/* 안 본 단어가 전부 "오늘 복습"으로 잡히면 첫날에 1500개가 뜬다.
+          실제로 오늘 할 양(한 세션)만 보여 준다. */}
       <div className="trainer-summary-strip">
-        <span>오늘 복습 {summary.due}개</span>
-        <span>즐겨찾기 {summary.favorite}개</span>
-        <span>전체 {summary.total}개</span>
+        <span>오늘 할 단어 {Math.min(sessionSize, summary.due)}개</span>
+        <span>익힌 단어 {summary.completed}개</span>
       </div>
 
       <section className="trainer-session-card" aria-label="단어 복습 세션">

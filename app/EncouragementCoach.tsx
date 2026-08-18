@@ -62,30 +62,23 @@ export function EncouragementCoach({
     >
       <div className="encouragement-card">
         <MikuPartner mood={mood} line={line} eyebrow={EYEBROW}>
+          {/* 레벨·포인트는 기록 탭으로 옮겼다. 첫 화면에 0으로 찬 지표를 늘어놓으면
+              "너는 아직 아무것도 안 했다"는 말을 여러 번 하는 셈이다. */}
           <div className="encouragement-meta" aria-label="학습 진행 정보">
             <span>{formatSuneungCountdown(dday)}</span>
-            <span>Lv.{level}</span>
-            <span>성장 포인트 {points} P</span>
           </div>
           <p className="miku-streak-line">{formatStreakLine(streak)}</p>
         </MikuPartner>
 
+        {/* 첫 화면의 주된 행동은 하나여야 한다. 타이머는 헤더에서 열 수 있다. */}
         <div className="encouragement-actions">
           <button
             type="button"
             className="primary-action"
             style={TOUCH_TARGET_STYLE}
-            onClick={onStartThreeMinutes}
-          >
-            미쿠와 3분 집중 시작
-          </button>
-          <button
-            type="button"
-            className="secondary-action"
-            style={TOUCH_TARGET_STYLE}
             onClick={onOpenEasyStep}
           >
-            가장 쉬운 한 칸 열기
+            오늘 여기서 시작하기
           </button>
         </div>
       </div>

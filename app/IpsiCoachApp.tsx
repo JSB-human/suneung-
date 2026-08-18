@@ -419,6 +419,8 @@ export default function IpsiCoachApp() {
     todayAnswered: 0,
     todayCorrect: 0,
     streakDays: streak,
+    // 학습 기록이 하나도 없으면 아직 시작을 안 한 것이지 그만둔 것이 아니다.
+    hasEverStudied: Object.keys(appState.studyLog).length > 0,
   });
   const mikuGreeting = pickMikuLine({
     event: resolveGreetingEvent({
@@ -789,7 +791,7 @@ export default function IpsiCoachApp() {
             <div className="section-heading">
               <div>
                 <h2>🔤 오늘의 단어</h2>
-                <p>단어는 길에 없어요. 매일 조금씩, 복습할 것만 골라 드립니다.</p>
+                <p>매일 조금씩. 오늘 볼 것만 골라 드립니다.</p>
               </div>
             </div>
             <VocabTrainer

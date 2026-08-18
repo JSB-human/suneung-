@@ -26,8 +26,9 @@ test("server-renders the expanded mobile study coach", async () => {
   assert.match(html, /고1 기초 · 2028학년도 통합형/);
   assert.match(html, /수능人 파트너(?:<!-- -->)? · 하츠네 미쿠/);
   assert.match(html, /2028 수능 D-/);
-  assert.match(html, /3분 집중/);
-  assert.match(html, /가장 쉬운 한 칸/);
+  // 3분 집중 버튼은 오늘 카드에서 헤더 타이머로 옮겼다. 기능은 그대로 있다.
+  assert.match(html, /집중 타이머/, "타이머는 헤더에서 열 수 있어야 한다");
+  assert.match(html, /오늘 여기서 시작하기/, "첫 화면의 주된 행동은 하나여야 한다");
   // 오늘 탭은 미쿠 · 세 과목의 다음 칸 · 오늘의 단어 세 가지만 남는다.
   for (const label of ["국어", "영어", "수학"]) {
     assert.match(

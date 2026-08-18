@@ -18,6 +18,14 @@ export type MikuMoodInput = {
   todayCorrect: number;
   /** 연속 학습일. */
   streakDays: number;
+  /**
+   * 지금까지 한 번이라도 공부한 적이 있는가.
+   *
+   * 이걸 구분하지 않으면 처음 온 학습자가 곧바로 `worried`가 된다.
+   * 활동일 0은 "하다가 그만둠"일 수도 있고 "아직 시작 안 함"일 수도 있는데,
+   * 뒤엣것은 걱정할 일이 아니라 시작을 권할 일이다.
+   */
+  hasEverStudied?: boolean;
 };
 
 export type GreetingInput = {
@@ -85,7 +93,8 @@ export function computeMikuMood(input: MikuMoodInput): MikuMood {
   const hasSample = answered >= MIN_ACCURACY_SAMPLE;
   const accuracy = answered > 0 ? correct / answered : 0;
 
-  if (activeDays <= WORRIED_ACTIVE_DAYS) {
+  // 한 번도 공부한 적이 없으면 걱정하지 않는다. 아직 시작을 안 했을 뿐이다.
+  if (input.hasEverStudied !== false && activeDays <= WORRIED_ACTIVE_DAYS) {
     return "worried";
   }
   if (hasSample && accuracy < WORRIED_ACCURACY) {

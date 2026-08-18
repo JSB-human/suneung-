@@ -155,3 +155,28 @@ test("resolveGreetingEvent는 같은 날 다시 오면 sessionStart를 낸다", 
     "sessionStart",
   );
 });
+
+test("a brand new learner is not worried at", () => {
+  // 처음 온 학습자는 활동일이 0이지만 걱정할 일이 아니다.
+  const mood = computeMikuMood({
+    hour: 15,
+    activeDaysLast7: 0,
+    todayAnswered: 0,
+    todayCorrect: 0,
+    streakDays: 0,
+    hasEverStudied: false,
+  });
+  assert.notEqual(mood, "worried", "시작도 안 한 학습자를 걱정하면 안 된다");
+});
+
+test("a learner who studied before but stopped is still worried about", () => {
+  const mood = computeMikuMood({
+    hour: 15,
+    activeDaysLast7: 0,
+    todayAnswered: 0,
+    todayCorrect: 0,
+    streakDays: 0,
+    hasEverStudied: true,
+  });
+  assert.equal(mood, "worried");
+});
