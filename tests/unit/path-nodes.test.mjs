@@ -3,7 +3,9 @@ import test from "node:test";
 import { FOUNDATION_REFERENCE } from "../../app/foundation-reference.ts";
 import { LANGUAGE_KNOWLEDGE_CURRICULA } from "../../app/language-curriculum.ts";
 import { MATH_KNOWLEDGE_CURRICULUM } from "../../app/math-curriculum.ts";
+import { resolveNodeContent } from "../../app/path/node-content.ts";
 import { PATH_NODES, getNode, getNodesForSubject } from "../../app/path/path-nodes.ts";
+import { getPatternNodes } from "../../app/path/pattern-nodes.ts";
 
 const SUBJECTS = ["korean", "english", "math"];
 
@@ -55,10 +57,24 @@ test("every capsule and every concept appears exactly once", () => {
 });
 
 test("subject node counts match the measured content", () => {
-  assert.equal(getNodesForSubject("korean").length, 31);
-  assert.equal(getNodesForSubject("english").length, 31);
-  assert.equal(getNodesForSubject("math").length, 22);
-  assert.equal(PATH_NODES.length, 84);
+  // 캡슐·개념 칸 수는 커리큘럼이 정하므로 고정 숫자로 지킨다.
+  // 유형 칸은 집필하는 대로 늘어나므로 pattern-nodes.ts가 가진 개수와 맞춰 본다.
+  const KNOWLEDGE_COUNT = { korean: 31, english: 31, math: 22 };
+  let knowledgeTotal = 0;
+
+  for (const subject of SUBJECTS) {
+    const nodes = getNodesForSubject(subject);
+    const patterns = nodes.filter((node) => node.kind === "pattern");
+    assert.equal(patterns.length, getPatternNodes(subject).length, `${subject}: 유형 칸이 길에서 빠졌다`);
+    assert.equal(
+      nodes.length - patterns.length,
+      KNOWLEDGE_COUNT[subject],
+      `${subject}: 캡슐·개념 칸 수가 달라졌다`,
+    );
+    knowledgeTotal += nodes.length - patterns.length;
+  }
+
+  assert.equal(knowledgeTotal, 84);
 });
 
 test("every node has a non-empty title and summary", () => {
