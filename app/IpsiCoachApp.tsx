@@ -741,15 +741,6 @@ export default function IpsiCoachApp() {
             mood={mikuMood}
             streak={streak}
             dday={dday}
-            points={points}
-            level={level}
-            onStartThreeMinutes={() => {
-              setTimerPreset(3);
-              setIsTimerOpen(true);
-              setStatusMessage(
-                "미쿠와 딱 3분만 시작해 봐요. 시작한 순간 이미 한 칸 전진했어요! 🎵",
-              );
-            }}
             onOpenEasyStep={() => switchTab(nextSubject)}
           />
 

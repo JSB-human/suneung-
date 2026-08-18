@@ -98,7 +98,8 @@ test("preserves and migrates local study state safely", async () => {
   assert.match(component, /getDaysUntil2028Csat/);
   assert.match(component, /year: 2027, monthIndex: 10, day: 18/);
   assert.match(component, /Date\.UTC/);
-  assert.match(component, /setTimerPreset\(3\)/);
+  // 3분 시작 버튼은 오늘 카드에서 뺐지만 타이머 프리셋에 3분이 남아 있어야 한다.
+  assert.match(component, /\[3, 15, 25, 50\]/, "타이머에 3분 옵션이 있어야 한다");
   assert.match(component, /"math-foundation": "ma-01"/);
   assert.match(component, /"math-core": "ma-06"/);
   assert.match(component, /"math-ebs": "ma-12"/);

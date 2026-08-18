@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import PracticeRunner from "../practice/PracticeRunner";
 import type { PracticeOutcomeReport } from "../practice/PracticeRunner";
+import { createRng, hashString } from "../practice/rng.ts";
 import { resolveNodeContent } from "./node-content.ts";
 
 export type NodeRunnerProps = {
@@ -38,6 +39,9 @@ export default function NodeRunner({
   const [finalScore, setFinalScore] = useState<{ correct: number; total: number } | null>(
     null,
   );
+  // 틀린 문제는 해설만 읽고 넘어가면 다음에 또 틀린다.
+  // 해설을 본 뒤 스스로 다시 풀어야 넘어갈 수 있게 한다.
+  const [retryRound, setRetryRound] = useState(0);
 
   if (!content) {
     return (
@@ -49,6 +53,13 @@ export default function NodeRunner({
 
   const questions = content.questions;
   const question = questions[questionIndex];
+
+  // 다시 풀 때는 선지 자리를 바꾼다. 자리를 외워서 고르면 다시 푸는 의미가 없다.
+  // 같은 라운드에서는 항상 같은 순서라 화면이 흔들리지 않는다.
+  const shownChoices =
+    question && retryRound > 0
+      ? createRng(hashString(`${question.id}:${retryRound}`)).shuffle(question.choices)
+      : (question?.choices ?? []);
 
   const finish = (finalCorrect: number, finalTotal: number) => {
     const total = Math.max(1, finalTotal);
@@ -65,14 +76,28 @@ export default function NodeRunner({
     onOutcome?.(report);
   };
 
+  const isSubmissionCorrect =
+    Boolean(question) &&
+    submitted.replace(/\s+/g, "") === (question?.answer ?? "").replace(/\s+/g, "");
+
   const checkAnswer = () => {
     if (checked || !question) {
       return;
     }
     setChecked(true);
-    if (submitted.replace(/\s+/g, "") === question.answer.replace(/\s+/g, "")) {
-      setCorrectCount((previous) => previous + 1);
+    if (isSubmissionCorrect) {
+      // 점수는 첫 시도만 센다. 다시 풀어 맞힌 것은 학습이지 정답률이 아니다.
+      if (retryRound === 0) {
+        setCorrectCount((previous) => previous + 1);
+      }
     }
+  };
+
+  /** 같은 문제를 선지 순서만 바꿔 다시 낸다. 자리 기억이 아니라 이유로 고르게 하려는 것이다. */
+  const retrySameQuestion = () => {
+    setRetryRound((previous) => previous + 1);
+    setSubmitted("");
+    setChecked(false);
   };
 
   const goNext = () => {
@@ -83,6 +108,7 @@ export default function NodeRunner({
     setQuestionIndex((previous) => previous + 1);
     setSubmitted("");
     setChecked(false);
+    setRetryRound(0);
   };
 
   return (
@@ -141,9 +167,9 @@ export default function NodeRunner({
           </p>
           <p className="practice-prompt">{question.prompt}</p>
 
-          {question.choices.length > 0 ? (
+          {shownChoices.length > 0 ? (
             <div className="practice-choices" role="group" aria-label="답 고르기">
-              {question.choices.map((choice) => (
+              {shownChoices.map((choice) => (
                 <button
                   key={choice.value}
                   type="button"
@@ -177,12 +203,23 @@ export default function NodeRunner({
               정답 확인
             </button>
           ) : (
-            <div className="practice-result" role="status" aria-live="polite">
+            <div
+              className={`practice-result ${isSubmissionCorrect ? "is-correct" : "is-wrong"}`}
+              role="status"
+              aria-live="polite"
+            >
+              <strong>{isSubmissionCorrect ? "맞았어!" : "다시 한 번 보자"}</strong>
               <p>정답 · {question.answer}</p>
               <p className="node-explanation">{question.explanation}</p>
-              <button type="button" className="practice-primary" onClick={goNext}>
-                {questionIndex + 1 >= questions.length ? "이 칸 끝내기" : "다음 문제"}
-              </button>
+              {isSubmissionCorrect ? (
+                <button type="button" className="practice-primary" onClick={goNext}>
+                  {questionIndex + 1 >= questions.length ? "이 칸 끝내기" : "다음 문제"}
+                </button>
+              ) : (
+                <button type="button" className="practice-primary" onClick={retrySameQuestion}>
+                  해설 읽었으면 직접 다시 풀기
+                </button>
+              )}
             </div>
           )}
         </div>

@@ -10,9 +10,6 @@ type EncouragementCoachProps = {
   mood: MikuMood;
   streak: number;
   dday: number;
-  points: number;
-  level: number;
-  onStartThreeMinutes: () => void;
   onOpenEasyStep: () => void;
   className?: string;
 };
@@ -49,9 +46,6 @@ export function EncouragementCoach({
   mood,
   streak,
   dday,
-  points,
-  level,
-  onStartThreeMinutes,
   onOpenEasyStep,
   className,
 }: EncouragementCoachProps) {

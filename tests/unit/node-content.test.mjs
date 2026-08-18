@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { createRng, hashString } from "../../app/practice/rng.ts";
 import { PATH_NODES } from "../../app/path/path-nodes.ts";
 import { resolveNodeContent } from "../../app/path/node-content.ts";
 
@@ -78,4 +79,27 @@ test("concept nodes put their own resources before the subject-wide ones", () =>
   const content = resolveNodeContent("concept:linear-equations");
   assert.ok(content.links.length > 2, "expected concept resources on top of the subject links");
   assert.doesNotMatch(content.links[0].note ?? "", /^EBSi 공식 강좌$/);
+});
+
+test("shuffling choices for a retry keeps the same set and one correct answer", () => {
+  // 다시 풀 때 선지 자리만 바뀌어야 한다. 선지가 빠지거나 늘면 안 된다.
+  for (const node of PATH_NODES) {
+    for (const question of resolveNodeContent(node.id).questions) {
+      if (question.choices.length === 0) continue;
+      for (const round of [1, 2, 3]) {
+        const shuffled = createRng(hashString(`${question.id}:${round}`)).shuffle(question.choices);
+        assert.equal(shuffled.length, question.choices.length, `${question.id}: 선지 수가 바뀌었다`);
+        assert.deepEqual(
+          [...shuffled].map((c) => c.value).sort(),
+          [...question.choices].map((c) => c.value).sort(),
+          `${question.id}: 선지 구성이 바뀌었다`,
+        );
+        assert.equal(
+          shuffled.filter((c) => c.value === question.answer).length,
+          1,
+          `${question.id}: 정답이 정확히 하나여야 한다`,
+        );
+      }
+    }
+  }
 });
