@@ -1707,3 +1707,148 @@
   margin: 4px 0 0;
   line-height: 1.65;
 }
+
+/* ==========================================================================
+   디자인 체계 정리
+   측정 결과 버튼 변형 16종, 여백 11종, 반경 6종이 근거 없이 섞여 있었다.
+   visual-refresh.css가 마지막에 로드되므로 여기서 한 번에 맞춘다.
+   ========================================================================== */
+
+:root {
+  /* 간격 4의 배수. 10px·13px 같은 값이 다시 생기지 않게 한다. */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+
+  /* 반경 3단계. 14/16/20/22px이 섞여 있던 것을 정리한다. */
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* 터치 영역 최소치. 이 값보다 작은 버튼을 만들지 않는다. */
+  --tap: 44px;
+}
+
+/* --- 버튼 4종 ---------------------------------------------------------- */
+/* 주된 행동 · 보조 행동 · 조용한 행동 · 선지. 이 넷 말고는 만들지 않는다. */
+
+.practice-primary,
+.primary-action,
+.trainer-start-button {
+  min-height: var(--tap);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--miku-teal-dark);
+  border-radius: var(--radius-sm);
+  background: var(--miku-teal-dark);
+  color: #fff;
+  font-size: 15px;
+  font-weight: 800;
+}
+
+.practice-secondary,
+.secondary-action,
+.concept-sheet-close,
+.trainer-more-button,
+.practice-concept-toggle {
+  min-height: var(--tap);
+  padding: 0 var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--ink-strong);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.practice-primary:disabled,
+.practice-secondary:disabled,
+.primary-action:disabled,
+.secondary-action:disabled {
+  opacity: 0.45;
+}
+
+.practice-choice {
+  min-height: 48px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  font-size: 16px;
+  text-align: left;
+}
+
+.practice-choice[aria-pressed="true"] {
+  border-color: var(--miku-teal-dark);
+  border-width: 2px;
+  background: var(--miku-soft);
+  font-weight: 700;
+}
+
+/* --- 길을 목록이 아니라 경로처럼 --------------------------------------- */
+/* 칸 사이를 선으로 잇는다. 이어져 있다는 것이 보여야 "길"로 읽힌다. */
+
+.path-list {
+  position: relative;
+}
+
+.path-node {
+  position: relative;
+}
+
+.path-node + .path-node::before {
+  position: absolute;
+  top: -10px;
+  left: 34px;
+  width: 2px;
+  height: 10px;
+  background: var(--line);
+  content: "";
+}
+
+/* 지나온 구간은 진하게. 어디까지 왔는지가 선으로 보인다. */
+.path-node.is-done + .path-node::before,
+.path-node.is-done + .path-node.is-current::before {
+  background: var(--miku-teal);
+}
+
+.path-node.is-current .path-node-button {
+  border-color: var(--miku-teal-dark);
+  border-width: 2px;
+  background: var(--miku-soft);
+}
+
+.path-node.is-done .path-node-order {
+  background: var(--miku-teal);
+  color: #fff;
+}
+
+.path-node.is-current .path-node-order {
+  background: var(--miku-teal-dark);
+  color: #fff;
+}
+
+/* 잠긴 칸은 흐리게 하되 제목은 읽혀야 한다. 앞으로 배울 것을 보여 주는 게 목적이다. */
+.path-node.is-locked .path-node-button {
+  opacity: 1;
+  border-style: dashed;
+  background: transparent;
+}
+
+.path-node.is-locked .path-node-body strong {
+  color: var(--muted);
+}
+
+.path-node.is-locked .path-node-order {
+  background: transparent;
+  border: 1px dashed var(--line);
+  color: var(--muted);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .path-node.is-current .path-node-button {
+    transition: border-color 150ms ease, background-color 150ms ease;
+  }
+}
