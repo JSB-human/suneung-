@@ -82,14 +82,34 @@ test("every node reaches 3 check questions unless a generator backs it", () => {
   assert.deepEqual(short, [], `칸당 3문항을 채우지 못한 노드: ${short.join(", ")}`);
 });
 
-test("English nodes quote real English in at least one authored question", () => {
+const QUOTES_ENGLISH = /[A-Za-z]{3,}[^가-힣]*\s+[A-Za-z]{2,}/;
+
+// 유형 칸은 추가 문항 대신 자기 문항 3개를 직접 들고 있으므로 NODE_QUESTIONS에 없다.
+test("English knowledge nodes quote real English in at least one authored question", () => {
   for (const node of getNodesForSubject("english")) {
+    if (node.kind === "pattern") {
+      continue;
+    }
     const authored = NODE_QUESTIONS[node.id] ?? [];
     assert.ok(authored.length >= 2, `${node.id}: expected 2 authored questions`);
-    const hasEnglish = authored.some((question) =>
-      /[A-Za-z]{3,}[^가-힣]*\s+[A-Za-z]{2,}/.test(question.prompt),
-    );
+    const hasEnglish = authored.some((question) => QUOTES_ENGLISH.test(question.prompt));
     assert.ok(hasEnglish, `${node.id}: no authored question quotes actual English`);
+  }
+});
+
+// 영어 유형 칸은 한국어 설명만 읽고 끝나면 안 된다. 실제 영어 문장을 만나야 한다.
+test("English pattern nodes quote real English in their own questions", () => {
+  for (const node of getNodesForSubject("english")) {
+    if (node.kind !== "pattern") {
+      continue;
+    }
+    const questions = resolveNodeContent(node.id).questions;
+    const quoting = questions.filter(
+      (question) =>
+        QUOTES_ENGLISH.test(question.prompt) ||
+        question.choices.some((choice) => QUOTES_ENGLISH.test(choice.label)),
+    );
+    assert.ok(quoting.length >= 2, `${node.id}: 영어를 인용한 문항이 ${quoting.length}개뿐이다`);
   }
 });
 
