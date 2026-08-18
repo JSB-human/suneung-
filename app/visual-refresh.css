@@ -1900,3 +1900,53 @@
   outline: 2px solid var(--miku-teal-dark);
   outline-offset: 2px;
 }
+
+/* --- 칸 읽기 화면 ------------------------------------------------------ */
+/* 덩어리마다 이름을 붙인다. 라벨이 없으면 설명인지 공식인지 실수인지
+   구분이 안 돼 어디를 봐야 할지 모른다. */
+
+.node-block {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--surface);
+}
+
+.node-block-label {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: var(--miku-teal-dark);
+}
+
+.node-block.is-warning {
+  border-color: var(--warning);
+  background: var(--warning-soft);
+}
+
+.node-block.is-warning .node-block-label {
+  color: var(--warning);
+}
+
+/* 순서대로 볼 것 — 번호가 보여야 순서라는 뜻이 전달된다. */
+.node-key-points {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding-left: var(--space-5);
+  line-height: 1.7;
+}
+
+.node-key-points li {
+  padding-left: var(--space-1);
+}
+
+/* 본문은 길게 읽는 글이라 줄간격을 넉넉히 준다. */
+.node-explanation {
+  font-size: 16px;
+  line-height: 1.8;
+  word-break: keep-all;
+}

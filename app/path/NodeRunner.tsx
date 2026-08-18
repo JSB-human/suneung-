@@ -144,24 +144,40 @@ export default function NodeRunner({
 
       {stage === "read" ? (
         <>
-          <p className="node-explanation">{content.explanation}</p>
+          {/* 각 덩어리에 이름을 붙인다. 라벨이 없으면 설명인지 공식인지
+              실수인지 구분이 안 돼 어디를 봐야 할지 모른다. */}
+          <section className="node-block">
+            <h4 className="node-block-label">이게 뭐예요?</h4>
+            <p className="node-explanation">{content.explanation}</p>
+          </section>
 
-          {content.formula ? <p className="concept-sheet-formula">{content.formula}</p> : null}
+          {content.formula ? (
+            <section className="node-block">
+              <h4 className="node-block-label">외워 둘 것</h4>
+              <p className="concept-sheet-formula">{content.formula}</p>
+            </section>
+          ) : null}
 
           {content.keyPoints.length > 0 ? (
-            <ul className="concept-sheet-points">
-              {content.keyPoints.map((point) => (
-                <li key={point}>{point}</li>
-              ))}
-            </ul>
+            <section className="node-block">
+              <h4 className="node-block-label">순서대로 볼 것</h4>
+              <ol className="node-key-points">
+                {content.keyPoints.map((point) => (
+                  <li key={point}>{point}</li>
+                ))}
+              </ol>
+            </section>
           ) : null}
 
           {content.mistake ? (
-            <p className="concept-sheet-mistake">자주 하는 실수 · {content.mistake}</p>
+            <section className="node-block is-warning">
+              <h4 className="node-block-label">여기서 자주 틀려요</h4>
+              <p className="concept-sheet-mistake">{content.mistake}</p>
+            </section>
           ) : null}
 
           <button type="button" className="practice-primary" onClick={() => setStage("check")}>
-            확인 문제 풀기
+            읽었어요 · 확인 문제 풀기
           </button>
         </>
       ) : null}
