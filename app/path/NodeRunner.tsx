@@ -11,6 +11,15 @@ export type NodeRunnerProps = {
   onComplete: (correctCount: number, totalCount: number) => void;
   onClose: () => void;
   onOutcome?: (report: PracticeOutcomeReport) => void;
+  /**
+   * 다음 칸으로 바로 이어 가기. 없으면 그리지 않는다.
+   *
+   * 칸을 끝낼 때마다 길로 돌아가 다음 칸을 다시 찾게 하면, 한 번에 두 칸을
+   * 할 마음이 있어도 도중에 끊긴다.
+   */
+  onNextNode?: () => void;
+  /** 다음 칸 제목. 무엇으로 이어지는지 보이면 누르기가 쉬워진다. */
+  nextNodeTitle?: string;
 };
 
 type Stage = "read" | "check" | "done";
@@ -24,6 +33,8 @@ export default function NodeRunner({
   onComplete,
   onClose,
   onOutcome,
+  onNextNode,
+  nextNodeTitle,
 }: NodeRunnerProps) {
   const content = useMemo(() => resolveNodeContent(nodeId), [nodeId]);
   const [stage, setStage] = useState<Stage>("read");
@@ -247,7 +258,12 @@ export default function NodeRunner({
           <p>
             맞힌 문제 {finalScore?.correct ?? 0} / {finalScore?.total ?? 1}
           </p>
-          <button type="button" className="practice-primary" onClick={onClose}>
+          {onNextNode ? (
+            <button type="button" className="practice-primary" onClick={onNextNode}>
+              다음 칸 이어서 하기{nextNodeTitle ? ` · ${nextNodeTitle}` : ""}
+            </button>
+          ) : null}
+          <button type="button" className="practice-secondary" onClick={onClose}>
             길로 돌아가기
           </button>
         </div>

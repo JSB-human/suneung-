@@ -99,6 +99,11 @@ test("preserves and migrates local study state safely", async () => {
   assert.match(component, /getSkillAccuracy/, "개념별 정답률을 보여 줘야 한다");
   // 이어하기: 마지막으로 보던 탭을 저장하고 복원한다.
   assert.match(component, /lastTab/, "마지막 탭을 저장해야 한다");
+  // 첫 실행 안내는 한 번만 뜨고, 본 사실이 저장돼야 다시 안 뜬다.
+  assert.match(component, /hasSeenIntro/, "안내를 봤는지 저장해야 한다");
+  assert.match(component, /<OnboardingSheet/, "첫 안내를 띄워야 한다");
+  // 안내는 하이드레이션 뒤에만 뜬다. 서버 렌더에 넣으면 화면이 한 번 깜빡인다.
+  assert.match(component, /isReady && !appState\.hasSeenIntro/, "준비된 뒤에만 안내를 띄워야 한다");
   assert.match(component, /setActiveTab\(restored\.lastTab\)/, "다시 열면 그 탭으로 돌아와야 한다");
   assert.match(component, /normalizeLanguageState/);
   assert.match(component, /getDaysUntil2028Csat/);

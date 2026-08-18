@@ -2,6 +2,7 @@
 
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import EncouragementCoach from "./EncouragementCoach";
+import OnboardingSheet from "./OnboardingSheet";
 import { pickMikuLine } from "./miku/miku-lines";
 import { hashString } from "./practice/rng";
 import { computeMikuMood, countActiveDaysLast7, resolveGreetingEvent } from "./miku/miku-mood";
@@ -71,6 +72,8 @@ type AppState = {
   path: PathState;
   /** 마지막으로 보던 탭. 앱을 다시 열면 여기로 돌아온다. */
   lastTab: TabId;
+  /** 첫 안내를 봤는지. 한 번 보면 다시 뜨지 않는다. */
+  hasSeenIntro: boolean;
 };
 
 type LegacyWordStatus = "unknown" | "fuzzy" | "mastered";
@@ -108,6 +111,7 @@ const DEFAULT_APP_STATE: AppState = {
   practice: EMPTY_PRACTICE_STATE,
   path: EMPTY_PATH_STATE,
   lastTab: "today",
+  hasSeenIntro: false,
 };
 
 const NAV_ITEMS: Array<{ id: TabId; label: string }> = [
@@ -276,6 +280,7 @@ function normalizeStoredState(value: unknown, todayKey: string): AppState {
     // v3에는 길 진도가 없었다. 없으면 빈 길로 시작하고, 알 수 없는 칸 id는 버린다.
     path: normalizePathState((candidate as { path?: unknown }).path),
     lastTab: normalizeTabId((candidate as { lastTab?: unknown }).lastTab),
+    hasSeenIntro: (candidate as { hasSeenIntro?: unknown }).hasSeenIntro === true,
     practice: (() => {
       const practice = normalizePracticeState(
         (candidate as { practice?: unknown }).practice,
@@ -711,6 +716,12 @@ export default function IpsiCoachApp() {
 
   return (
     <div className="app-shell">
+      {isReady && !appState.hasSeenIntro ? (
+        <OnboardingSheet
+          userName={displayName}
+          onDone={() => setAppState((previous) => ({ ...previous, hasSeenIntro: true }))}
+        />
+      ) : null}
       <header className="topbar">
         <a
           className="brand-lockup"

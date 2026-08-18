@@ -81,13 +81,21 @@ export default function PathView({
   }, [subject]);
 
   if (openNodeId) {
+    // 길 순서상 바로 다음 칸. 방금 끝낸 칸을 완료로 표시하면 여기가 열린다.
+    const openIndex = nodes.findIndex((node) => node.id === openNodeId);
+    const nextNode = openIndex >= 0 ? nodes[openIndex + 1] : undefined;
+
     return (
       <NodeRunner
+        // 칸이 바뀌면 새로 마운트해야 한다. 안 그러면 이전 칸의 진행 상태가 남는다.
+        key={openNodeId}
         nodeId={openNodeId}
         onOutcome={onOutcome}
         onComplete={(correctCount, totalCount) =>
           onCompleteNode(openNodeId, correctCount, totalCount)
         }
+        onNextNode={nextNode ? () => setOpenNodeId(nextNode.id) : undefined}
+        nextNodeTitle={nextNode?.title}
         onClose={() => setOpenNodeId(null)}
       />
     );
