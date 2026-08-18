@@ -1,6 +1,7 @@
 import type { Subject } from "../practice/types.ts";
 import { ENGLISH_PATTERNS } from "./pattern-nodes-english.ts";
 import { KOREAN_PATTERNS } from "./pattern-nodes-korean.ts";
+import { MATH_PATTERNS } from "./pattern-nodes-math.ts";
 import type { NodeQuestion } from "./types.ts";
 
 /**
@@ -28,7 +29,7 @@ export type PatternNode = {
   questions: NodeQuestion[];
 };
 
-export const PATTERN_NODES: PatternNode[] = [...KOREAN_PATTERNS, ...ENGLISH_PATTERNS];
+export const PATTERN_NODES: PatternNode[] = [...KOREAN_PATTERNS, ...ENGLISH_PATTERNS, ...MATH_PATTERNS];
 
 const BY_SUBJECT = new Map<Subject, PatternNode[]>();
 for (const node of PATTERN_NODES) {

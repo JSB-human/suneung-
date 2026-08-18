@@ -303,7 +303,8 @@ test("4b. the plan is valid on the exam day itself and when the path is finished
   assert.equal(onExamDay.daysUntilExam, 0);
   assert.ok(onExamDay.weeks.length >= 1);
 
-  const finished = planFor("math", "2027-01-04", stateWithFirst("math", 22));
+  const mathNodeCount = getNodesForSubject("math").length;
+  const finished = planFor("math", "2027-01-04", stateWithFirst("math", mathNodeCount));
   assert.equal(finished.remainingCount, 0);
   assert.equal(finished.nodesPerWeek, 0);
   assert.equal(finished.finishWeekIndex, null);

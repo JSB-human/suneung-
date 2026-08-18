@@ -131,13 +131,22 @@ test("authored questions are appended after the built-in question", () => {
 
 // 생성기 칸 3개는 quickCheck 1문항만 고정으로 들고 있으므로 합계가 22×3이 되지 않는다.
 // 12개 개념 칸(3) + 7개 캡슐 칸(3) + 3개 생성기 캡슐 칸(1) = 60.
-test("math nodes carry 60 fixed questions in total", () => {
-  const mathCounts = getNodesForSubject("math").map(
-    (node) => resolveNodeContent(node.id).questions.length,
-  );
+// 유형 칸은 뒤에 계속 붙으므로 개념·캡슐 칸만 세고, 유형 칸은 따로 3문항씩인지 본다.
+test("math concept and capsule nodes carry 60 fixed questions in total", () => {
+  const mathCounts = getNodesForSubject("math")
+    .filter((node) => node.kind !== "pattern")
+    .map((node) => resolveNodeContent(node.id).questions.length);
   assert.equal(
     mathCounts.reduce((sum, count) => sum + count, 0),
     60,
     "math question total changed",
   );
+});
+
+test("every math pattern node carries exactly 3 fixed questions", () => {
+  const patterns = getNodesForSubject("math").filter((node) => node.kind === "pattern");
+  assert.ok(patterns.length > 0, "수학 유형 칸이 하나도 없다");
+  for (const node of patterns) {
+    assert.equal(resolveNodeContent(node.id).questions.length, 3, `${node.id}: 확인 문제가 3개가 아니다`);
+  }
 });
