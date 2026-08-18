@@ -23,6 +23,8 @@ import {
   migrateVocabIntoReview,
   normalizePracticeState,
   recordOutcome,
+  summarizeMistakes,
+  getSkillAccuracy,
   type PracticeState,
 } from "./practice/practice-state";
 import type { LanguageSubject } from "./language-curriculum";
@@ -67,6 +69,8 @@ type AppState = {
   math: MathKnowledgeMapValue;
   practice: PracticeState;
   path: PathState;
+  /** 마지막으로 보던 탭. 앱을 다시 열면 여기로 돌아온다. */
+  lastTab: TabId;
 };
 
 type LegacyWordStatus = "unknown" | "fuzzy" | "mastered";
@@ -103,6 +107,7 @@ const DEFAULT_APP_STATE: AppState = {
   math: createEmptyMathKnowledgeMapValue(),
   practice: EMPTY_PRACTICE_STATE,
   path: EMPTY_PATH_STATE,
+  lastTab: "today",
 };
 
 const NAV_ITEMS: Array<{ id: TabId; label: string }> = [
@@ -163,6 +168,12 @@ function findLastStudyDate(
     .filter((key) => key < todayKey && (studyLog[key] ?? 0) > 0)
     .sort();
   return days.length > 0 ? days[days.length - 1] : null;
+}
+
+const TAB_IDS: TabId[] = ["today", "korean", "english", "math", "records"];
+
+function normalizeTabId(value: unknown): TabId {
+  return TAB_IDS.includes(value as TabId) ? (value as TabId) : "today";
 }
 
 function isStringArray(value: unknown): value is string[] {
@@ -264,6 +275,7 @@ function normalizeStoredState(value: unknown, todayKey: string): AppState {
     language: normalizeLanguageState(candidate.language),
     // v3에는 길 진도가 없었다. 없으면 빈 길로 시작하고, 알 수 없는 칸 id는 버린다.
     path: normalizePathState((candidate as { path?: unknown }).path),
+    lastTab: normalizeTabId((candidate as { lastTab?: unknown }).lastTab),
     practice: (() => {
       const practice = normalizePracticeState(
         (candidate as { practice?: unknown }).practice,
@@ -422,6 +434,17 @@ export default function IpsiCoachApp() {
     // 학습 기록이 하나도 없으면 아직 시작을 안 한 것이지 그만둔 것이 아니다.
     hasEverStudied: Object.keys(appState.studyLog).length > 0,
   });
+  const mistakeSummary = summarizeMistakes(appState.practice);
+  // 풀어 본 스킬만, 정답률 낮은 순으로. 안 푼 것을 0%로 보여 주면 못한다는 뜻이 된다.
+  const practicedSkills = Object.keys(appState.practice.skillStats)
+    .map((skillId) => ({
+      skillId,
+      label: getSkillEntry(skillId)?.label ?? skillId,
+      accuracy: getSkillAccuracy(appState.practice, skillId) ?? 0,
+      attempts: appState.practice.skillStats[skillId].attempts,
+    }))
+    .sort((left, right) => left.accuracy - right.accuracy);
+
   const mikuGreeting = pickMikuLine({
     event: resolveGreetingEvent({
       todayKey,
@@ -500,7 +523,9 @@ export default function IpsiCoachApp() {
       try {
         const current = window.localStorage.getItem(STORAGE_KEY);
         if (current) {
-          setAppState(normalizeStoredState(JSON.parse(current), todayKey));
+          const restored = normalizeStoredState(JSON.parse(current), todayKey);
+          setAppState(restored);
+          setActiveTab(restored.lastTab);
           setIsReady(true);
           setLocalHour(new Date().getHours());
           return;
@@ -612,6 +637,8 @@ export default function IpsiCoachApp() {
 
   const switchTab = (tab: TabId) => {
     setActiveTab(tab);
+    // 다음에 앱을 열면 여기로 돌아온다. 매번 오늘 탭에서 찾아가지 않게 한다.
+    setAppState((previous) => (previous.lastTab === tab ? previous : { ...previous, lastTab: tab }));
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -889,6 +916,14 @@ export default function IpsiCoachApp() {
             </div>
           </div>
 
+          {/* 레벨·포인트는 첫 화면에서 빼고 여기로 옮겼다. 시작할 때는 0이 부담이지만
+              기록을 보러 온 자리에서는 쌓인 것이 보이는 편이 낫다. */}
+          <div className="record-score-row" aria-label="성장 포인트">
+            <span>Lv.{level}</span>
+            <span>성장 포인트 {points} P</span>
+            <span>연속 {streak}일</span>
+          </div>
+
           <div className="stats-grid">
             <article className="stat-card"><p>연속 학습</p><strong>{streak}일</strong></article>
             <article className="stat-card"><p>최근 7일</p><strong>{weeklyTotal}분</strong></article>
@@ -913,6 +948,48 @@ export default function IpsiCoachApp() {
               ))}
             </div>
           </article>
+
+          {mistakeSummary.length > 0 ? (
+            <section className="study-detail-section" aria-label="자주 하는 실수">
+              <div className="content-section-heading">
+                <span>WEAK SPOTS</span>
+                <div>
+                  <h2>자주 틀리는 것</h2>
+                  <p>최근에 틀린 문제에서 반복되는 실수예요. 여기부터 고치면 가장 빨리 올라갑니다.</p>
+                </div>
+              </div>
+              <ul className="weak-spot-list">
+                {mistakeSummary.slice(0, 5).map((item) => (
+                  <li key={item.tag}>
+                    <strong>{item.label}</strong>
+                    <span>{item.count}번</span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
+
+          {practicedSkills.length > 0 ? (
+            <section className="study-detail-section" aria-label="개념별 정답률">
+              <div className="content-section-heading">
+                <span>ACCURACY</span>
+                <div>
+                  <h2>개념별 정답률</h2>
+                  <p>풀어 본 개념만 나옵니다. 낮은 것부터 다시 보면 됩니다.</p>
+                </div>
+              </div>
+              <ul className="accuracy-list">
+                {practicedSkills.map((item) => (
+                  <li key={item.skillId}>
+                    <strong>{item.label}</strong>
+                    <span>
+                      {Math.round(item.accuracy * 100)}% · {item.attempts}문제
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          ) : null}
 
           <section className="study-detail-section" aria-label="오답노트">
             <div className="content-section-heading">

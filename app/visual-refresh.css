@@ -1603,3 +1603,59 @@
   background: var(--surface);
   font-weight: 700;
 }
+
+/* 자주 하는 실수 · 개념별 정답률. 둘 다 "지금 뭘 고칠지"를 알려 주는 목록이다. */
+.weak-spot-list,
+.accuracy-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.weak-spot-list li,
+.accuracy-list li {
+  display: flex;
+  gap: 12px;
+  align-items: baseline;
+  justify-content: space-between;
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+}
+
+.weak-spot-list strong,
+.accuracy-list strong {
+  min-width: 0;
+  font-size: 15px;
+  line-height: 1.4;
+  word-break: keep-all;
+}
+
+.weak-spot-list span,
+.accuracy-list span {
+  flex: 0 0 auto;
+  font-size: 14px;
+  font-weight: 700;
+  opacity: 0.8;
+}
+
+/* 기록 탭 상단의 누적 지표. 첫 화면에서 옮겨 온 자리다. */
+.record-score-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.record-score-row span {
+  padding: 8px 12px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 700;
+}

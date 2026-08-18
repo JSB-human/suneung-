@@ -94,6 +94,12 @@ test("preserves and migrates local study state safely", async () => {
     assert.match(component, new RegExp(field), `${field}가 v4에서도 보존되어야 한다`);
   }
   assert.match(component, /recordOutcome/);
+  // 약점 집계와 정답률은 데이터만 쌓아 두면 의미가 없다. 화면에 나와야 한다.
+  assert.match(component, /summarizeMistakes/, "자주 하는 실수를 집계해 보여 줘야 한다");
+  assert.match(component, /getSkillAccuracy/, "개념별 정답률을 보여 줘야 한다");
+  // 이어하기: 마지막으로 보던 탭을 저장하고 복원한다.
+  assert.match(component, /lastTab/, "마지막 탭을 저장해야 한다");
+  assert.match(component, /setActiveTab\(restored\.lastTab\)/, "다시 열면 그 탭으로 돌아와야 한다");
   assert.match(component, /normalizeLanguageState/);
   assert.match(component, /getDaysUntil2028Csat/);
   assert.match(component, /year: 2027, monthIndex: 10, day: 18/);

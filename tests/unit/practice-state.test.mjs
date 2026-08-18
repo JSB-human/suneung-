@@ -1,11 +1,15 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFile } from "node:fs/promises";
 import {
   EMPTY_PRACTICE_STATE,
   MAX_WRONG_NOTES,
   migrateVocabIntoReview,
   normalizePracticeState,
   recordOutcome,
+  getSkillAccuracy,
+  summarizeMistakes,
+  MISTAKE_LABELS,
 } from "../../app/practice/practice-state.ts";
 
 const TODAY = "2026-08-06";
@@ -115,4 +119,53 @@ test("migration never overwrites an entry that already exists", () => {
   const existing = { "vocab:assume": { ...EMPTY_PRACTICE_STATE.reviewById, mastery: 99, status: "completed", dueDate: null, intervalDays: 9, ease: 2.5, reviewCount: 9, streak: 9, favorite: false, lastReviewedAt: null } };
   const migrated = migrateVocabIntoReview({ assume: { status: "new", mastery: 0 } }, existing);
   assert.equal(migrated["vocab:assume"].mastery, 99);
+});
+
+test("skill stats accumulate attempts and correct answers", () => {
+  let state = recordOutcome(EMPTY_PRACTICE_STATE, outcome({ isCorrect: true, mistakeTag: null }));
+  state = recordOutcome(state, outcome({ isCorrect: false }));
+  state = recordOutcome(state, outcome({ isCorrect: true, mistakeTag: null }));
+  assert.deepEqual(state.skillStats["ma-factor"], { attempts: 3, correct: 2 });
+});
+
+test("accuracy is null before the first attempt", () => {
+  assert.equal(getSkillAccuracy(EMPTY_PRACTICE_STATE, "ma-factor"), null);
+  const state = recordOutcome(EMPTY_PRACTICE_STATE, outcome({ isCorrect: true, mistakeTag: null }));
+  assert.equal(getSkillAccuracy(state, "ma-factor"), 1);
+  assert.equal(getSkillAccuracy(state, "ma-linear-eq"), null, "안 푼 스킬을 0%로 보여 주면 안 된다");
+});
+
+test("mistakes are summarized most frequent first with readable labels", () => {
+  let state = EMPTY_PRACTICE_STATE;
+  for (const seed of [1, 2, 3]) {
+    state = recordOutcome(state, outcome({ seed, mistakeTag: "sign-transpose" }));
+  }
+  state = recordOutcome(state, outcome({ seed: 4, mistakeTag: "not-reduced" }));
+
+  const summary = summarizeMistakes(state);
+  assert.equal(summary[0].tag, "sign-transpose");
+  assert.equal(summary[0].count, 3);
+  assert.equal(summary[0].label, "이항할 때 부호");
+  assert.equal(summary[1].count, 1);
+});
+
+test("outcomes without a mistake tag are left out of the summary", () => {
+  const state = recordOutcome(EMPTY_PRACTICE_STATE, outcome({ mistakeTag: null }));
+  assert.deepEqual(summarizeMistakes(state), []);
+});
+
+test("every mistake tag the generators emit has a readable label", async () => {
+  // 미쿠 대사집이 아니라 생성기가 실제로 붙이는 태그를 본다.
+  // 태그를 새로 만들고 라벨을 안 붙이면 화면에 "sign-transpose"가 그대로 뜬다.
+  const source = await readFile(new URL("../../app/practice/generators/math.ts", import.meta.url), "utf8");
+  const tags = [...new Set([...source.matchAll(/mistakeTag: "([a-z-]+)"/g)].map((m) => m[1]))];
+  assert.ok(tags.length > 10, `expected generator tags, found ${tags.length}`);
+  for (const tag of tags) {
+    assert.ok(MISTAKE_LABELS[tag], `${tag} has no Korean label`);
+  }
+});
+
+test("normalizePracticeState repairs a corrupted stat", () => {
+  const state = normalizePracticeState({ skillStats: { "ma-factor": { attempts: 2, correct: 9 } } });
+  assert.deepEqual(state.skillStats["ma-factor"], { attempts: 2, correct: 2 });
 });
