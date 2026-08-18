@@ -1592,3 +1592,14 @@
   line-height: 1.5;
   opacity: 0.75;
 }
+
+/* 단어 목록 "더 보기". 1500장을 한 번에 그리지 않기 위한 장치다. */
+.trainer-more-button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface);
+  font-weight: 700;
+}

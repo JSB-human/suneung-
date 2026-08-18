@@ -78,6 +78,9 @@ const RATING_HINT: Record<VocabRating, string> = {
 
 const TOUCH_TARGET_STYLE = { minHeight: 44, minWidth: 44 };
 
+/** 목록을 펼쳤을 때 한 번에 그리는 단어 수. "더 보기"로 늘린다. */
+const LIBRARY_PAGE_SIZE = 30;
+
 function normalizeState(state?: VocabTrainerState): VocabTrainerState {
   if (!state) {
     return DEFAULT_STATE;
@@ -229,6 +232,12 @@ export function VocabTrainer({
       },
     );
   }, [today, trainerState, words]);
+
+  // 단어 목록은 접혀 있어도 <details> 자식이 DOM에 전부 만들어진다.
+  // 1500장을 늘 그리면 문서가 1MB를 넘고 폰에서 스크롤이 끊긴다.
+  // 펼쳤을 때만 그리고, 그때도 한 번에 다 그리지 않는다.
+  const [isLibraryOpen, setIsLibraryOpen] = useState(false);
+  const [renderLimit, setRenderLimit] = useState(LIBRARY_PAGE_SIZE);
 
   const visibleWords = useMemo(() => {
     const loweredSearch = searchTerm.trim().toLowerCase();
@@ -508,8 +517,14 @@ export function VocabTrainer({
       </section>
 
       {/* 단어 목록 전체를 늘 펼쳐 두면 화면이 수십 배로 길어진다. 접어 둔다. */}
-      <details className="trainer-library">
+      <details
+        className="trainer-library"
+        open={isLibraryOpen}
+        onToggle={(event) => setIsLibraryOpen(event.currentTarget.open)}
+      >
         <summary className="trainer-library-summary">내 단어장 전체 보기 · {words.length}개</summary>
+        {isLibraryOpen ? (
+        <>
         <div className="trainer-library-head">
           <div>
             <p>검색과 필터로 새 단어, 학습중, 복습예정, 완료 상태를 빠르게 확인합니다.</p>
@@ -544,7 +559,7 @@ export function VocabTrainer({
         </div>
 
         <div className="trainer-word-list">
-          {visibleWords.map((word) => {
+          {visibleWords.slice(0, renderLimit).map((word) => {
             const progress = getProgress(trainerState, word.id);
             const stage = resolveStage(progress);
             const due = isDue(progress, today);
@@ -593,6 +608,19 @@ export function VocabTrainer({
             </div>
           ) : null}
         </div>
+
+        {visibleWords.length > renderLimit ? (
+          <button
+            type="button"
+            className="trainer-more-button"
+            style={TOUCH_TARGET_STYLE}
+            onClick={() => setRenderLimit((previous) => previous + LIBRARY_PAGE_SIZE)}
+          >
+            더 보기 ({renderLimit} / {visibleWords.length})
+          </button>
+        ) : null}
+        </>
+        ) : null}
       </details>
     </section>
   );
