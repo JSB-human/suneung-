@@ -5,6 +5,7 @@ import {
   formatFraction,
   formatQuadratic,
   gcd,
+  josa,
   lcm,
   reduceFraction,
 } from "../../app/practice/math-format.ts";
@@ -49,4 +50,29 @@ test("formatQuadratic renders readable polynomials", () => {
 test("formatFactor renders (x + a) form", () => {
   assert.equal(formatFactor(3), "(x + 3)");
   assert.equal(formatFactor(-4), "(x - 4)");
+});
+
+test("josa picks the particle from how the number is read", () => {
+  // 받침 있음: 1 일, 3 삼, 6 육, 7 칠, 8 팔, 0 (십·백·천·만)
+  assert.equal(josa(3, "이/가"), "이");
+  assert.equal(josa(4, "이/가"), "가");
+  assert.equal(josa(10, "이/가"), "이");
+  assert.equal(josa(2, "을/를"), "를");
+  assert.equal(josa(7, "을/를"), "을");
+  assert.equal(josa(6, "와/과"), "과");
+  assert.equal(josa(5, "와/과"), "와");
+});
+
+test("josa uses 로 after a ㄹ ending, not 으로", () => {
+  assert.equal(josa(1, "으로/로"), "로", "1은 '일'이라 ㄹ 받침");
+  assert.equal(josa(8, "으로/로"), "로", "8은 '팔'이라 ㄹ 받침");
+  assert.equal(josa(3, "으로/로"), "으로");
+  assert.equal(josa(2, "으로/로"), "로");
+  assert.equal(josa(10, "으로/로"), "으로", "10은 '십'이라 ㅂ 받침");
+});
+
+test("josa reads only the last digit and ignores the sign", () => {
+  assert.equal(josa(23, "이/가"), josa(3, "이/가"));
+  assert.equal(josa(-3, "이/가"), josa(3, "이/가"));
+  assert.equal(josa(124, "을/를"), josa(4, "을/를"));
 });

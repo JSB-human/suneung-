@@ -1,6 +1,14 @@
 import type { Rng } from "../rng.ts";
 import type { Level, QuestionBody, QuestionGenerator } from "../types.ts";
-import { formatFactor, formatFraction, formatQuadratic, lcm, reduceFraction } from "../math-format.ts";
+import {
+  formatFactor,
+  formatFraction,
+  formatQuadratic,
+  josa,
+  josaAfterExpression,
+  lcm,
+  reduceFraction,
+} from "../math-format.ts";
 import { buildChoices, type DistractorCandidate } from "./choice-builder.ts";
 
 type LevelRange = {
@@ -53,14 +61,14 @@ const generateLinearEquation: QuestionGenerator = (rng: Rng, level: Level): Ques
     choices: buildChoices(rng, String(solution), candidates),
     acceptableAnswers: [String(solution)],
     steps: [
-      `양변에서 ${constant < 0 ? `${Math.abs(constant)}를 더하면` : `${constant}를 빼면`} ${coefficient}x = ${coefficient * solution}`,
-      `양변을 ${coefficient}로 나누면 x = ${solution}`,
+      `양변에서 ${constant < 0 ? `${Math.abs(constant)}${josa(constant, "을/를")} 더하면` : `${constant}${josa(constant, "을/를")} 빼면`} ${coefficient}x = ${coefficient * solution}`,
+      `양변을 ${coefficient}${josa(coefficient, "으로/로")} 나누면 x = ${solution}`,
       `검산: ${coefficient} × ${solution} ${constant < 0 ? "-" : "+"} ${Math.abs(constant)} = ${rightSide}`,
     ],
     hints: [
       "일차방정식이야. x가 있는 항만 왼쪽에 남기면 돼.",
-      `상수항 ${constant}를 반대쪽으로 넘겨. 넘어갈 때 부호가 바뀌어.`,
-      `${coefficient}x = ${coefficient * solution} 까지 왔으면 양변을 ${coefficient}로 나누면 끝이야.`,
+      `상수항 ${constant}${josa(constant, "을/를")} 반대쪽으로 넘겨. 넘어갈 때 부호가 바뀌어.`,
+      `${coefficient}x = ${coefficient * solution} 까지 왔으면 양변을 ${coefficient}${josa(coefficient, "으로/로")} 나누면 끝이야.`,
     ],
   };
 };
@@ -82,7 +90,8 @@ const generatePolynomialExpansion: QuestionGenerator = (rng: Rng, level: Level):
   const constantTerm = constantB * constantD;
 
   const answer = formatQuadratic(squareTerm, middleTerm, constantTerm);
-  const prompt = `${formatBinomial(leadA, constantB)}${formatBinomial(leadC, constantD)} 를 전개하면?`;
+  const expression = `${formatBinomial(leadA, constantB)}${formatBinomial(leadC, constantD)}`;
+  const prompt = `${expression}${josaAfterExpression(expression, "을/를")} 전개하면?`;
 
   const candidates: DistractorCandidate[] = [
     { value: formatQuadratic(squareTerm, 0, constantTerm), mistakeTag: "missing-cross" },
@@ -139,7 +148,8 @@ const generateFactoring: QuestionGenerator = (rng: Rng, level: Level): QuestionB
   const middleTerm = rootA + rootB;
   const constantTerm = rootA * rootB;
   const answer = `${formatFactor(rootA)}${formatFactor(rootB)}`;
-  const prompt = `${formatQuadratic(1, middleTerm, constantTerm)} 를 인수분해하면?`;
+  const expression = formatQuadratic(1, middleTerm, constantTerm);
+  const prompt = `${expression}${josaAfterExpression(expression, "을/를")} 인수분해하면?`;
 
   const candidates: DistractorCandidate[] = [
     { value: `${formatFactor(-rootA)}${formatFactor(-rootB)}`, mistakeTag: "both-signs" },
@@ -155,15 +165,15 @@ const generateFactoring: QuestionGenerator = (rng: Rng, level: Level): QuestionB
     choices: buildChoices(rng, answer, candidates),
     acceptableAnswers: [answer],
     steps: [
-      `곱해서 ${constantTerm}, 더해서 ${middleTerm}이 되는 두 수를 찾는다.`,
-      `그 두 수는 ${rootA} 와 ${rootB} 이다.`,
+      `곱해서 ${constantTerm}, 더해서 ${middleTerm}${josa(middleTerm, "이/가")} 되는 두 수를 찾는다.`,
+      `그 두 수는 ${rootA}${josa(rootA, "와/과")} ${rootB}이다.`,
       `따라서 ${answer}`,
       `검산: 전개하면 ${formatQuadratic(1, middleTerm, constantTerm)}`,
     ],
     hints: [
       "x²+(a+b)x+ab = (x+a)(x+b) 꼴이야.",
-      `곱해서 ${constantTerm}이 되는 두 정수 짝을 모두 적어 봐.`,
-      `그중 더해서 ${middleTerm}이 되는 짝이 답이야.`,
+      `곱해서 ${constantTerm}${josa(constantTerm, "이/가")} 되는 두 정수 짝을 모두 적어 봐.`,
+      `그중 더해서 ${middleTerm}${josa(middleTerm, "이/가")} 되는 짝이 답이야.`,
     ],
   };
 };
@@ -179,7 +189,7 @@ const generateQuadraticEquation: QuestionGenerator = (rng: Rng, level: Level): Q
   const middleTerm = -(rootA + rootB);
   const constantTerm = rootA * rootB;
   const answer = formatRoots(rootA, rootB);
-  const prompt = `${formatQuadratic(1, middleTerm, constantTerm)} = 0 의 해는?`;
+  const prompt = `${formatQuadratic(1, middleTerm, constantTerm)} = 0의 해는?`;
 
   const candidates: DistractorCandidate[] = [
     { value: formatRoots(-rootA, -rootB), mistakeTag: "root-sign" },
@@ -201,7 +211,7 @@ const generateQuadraticEquation: QuestionGenerator = (rng: Rng, level: Level): Q
     ],
     hints: [
       "우변이 0이니까 좌변을 인수분해부터 해 봐.",
-      `곱해서 ${constantTerm}, 더해서 ${middleTerm}이 되는 두 수를 찾아.`,
+      `곱해서 ${constantTerm}, 더해서 ${middleTerm}${josa(middleTerm, "이/가")} 되는 두 수를 찾아.`,
       "인수분해했으면 각 괄호를 0으로 놓으면 돼. 부호가 반대로 나오는 것에 주의해.",
     ],
   };
@@ -241,7 +251,8 @@ const generateFractionArithmetic: QuestionGenerator = (rng: Rng, level: Level): 
 
   const result = reduceFraction(rawNumerator, rawDenominator);
   const answer = formatFraction(result);
-  const prompt = `${numeratorA}/${denominatorB} ${operator} ${numeratorC}/${denominatorD} 를 계산하면? (기약분수로)`;
+  const expression = `${numeratorA}/${denominatorB} ${operator} ${numeratorC}/${denominatorD}`;
+  const prompt = `${expression}${josaAfterExpression(expression, "을/를")} 계산하면? (기약분수로)`;
 
   const naive =
     operator === "+"
@@ -261,7 +272,7 @@ const generateFractionArithmetic: QuestionGenerator = (rng: Rng, level: Level): 
   const steps =
     operator === "+" || operator === "-"
       ? [
-          `분모를 ${denominatorB} 와 ${denominatorD} 의 최소공배수 ${commonDenominator} 로 맞춘다.`,
+          `분모를 ${denominatorB}${josa(denominatorB, "와/과")} ${denominatorD}의 최소공배수 ${commonDenominator}${josa(commonDenominator, "으로/로")} 맞춘다.`,
           `${scaledNumeratorA}/${commonDenominator} ${operator} ${scaledNumeratorC}/${commonDenominator}`,
           `분자끼리 계산하면 ${rawNumerator}/${rawDenominator}`,
           `약분하면 ${answer}`,
@@ -282,7 +293,7 @@ const generateFractionArithmetic: QuestionGenerator = (rng: Rng, level: Level): 
     operator === "+" || operator === "-"
       ? [
           "분모가 다르면 바로 더하거나 뺄 수 없어.",
-          `${denominatorB} 와 ${denominatorD} 의 최소공배수 ${commonDenominator} 로 통분부터 해.`,
+          `${denominatorB}${josa(denominatorB, "와/과")} ${denominatorD}의 최소공배수 ${commonDenominator}${josa(commonDenominator, "으로/로")} 통분부터 해.`,
           "통분했으면 분자끼리만 계산하고, 마지막에 약분하는 걸 잊지 마.",
         ]
       : operator === "×"
