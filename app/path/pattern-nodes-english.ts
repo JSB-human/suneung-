@@ -827,4 +827,122 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
       },
     ],
   },
+
+  {
+    id: "en-p36-order",
+    subject: "english",
+    title: "36·37번 글의 순서",
+    summary: "주어진 글 뒤에 (A)(B)(C)를 놓을 차례를 정합니다.",
+    explanation:
+      "36·37번은 짧은 글을 먼저 주고 그 뒤에 이어질 세 덩어리 (A), (B), (C)의 순서를 고르는 문제입니다. 내용을 다 이해해야 풀리는 것처럼 보이지만, 순서를 정하는 것은 각 덩어리의 첫 문장에 든 연결어와 지시어입니다. this, they, the 뒤에 붙은 명사는 앞에서 이미 말한 것을 가리키므로, 그 대상이 어디 있는지만 찾으면 두 덩어리가 붙습니다. 선택지는 다섯 개지만 맨 앞 덩어리 하나만 정해도 후보가 둘로 줄어듭니다.",
+    keyPoints: [
+      "주어진 글의 마지막 문장에서 다음 덩어리가 이어받을 말(사람·사물·사건)에 동그라미를 칩니다.",
+      "(A)(B)(C)의 첫 문장만 읽고 this, they, the+명사, But, So처럼 앞을 이어받는 표시에 밑줄을 긋습니다.",
+      "동그라미 친 말을 그대로 받는 첫 문장이 있는 덩어리를 맨 앞에 놓고, 남은 둘도 같은 방법으로 이어 붙입니다.",
+    ],
+    mistake:
+      "세 덩어리를 처음부터 끝까지 다 해석한 뒤에 순서를 정하려 합니다. 순서는 각 덩어리의 첫 문장 하나로 갈리므로, 첫 문장끼리 먼저 맞춰 보고 확정한 다음에 나머지를 읽어야 시간이 남습니다.",
+    questions: [
+      {
+        id: "en-p36-q1",
+        prompt:
+          "주어진 글 ‘One morning I found a small bird on the road. It could not fly.’ 뒤에 (A) ‘After two weeks the bird was strong again. I opened the window, and it flew away.’ (B) ‘I took it home and put it in a box.’ (C) ‘Every day I gave the bird water and food in that box.’를 이어 쓸 때 알맞은 순서는?",
+        choices: [
+          { value: "bca", label: "(B) - (C) - (A)" },
+          { value: "acb", label: "(A) - (C) - (B)" },
+          { value: "bac", label: "(B) - (A) - (C)" },
+          { value: "cab", label: "(C) - (A) - (B)" },
+        ],
+        answer: "bca",
+        explanation:
+          "(B)의 it이 주어진 글의 a small bird를 그대로 받으므로 (B)가 맨 앞입니다. (C)의 that box는 (B)에서 처음 나온 상자를 가리키고, (A)의 After two weeks는 돌본 뒤의 일이라 맨 뒤입니다.",
+      },
+      {
+        id: "en-p36-q2",
+        prompt: "주어진 글이 ‘I bought two small trees and planted them in the yard.’로 끝날 때, 바로 뒤에 올 문장으로 가장 알맞은 것은?",
+        choices: [
+          { value: "one-of-them", label: "One of them died in winter, but the other grew tall." },
+          { value: "so-decided", label: "So I decided to buy some trees for the yard." },
+          { value: "yard-good", label: "A yard is a good place to grow plants." },
+          { value: "sold-house", label: "Later I sold the house and moved to the city." },
+        ],
+        answer: "one-of-them",
+        explanation:
+          "One of them의 them이 앞 문장의 two small trees를 그대로 받습니다. 나머지 셋은 앞 문장을 이어받는 지시어가 없고, So I decided to buy는 오히려 나무를 사기 전 이야기입니다.",
+      },
+      {
+        id: "en-p36-q3",
+        prompt:
+          "주어진 글 ‘People often say that talking fast makes you sound smart.’ 뒤에 (A) ‘However, listeners remember less when the speaker is too fast.’ (B) ‘In one test, students heard the same story at two speeds.’ (C) ‘The slow group answered twice as many questions.’를 이어 쓸 때 알맞은 순서는?",
+        choices: [
+          { value: "abc", label: "(A) - (B) - (C)" },
+          { value: "bac", label: "(B) - (A) - (C)" },
+          { value: "cab", label: "(C) - (A) - (B)" },
+          { value: "acb", label: "(A) - (C) - (B)" },
+        ],
+        answer: "abc",
+        explanation:
+          "(A)의 However가 주어진 글의 통념을 뒤집어 글의 방향을 정합니다. (B)의 In one test가 그 말을 뒷받침할 실험을 꺼내고, (C)의 The slow group은 (B)의 two speeds 중 하나를 받으므로 마지막입니다.",
+      },
+    ],
+  },
+
+  {
+    id: "en-p38-insertion",
+    subject: "english",
+    title: "38·39번 문장 삽입",
+    summary: "따로 빼놓은 문장 하나를 원래 자리로 되돌려 놓습니다.",
+    explanation:
+      "38·39번은 문장 하나를 상자에 따로 빼놓고, 지문의 ①~⑤ 중 그 문장이 원래 있던 자리를 고르는 문제입니다. 답의 근거는 지문보다 상자 안 문장에 먼저 있습니다. 그 문장에 But, So, this, they, such 같은 말이 있으면 앞에 무엇이 있어야 하는지가 이미 정해지기 때문입니다. 그리고 정답 자리는 앞뒤가 매끄러운 곳이 아니라, 문장을 빼놓았기 때문에 말이 살짝 끊기는 곳입니다.",
+    keyPoints: [
+      "상자 안 문장을 먼저 읽고 연결어와 지시어(But, So, this, they, such)에 동그라미를 칩니다.",
+      "동그라미 친 말이 가리킬 대상을 한국어로 적어 두고, 지문에서 그 대상이 처음 나오는 문장을 찾습니다.",
+      "그 문장 바로 뒤 번호에 넣어 읽고, 넣기 전에 끊겼던 앞뒤가 이어지는지 확인합니다.",
+    ],
+    mistake:
+      "앞뒤가 이미 잘 이어지는 자리를 고릅니다. 문장이 빠진 자리는 오히려 흐름이 갑자기 튀는 곳이므로, 읽다가 어색했던 지점을 후보로 삼아야 합니다.",
+    questions: [
+      {
+        id: "en-p38-q1",
+        prompt:
+          "상자 안 문장 ‘But the next morning it was gone.’을 넣을 자리는? ‘I planted a small flower by my window. ① Every evening I gave it water. ② At first it grew well, and one white flower opened. ③ A cat had knocked the pot to the ground. ④ After that I kept the pot on a high shelf. ⑤’",
+        choices: [
+          { value: "three", label: "③" },
+          { value: "two", label: "②" },
+          { value: "four", label: "④" },
+          { value: "five", label: "⑤" },
+        ],
+        answer: "three",
+        explanation:
+          "But이 꽃이 잘 피었다는 좋은 상황을 뒤집으므로 그 문장 뒤여야 합니다. 뒤에 오는 A cat had knocked the pot이 사라진 이유를 설명하는 말이라 두 문장 사이인 ③이 자리입니다.",
+      },
+      {
+        id: "en-p38-q2",
+        prompt: "상자 안 문장이 ‘However, they soon found a bigger problem.’일 때, 이 문장 앞에 반드시 있어야 하는 내용은?",
+        choices: [
+          { value: "people-small", label: "they가 가리킬 사람들과, 이미 다룬 더 작은 문제" },
+          { value: "later-result", label: "그 사람들이 나중에 얻게 될 결과" },
+          { value: "title-word", label: "problem이라는 단어가 들어간 제목" },
+          { value: "feeling", label: "글쓴이의 개인적인 감상" },
+        ],
+        answer: "people-small",
+        explanation:
+          "they는 앞에서 이미 나온 사람들을 받고, a bigger problem은 앞에 더 작은 문제가 있었다는 뜻입니다. 두 조건을 모두 채운 문장 바로 뒤가 정답 자리입니다.",
+      },
+      {
+        id: "en-p38-q3",
+        prompt:
+          "상자 안 문장 ‘So he began to write them down.’을 넣을 자리는? ‘Every night Tom had strange dreams. ① By morning he could remember almost nothing. ② He kept a small notebook next to his bed. ③ After a month the notebook was full of stories. ④’",
+        choices: [
+          { value: "two", label: "②" },
+          { value: "one", label: "①" },
+          { value: "three", label: "③" },
+          { value: "four", label: "④" },
+        ],
+        answer: "two",
+        explanation:
+          "So는 앞의 원인을 받는 말이라 아침이면 기억하지 못한다는 문장 뒤에 와야 하고, them은 그 앞의 dreams를 가리킵니다. 공책 이야기가 시작되기 바로 앞인 ②가 자리입니다.",
+      },
+    ],
+  },
 ];
