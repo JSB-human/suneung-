@@ -593,4 +593,238 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
       },
     ],
   },
+
+  {
+    id: "en-p29-grammar",
+    subject: "english",
+    title: "29번 어법",
+    summary: "밑줄 다섯 개 중 어법상 틀린 하나를 자리부터 따져 찾습니다.",
+    explanation:
+      "29번은 지문에 밑줄 다섯 개를 긋고 어법상 틀린 것 하나를 고르는 문제입니다. 문법 전체를 묻는 것 같지만 실제로는 해마다 같은 대여섯 자리에서만 나옵니다. 동사의 수 일치, 동사 자리냐 준동사 자리냐, 관계대명사와 관계부사, 능동과 수동, 대명사의 수가 그것입니다. 그래서 뜻을 해석하기 전에 그 밑줄이 문장에서 무슨 자리를 맡았는지부터 정하는 것이 순서입니다.",
+    keyPoints: [
+      "밑줄이 동사 자리인지 아닌지부터 정합니다. 한 절에 동사는 하나뿐입니다.",
+      "동사라면 그 동사의 주어를 찾아 단수·복수와 능동·수동을 맞춰 봅니다.",
+      "동사가 아니라면 밑줄이 꾸미는 명사를 찾아 관계사·분사·대명사가 그 명사와 어울리는지 봅니다.",
+    ],
+    mistake:
+      "밑줄 바로 앞 명사를 주어로 착각합니다. 주어와 동사 사이에 긴 수식어가 끼어 있으면 진짜 주어는 훨씬 앞에 있습니다.",
+    questions: [
+      {
+        id: "en-p29-q1",
+        prompt: "‘The books on the top shelf ____ very old.’의 빈칸에 어법상 알맞은 것은?",
+        choices: [
+          { value: "are", label: "are" },
+          { value: "is", label: "is" },
+          { value: "being", label: "being" },
+          { value: "to-be", label: "to be" },
+        ],
+        answer: "are",
+        explanation:
+          "주어는 The books이고 on the top shelf는 books를 꾸미는 말입니다. 동사 바로 앞의 shelf에 맞춰 is를 쓰면 안 됩니다.",
+      },
+      {
+        id: "en-p29-q2",
+        prompt: "‘The house ____ we lived in for ten years was sold last month.’의 빈칸에 알맞은 것은?",
+        choices: [
+          { value: "which", label: "which" },
+          { value: "where", label: "where" },
+          { value: "what", label: "what" },
+          { value: "who", label: "who" },
+        ],
+        answer: "which",
+        explanation:
+          "뒤 절에 in의 목적어가 비어 있으므로 그 빈자리를 채우는 관계대명사 which를 씁니다. 빠진 자리가 없을 때만 where를 쓸 수 있습니다.",
+      },
+      {
+        id: "en-p29-q3",
+        prompt: "‘The girl ____ next to the window is my sister.’의 빈칸에 알맞은 것은?",
+        choices: [
+          { value: "sitting", label: "sitting" },
+          { value: "sits", label: "sits" },
+          { value: "sit", label: "sit" },
+          { value: "sat", label: "sat" },
+        ],
+        answer: "sitting",
+        explanation:
+          "이 문장의 동사는 is 하나뿐이므로 빈칸은 동사 자리가 아닙니다. 앞의 girl을 꾸미는 자리라 분사 sitting이 들어갑니다.",
+      },
+    ],
+  },
+
+  {
+    id: "en-p30-vocab",
+    subject: "english",
+    title: "30번 어휘",
+    summary: "문맥의 방향과 반대로 쓰인 단어 하나를 찾습니다.",
+    explanation:
+      "30번은 밑줄 친 단어 다섯 개 중 문맥에 맞지 않게 쓰인 것을 고르는 문제입니다. 어려운 단어를 아는지가 아니라, 그 자리에 올 말이 좋은 쪽인지 나쁜 쪽인지, 늘리는 쪽인지 줄이는 쪽인지를 봅니다. 정답 자리에는 거의 언제나 뜻이 정반대인 단어가 놓여 있습니다. 그래서 단어를 다 몰라도 앞뒤 문장의 흐름만 잡으면 답이 보입니다.",
+    keyPoints: [
+      "밑줄 친 단어 옆에 그 단어가 좋은 뜻인지 나쁜 뜻인지 + 또는 −를 적습니다.",
+      "그 문장 앞뒤의 연결어(but, however, so, because)를 보고 그 자리에 와야 할 부호를 정합니다.",
+      "적어 둔 부호와 와야 할 부호가 어긋나는 자리를 답으로 고르고, 반대말을 넣어 다시 읽어 확인합니다.",
+    ],
+    mistake:
+      "모르는 단어에 밑줄이 있으면 그것을 답으로 찍습니다. 정답은 오히려 아는 단어를 반대 뜻으로 바꿔 놓은 자리인 경우가 많습니다.",
+    questions: [
+      {
+        id: "en-p30-q1",
+        prompt:
+          "‘Sleep helps the brain save what we learned. Students who sleep well remember more. So cutting sleep before a test ____ your score.’ 빈칸에 문맥상 알맞은 것은?",
+        choices: [
+          { value: "lowers", label: "lowers" },
+          { value: "raises", label: "raises" },
+          { value: "protects", label: "protects" },
+          { value: "doubles", label: "doubles" },
+        ],
+        answer: "lowers",
+        explanation:
+          "잠이 기억을 돕는다고 했으므로 잠을 줄이면 점수는 내려가야 합니다. 앞 문장이 정한 방향과 어긋나는 단어가 놓인 자리가 어휘 문제의 정답 자리입니다.",
+      },
+      {
+        id: "en-p30-q2",
+        prompt: "‘The road was closed, so the trip took much ____ time than usual.’의 빈칸에 알맞은 것은?",
+        choices: [
+          { value: "more", label: "more" },
+          { value: "less", label: "less" },
+          { value: "equal", label: "equal" },
+          { value: "short", label: "short" },
+        ],
+        answer: "more",
+        explanation:
+          "so는 앞의 원인과 방향이 같은 결과를 잇습니다. 길이 막혔으니 시간은 평소보다 더 걸립니다.",
+      },
+      {
+        id: "en-p30-q3",
+        prompt:
+          "‘Many people believe money brings happiness. However, studies show that more money often brings more ____.’ 빈칸에 알맞은 것은?",
+        choices: [
+          { value: "worry", label: "worry" },
+          { value: "joy", label: "joy" },
+          { value: "peace", label: "peace" },
+          { value: "rest", label: "rest" },
+        ],
+        answer: "worry",
+        explanation:
+          "However는 앞 문장의 방향을 뒤집습니다. 앞이 행복이라는 좋은 방향이므로 뒤에는 걱정처럼 반대 방향의 말이 와야 합니다.",
+      },
+    ],
+  },
+
+  {
+    id: "en-p31-blank",
+    subject: "english",
+    title: "31~34번 빈칸 추론",
+    summary: "지문이 다른 말로 되풀이한 문장을 찾아 빈칸을 채웁니다.",
+    explanation:
+      "31~34번은 지문 한 군데를 지우고 그 자리에 들어갈 말을 고르는 문제입니다. 31번은 단어 하나, 32~34번은 구나 절이 들어가고, 배점이 크고 오답률도 가장 높습니다. 그렇지만 답은 언제나 지문 안에 이미 다른 표현으로 쓰여 있습니다. 빈칸이 든 문장은 대개 글의 요지를 압축한 문장이라, 요지를 바꿔 쓴 선택지가 답이 됩니다.",
+    keyPoints: [
+      "빈칸이 든 문장을 통째로 읽고 그 문장이 무엇에 대해 무엇을 말하는지 뼈대를 적습니다.",
+      "빈칸 앞뒤에서 같은 말을 다르게 되풀이한 문장(예시·비유·반복)을 찾아 밑줄을 긋습니다.",
+      "밑줄 친 문장을 한국어 한 줄로 줄이고, 그 한 줄과 같은 말을 하는 선택지를 고릅니다.",
+    ],
+    mistake:
+      "빈칸 바로 앞 단어와 매끄럽게 이어지는 선택지를 고릅니다. 빈칸의 근거는 바로 옆이 아니라 글 전체가 되풀이한 말에 있습니다.",
+    questions: [
+      {
+        id: "en-p31-q1",
+        prompt:
+          "‘A map is useful because it leaves things out. If a map showed every tree and every stone, it would be as large as the city itself. A good map is one that ____.’ 빈칸에 알맞은 것은?",
+        choices: [
+          { value: "drops", label: "drops what you do not need" },
+          { value: "shows-all", label: "shows every detail of the city" },
+          { value: "as-large", label: "is as large as the city itself" },
+          { value: "color", label: "uses many bright colors" },
+        ],
+        answer: "drops",
+        explanation:
+          "첫 문장이 지도는 빼기 때문에 쓸모 있다고 말하고, 둘째 문장이 같은 말을 반대 상황으로 다시 설명합니다. 빈칸은 그 되풀이를 한 번 더 줄인 자리입니다.",
+      },
+      {
+        id: "en-p31-q2",
+        prompt:
+          "‘Water always flows to the lowest place. In the same way, our attention flows to whatever is ____.’ 빈칸에 알맞은 것은?",
+        choices: [
+          { value: "easiest", label: "easiest" },
+          { value: "hardest", label: "hardest" },
+          { value: "oldest", label: "oldest" },
+          { value: "farthest", label: "farthest" },
+        ],
+        answer: "easiest",
+        explanation:
+          "In the same way는 앞 문장과 같은 모양을 뒤에서 되풀이하라는 신호입니다. 물이 가장 낮은 곳으로 흐르듯 주의는 가장 쉬운 쪽으로 흘러갑니다.",
+      },
+      {
+        id: "en-p31-q3",
+        prompt: "빈칸 추론에서 답의 근거를 찾을 곳으로 가장 알맞은 것은?",
+        choices: [
+          { value: "repeat", label: "글이 다른 표현으로 같은 말을 되풀이한 문장" },
+          { value: "next-word", label: "빈칸 바로 앞 단어" },
+          { value: "hard-word", label: "지문에서 가장 어려운 단어가 든 문장" },
+          { value: "first-example", label: "지문 첫 문장에 나온 예시" },
+        ],
+        answer: "repeat",
+        explanation:
+          "빈칸 문장은 글의 요지를 압축한 자리라 근거는 글이 되풀이한 말에 있습니다. 바로 옆 단어와 잘 붙는지로 고르면 함정에 걸립니다.",
+      },
+    ],
+  },
+
+  {
+    id: "en-p35-irrelevant",
+    subject: "english",
+    title: "35번 무관한 문장",
+    summary: "소재는 같지만 방향이 다른 문장 하나를 빼냅니다.",
+    explanation:
+      "35번은 한 문단 안에 번호가 붙은 문장 다섯 개를 놓고 흐름에 맞지 않는 문장 하나를 빼는 문제입니다. 빠질 문장은 소재는 글과 같지만 필자가 하려는 말과 방향이 다릅니다. 번호가 붙지 않은 첫 문장은 후보가 아니라 방향을 정해 주는 기준입니다. 그래서 첫 문장을 정확히 읽어 두면 나머지는 O·X로 갈리는 단순한 작업이 됩니다.",
+    keyPoints: [
+      "번호가 없는 첫 문장을 읽고 이 글이 무엇을 어떤 방향으로 말하는지 한 줄로 적습니다.",
+      "문장마다 그 한 줄과 방향이 같으면 O, 다르면 X를 옆에 적습니다.",
+      "X를 준 문장을 빼고 앞뒤를 이어 읽어 자연스러우면 그것을 답으로 확정합니다.",
+    ],
+    mistake:
+      "어려운 단어가 든 문장을 답으로 고릅니다. 무관한 문장은 어려운 문장이 아니라 소재만 같고 하려는 말이 다른 문장입니다.",
+    questions: [
+      {
+        id: "en-p35-q1",
+        prompt:
+          "‘Walking every day is good for the heart. ① It also helps you sleep better. ② Many doctors say thirty minutes is enough. ③ Running shoes have become much more expensive this year. ④ Even a short walk after dinner helps.’ 흐름과 관계없는 문장은?",
+        choices: [
+          { value: "three", label: "③" },
+          { value: "one", label: "①" },
+          { value: "two", label: "②" },
+          { value: "four", label: "④" },
+        ],
+        answer: "three",
+        explanation:
+          "첫 문장이 정한 방향은 걷기가 건강에 좋다는 것입니다. ③은 신발 가격 이야기라 소재만 비슷할 뿐 건강과 이어지지 않습니다.",
+      },
+      {
+        id: "en-p35-q2",
+        prompt: "35번에서 번호가 붙지 않은 첫 문장의 역할로 가장 알맞은 것은?",
+        choices: [
+          { value: "standard", label: "글의 방향을 정해 주는 기준이라 후보가 아니다" },
+          { value: "candidate", label: "첫 문장도 빼야 할 후보 중 하나다" },
+          { value: "summary", label: "결론이므로 맨 마지막에 읽어야 한다" },
+          { value: "ignore", label: "예시일 뿐이라 읽지 않아도 된다" },
+        ],
+        answer: "standard",
+        explanation:
+          "첫 문장은 이 글이 무엇을 어떤 방향으로 말할지 정해 줍니다. 그 기준이 있어야 나머지 문장에 O와 X를 줄 수 있습니다.",
+      },
+      {
+        id: "en-p35-q3",
+        prompt:
+          "‘Bread has been baked for thousands of years. ① Today many people bake bread at home. ② A small home oven is enough for one loaf. ③ Rice is the main food in many Asian countries. ④ Fresh bread also makes the kitchen smell good.’ 흐름과 관계없는 문장은?",
+        choices: [
+          { value: "three", label: "③" },
+          { value: "one", label: "①" },
+          { value: "two", label: "②" },
+          { value: "four", label: "④" },
+        ],
+        answer: "three",
+        explanation:
+          "글은 집에서 빵을 굽는 이야기로 이어지는데 ③만 쌀을 말합니다. ③을 빼고 ②와 ④를 이어 읽으면 흐름이 자연스럽게 붙습니다.",
+      },
+    ],
+  },
 ];
