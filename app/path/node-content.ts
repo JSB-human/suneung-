@@ -3,6 +3,7 @@ import { LANGUAGE_KNOWLEDGE_CURRICULA } from "../language-curriculum.ts";
 import { MATH_KNOWLEDGE_CURRICULUM } from "../math-curriculum.ts";
 import { CORE_NOTES, SUBJECT_MEDIA_LINKS } from "../study-content.ts";
 import { NODE_QUESTIONS } from "./node-questions.ts";
+import { findPatternNode } from "./pattern-nodes.ts";
 import { getNode } from "./path-nodes.ts";
 import type { Subject } from "../practice/types.ts";
 import type { NodeQuestion } from "./types.ts";
@@ -118,6 +119,25 @@ export function resolveNodeContent(nodeId: string): NodeContent | null {
     skillId: node.skillId,
     links: subjectLinks(node.subject),
   };
+
+  if (node.kind === "pattern") {
+    const pattern = findPatternNode(node.sourceId);
+    if (!pattern) {
+      return null;
+    }
+    return {
+      ...base,
+      explanation: pattern.explanation,
+      keyPoints: [...pattern.keyPoints],
+      // 유형 칸에는 공식이 없다. 대신 "먼저 볼 것"이 그 자리를 대신한다.
+      formula: undefined,
+      mistake: pattern.mistake,
+      questions: withAuthoredQuestions(
+        nodeId,
+        pattern.questions.map((question) => ({ ...question, choices: [...question.choices] })),
+      ),
+    };
+  }
 
   if (node.kind === "capsule") {
     const capsule = findCapsule(node.sourceId);

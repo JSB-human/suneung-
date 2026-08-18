@@ -1,6 +1,6 @@
 import type { Subject } from "../practice/types.ts";
 
-export type PathNodeKind = "capsule" | "concept";
+export type PathNodeKind = "capsule" | "concept" | "pattern";
 
 export type PathNode = {
   id: string;

@@ -98,3 +98,25 @@ test("an explicit capsule order does not drop or duplicate any capsule", () => {
     assert.equal(new Set(ids).size, ids.length, `${subject}: duplicate capsule`);
   }
 });
+
+test("pattern nodes come after every concept node in a subject", () => {
+  // 개념을 모르는 상태에서 유형을 보면 못 푼다. 순서가 뒤집히면 안 된다.
+  for (const subject of SUBJECTS) {
+    const nodes = getNodesForSubject(subject);
+    const lastConcept = nodes.map((node) => node.kind).lastIndexOf("concept");
+    const firstPattern = nodes.findIndex((node) => node.kind === "pattern");
+    if (firstPattern === -1) continue;
+    assert.ok(lastConcept < firstPattern, `${subject}: 유형 칸이 개념 칸보다 앞에 있다`);
+  }
+});
+
+test("every pattern node resolves to content with three check questions", () => {
+  for (const node of PATH_NODES.filter((item) => item.kind === "pattern")) {
+    const content = resolveNodeContent(node.id);
+    assert.ok(content, `${node.id}: 내용을 못 불러온다`);
+    assert.ok(content.explanation.trim(), `${node.id}: 설명이 비었다`);
+    assert.equal(content.keyPoints.length, 3, `${node.id}: 먼저 볼 것이 3개여야 한다`);
+    assert.ok(content.mistake?.trim(), `${node.id}: 자주 하는 실수가 비었다`);
+    assert.ok(content.questions.length >= 3, `${node.id}: 확인 문제가 3개 미만`);
+  }
+});

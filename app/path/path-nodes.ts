@@ -4,6 +4,7 @@ import { MATH_KNOWLEDGE_CURRICULUM } from "../math-curriculum.ts";
 import { SKILL_MAP } from "../practice/skill-map.ts";
 import type { Subject } from "../practice/types.ts";
 import { FORMULA_MAP } from "./formula-map.ts";
+import { getPatternNodes } from "./pattern-nodes.ts";
 import type { PathNode } from "./types.ts";
 
 const SUBJECTS: Subject[] = ["korean", "english", "math"];
@@ -101,6 +102,11 @@ function buildSubjectNodes(subject: Subject): PathNode[] {
         }
       }
     }
+  }
+
+  // 유형 칸은 개념을 다 배운 뒤에 온다. 개념을 모르면 유형을 봐도 못 푼다.
+  for (const pattern of getPatternNodes(subject)) {
+    push(pattern.id, "pattern", pattern.title, pattern.summary);
   }
 
   return nodes;
