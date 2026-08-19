@@ -1931,6 +1931,59 @@
   color: var(--warning);
 }
 
+/* --- 자세한 강의 -------------------------------------------------------
+   요약만으로는 처음 배울 수 없어서 붙인 긴 설명이다. 길이 자체는 문제가
+   아니고, 한 덩어리로 흐르는 것이 문제다. 제목마다 칸을 끊어 눈이 쉴
+   자리를 만든다. */
+
+.node-lesson {
+  display: grid;
+  gap: var(--space-3);
+}
+
+/* 칸을 열자마자 읽히는 한 줄. 왜 이걸 배우는지 말해 준다. */
+.node-lesson-hook {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-left: 3px solid var(--miku-teal);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  background: var(--miku-soft);
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.6;
+  color: var(--ink-strong);
+}
+
+/* 예제는 설명과 배경을 달리해 "여기서부터 같이 푼다"는 신호를 준다. */
+.node-lesson-example {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-radius: var(--radius-sm);
+  background: var(--surface-soft);
+}
+
+.node-lesson-question {
+  margin: 0;
+  font-weight: 700;
+  line-height: 1.65;
+}
+
+.node-lesson-steps {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding-left: var(--space-5);
+  line-height: 1.7;
+}
+
+.node-lesson-answer {
+  margin: 0;
+  font-weight: 800;
+  color: var(--miku-teal-dark);
+  line-height: 1.6;
+}
+
 /* 순서대로 볼 것 — 번호가 보여야 순서라는 뜻이 전달된다. */
 .node-key-points {
   display: grid;

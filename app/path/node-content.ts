@@ -1,3 +1,4 @@
+import { findLesson } from "../foundation-lessons.ts";
 import { FOUNDATION_REFERENCE } from "../foundation-reference.ts";
 import { LANGUAGE_KNOWLEDGE_CURRICULA } from "../language-curriculum.ts";
 import { MATH_KNOWLEDGE_CURRICULUM } from "../math-curriculum.ts";
@@ -5,6 +6,7 @@ import { CORE_NOTES, SUBJECT_MEDIA_LINKS } from "../study-content.ts";
 import { NODE_QUESTIONS } from "./node-questions.ts";
 import { findPatternNode } from "./pattern-nodes.ts";
 import { getNode } from "./path-nodes.ts";
+import type { FoundationLesson } from "../foundation-lesson-types.ts";
 import type { Subject } from "../practice/types.ts";
 import type { NodeQuestion } from "./types.ts";
 
@@ -56,6 +58,8 @@ export type NodeContent = {
   skillId?: string;
   /** 칸 맨 아래 "더 보기"에 접어 두는 EBS·유튜브 링크. */
   links: NodeLink[];
+  /** 짧은 요약으로 부족한 칸에 붙는 자세한 강의. 없는 칸도 있다. */
+  lesson?: FoundationLesson;
 };
 
 // 칸의 확인 문제 = 원본 콘텐츠에 딸린 기본 문항 + node-questions.ts에서 집필한 추가 문항.
@@ -147,6 +151,7 @@ export function resolveNodeContent(nodeId: string): NodeContent | null {
     return {
       ...base,
       explanation: capsule.beginnerExplanation,
+      lesson: findLesson(capsule.id),
       keyPoints: base.keyPoints.length > 0 ? base.keyPoints : [...capsule.keyPoints],
       formula: base.formula ?? capsule.frame,
       mistake: base.mistake ?? capsule.commonTrap,

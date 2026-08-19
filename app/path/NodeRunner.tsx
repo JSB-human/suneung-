@@ -151,6 +151,32 @@ export default function NodeRunner({
             <p className="node-explanation">{content.explanation}</p>
           </section>
 
+          {/* 자세한 강의. 요약만으로 처음 배우기는 어려우므로, 있으면 이어서
+              읽힌다. 제목 붙은 덩어리로 나누는 것이 핵심이다 — 같은 분량도
+              한 덩어리면 휴대폰에서 글벽이 되어 아무도 읽지 않는다. */}
+          {content.lesson ? (
+            <div className="node-lesson">
+              <p className="node-lesson-hook">{content.lesson.hook}</p>
+              {content.lesson.sections.map((section) => (
+                <section className="node-block is-lesson" key={section.heading}>
+                  <h4 className="node-block-label">{section.heading}</h4>
+                  <p className="node-explanation">{section.body}</p>
+                  {section.example ? (
+                    <div className="node-lesson-example">
+                      <p className="node-lesson-question">{section.example.question}</p>
+                      <ol className="node-lesson-steps">
+                        {section.example.steps.map((step) => (
+                          <li key={step}>{step}</li>
+                        ))}
+                      </ol>
+                      <p className="node-lesson-answer">답 · {section.example.answer}</p>
+                    </div>
+                  ) : null}
+                </section>
+              ))}
+            </div>
+          ) : null}
+
           {content.formula ? (
             <section className="node-block">
               <h4 className="node-block-label">외워 둘 것</h4>
