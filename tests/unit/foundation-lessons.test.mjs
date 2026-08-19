@@ -42,18 +42,26 @@ test("강의는 요약보다 깊다", () => {
       assert.ok(section.heading.trim().length > 0, `${id}: 제목이 빈 덩어리가 있다`);
       assert.ok(!headings.has(section.heading), `${id}: 제목이 겹친다 — ${section.heading}`);
       headings.add(section.heading);
-      // 요약(평균 87자)보다 확실히 길어야 새로 쓴 의미가 있다. 다만 예제가
-      // 붙은 덩어리는 내용을 예제가 지고 있으므로 본문이 짧아도 된다 —
-      // 거기서까지 길이를 요구하면 설명을 늘리려고 군말을 넣게 된다.
-      const floor = section.example ? 40 : 120;
+      // 빈 껍데기 덩어리만 막는다. 덩어리마다 길이를 요구하면 예제가 지고
+      // 가는 덩어리나 일부러 짧게 끝내는 마무리에서 군말을 넣게 된다 —
+      // 실제로 이 규칙의 앞 버전이 그 둘을 다 잡아서 고쳤다.
       assert.ok(
-        section.body.trim().length >= floor,
-        `${id} / ${section.heading}: 본문이 ${section.body.trim().length}자다. 요약과 다를 게 없다`,
+        section.body.trim().length >= 40,
+        `${id} / ${section.heading}: 본문이 ${section.body.trim().length}자다. 덩어리라 부를 수 없다`,
       );
     }
 
+    // 깊이는 덩어리 하나가 아니라 강의 전체로 잰다.
     const total = lesson.sections.reduce((sum, section) => sum + section.body.length, 0);
     assert.ok(total >= 600, `${id}: 전체 ${total}자. 문제집 수준이라 부르기 어렵다`);
+
+    // 그렇다고 짧은 덩어리만 늘어놓으면 안 된다. 제대로 설명하는 덩어리가
+    // 최소 셋은 있어야 요약을 쪼개 놓은 것과 구별된다.
+    const substantial = lesson.sections.filter((s) => s.body.trim().length >= 120);
+    assert.ok(
+      substantial.length >= 3,
+      `${id}: 120자 넘는 덩어리가 ${substantial.length}개뿐이다. 요약을 쪼개 놓은 것과 다를 게 없다`,
+    );
   }
 });
 
