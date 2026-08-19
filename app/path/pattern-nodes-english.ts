@@ -945,4 +945,122 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
       },
     ],
   },
+
+  {
+    id: "en-p40-summary",
+    subject: "english",
+    title: "40번 요약문 완성",
+    summary: "지문을 한 문장으로 줄인 요약문의 빈칸 두 개를 한 쌍으로 채웁니다.",
+    explanation:
+      "40번은 지문 아래에 한 문장짜리 요약문을 두고 빈칸 (A), (B)에 들어갈 말을 한 쌍으로 고르는 문제입니다. 요약문은 지문 전체를 미리 줄여 놓은 것이라, 실험 과정이나 예시를 다 읽지 않아도 요약문 뼈대만 보면 지문에서 무엇을 찾을지 정해집니다. (A)와 (B)는 대개 원인과 결과, 또는 늘어남과 줄어듦처럼 서로 맞물려 있습니다. 두 칸 중 확실한 쪽 하나만 정해도 선택지가 둘 정도로 줄어듭니다.",
+    keyPoints: [
+      "지문보다 아래 요약문을 먼저 읽고 (A)와 (B)가 각각 무엇의 자리인지 한국어로 적습니다.",
+      "지문에서 결과나 결론을 말한 문장 하나를 찾아 밑줄을 긋습니다. 요약문은 그 문장을 다른 말로 옮겨 쓴 것입니다.",
+      "밑줄 친 문장으로 더 확실한 칸부터 채우고, 그 칸이 맞는 선택지끼리만 남겨 다른 칸을 비교합니다.",
+    ],
+    mistake:
+      "지문을 처음부터 끝까지 다 읽고 나서 요약문을 봅니다. 요약문을 먼저 읽어야 찾을 것이 두 가지로 좁혀지고, 실험 과정 같은 부분은 건너뛸 수 있습니다.",
+    questions: [
+      {
+        id: "en-p40-q1",
+        prompt:
+          "‘Students who wrote notes by hand remembered more than students who typed. Typing is fast, so typists wrote down almost every word without thinking. Writing by hand is slow, so those students had to pick what mattered.’ 요약문 ‘Because handwriting is (A), students must (B) what to write, and this helps memory.’의 (A)와 (B)로 알맞은 것은?",
+        choices: [
+          { value: "slow-choose", label: "(A) slow ... (B) choose" },
+          { value: "fast-choose", label: "(A) fast ... (B) choose" },
+          { value: "slow-copy", label: "(A) slow ... (B) copy" },
+          { value: "fast-copy", label: "(A) fast ... (B) copy" },
+        ],
+        answer: "slow-choose",
+        explanation:
+          "지문은 손으로 쓰는 것이 느리고, 느리기 때문에 무엇이 중요한지 골라야 한다고 말합니다. (A)에 slow, (B)에 choose가 들어가야 두 칸이 원인과 결과로 맞물립니다.",
+      },
+      {
+        id: "en-p40-q2",
+        prompt: "40번에서 가장 먼저 읽어야 할 것으로 알맞은 것은?",
+        choices: [
+          { value: "summary-first", label: "지문 아래에 있는 요약문 한 문장" },
+          { value: "first-line", label: "지문의 첫 문장" },
+          { value: "numbers", label: "실험에 나온 숫자" },
+          { value: "hard-word", label: "선택지에 나온 어려운 단어" },
+        ],
+        answer: "summary-first",
+        explanation:
+          "요약문은 지문 전체를 한 문장으로 줄여 둔 것이라 먼저 읽으면 찾을 것이 두 가지로 정해집니다. 그러면 지문의 실험 과정 부분은 건너뛰어도 됩니다.",
+      },
+      {
+        id: "en-p40-q3",
+        prompt:
+          "‘In one store, slow music made shoppers walk more slowly. They stayed longer and bought more. When the music was fast, they finished quickly and spent less.’ 요약문 ‘Slow music makes shoppers move more (A), which (B) the money they spend.’의 (A)와 (B)로 알맞은 것은?",
+        choices: [
+          { value: "slowly-raises", label: "(A) slowly ... (B) raises" },
+          { value: "quickly-raises", label: "(A) quickly ... (B) raises" },
+          { value: "slowly-lowers", label: "(A) slowly ... (B) lowers" },
+          { value: "quickly-lowers", label: "(A) quickly ... (B) lowers" },
+        ],
+        answer: "slowly-raises",
+        explanation:
+          "느린 음악이 걸음을 늦추고 더 오래 머물게 해서 더 많이 샀다고 했습니다. (A)는 그대로 slowly이고 (B)는 그 결과인 raises입니다.",
+      },
+    ],
+  },
+
+  {
+    id: "en-p41-long",
+    subject: "english",
+    title: "41·42번 장문 (제목·어휘)",
+    summary: "긴 지문 하나로 제목과 어휘 두 문제를 이어서 풉니다.",
+    explanation:
+      "41·42번은 긴 지문 하나에 문제 두 개가 붙습니다. 41번은 글의 제목을, 42번은 문맥에 맞지 않게 쓰인 낱말을 고릅니다. 지문이 길어서 겁이 나지만 묻는 것은 앞에서 배운 24번 제목과 30번 어휘 그대로입니다. 다른 점은 제목을 먼저 정해 두면 그 방향이 곧 어휘 문제의 채점 기준이 된다는 것입니다. 그래서 두 문제를 따로 풀지 말고 41번을 먼저 끝내야 합니다.",
+    keyPoints: [
+      "첫 문단과 마지막 문단만 먼저 읽고 이 글이 무엇을 어느 방향으로 말하는지 한 줄로 적습니다.",
+      "그 한 줄과 같은 말을 하는 선택지를 41번 제목으로 고릅니다.",
+      "적어 둔 한 줄을 기준으로 밑줄 친 낱말 다섯 개에 방향이 맞으면 O, 반대면 X를 적어 42번을 고릅니다.",
+    ],
+    mistake:
+      "긴 지문을 끝까지 다 읽은 뒤에야 문제를 봅니다. 두 문제 모두 글 전체의 방향 하나로 풀리므로, 앞뒤 문단으로 방향을 먼저 잡고 가운데는 필요할 때만 돌아가야 합니다.",
+    questions: [
+      {
+        id: "en-p41-q1",
+        prompt:
+          "‘For years our school let students bring phones into class. Teachers said lessons were often broken by messages. Last year the school asked students to leave phones in a box during class. Test scores went up, and students said they talked to each other more.’ 이 글의 제목으로 가장 알맞은 것은?",
+        choices: [
+          { value: "no-phone", label: "Class Without Phones Works Better" },
+          { value: "choose-phone", label: "How to Choose a Good Phone" },
+          { value: "teacher-phone", label: "Teachers Who Use Phones in Class" },
+          { value: "love-text", label: "Why Students Love Text Messages" },
+        ],
+        answer: "no-phone",
+        explanation:
+          "글은 수업 중 전화를 치운 뒤 점수와 대화가 모두 좋아졌다고 말합니다. 제목은 그 방향을 그대로 담은 것이어야 하고, 나머지 셋은 소재만 같을 뿐 방향이 없습니다.",
+      },
+      {
+        id: "en-p41-q2",
+        prompt:
+          "위와 같은 글에서 ‘After the phones were put away, students spoke to each other much ____.’의 빈칸에 문맥상 알맞은 것은?",
+        choices: [
+          { value: "more", label: "more" },
+          { value: "less", label: "less" },
+          { value: "later", label: "later" },
+          { value: "softly", label: "softly" },
+        ],
+        answer: "more",
+        explanation:
+          "41번에서 잡은 방향은 전화를 치운 뒤 상황이 좋아졌다는 것이고, 지문도 학생들이 서로 더 이야기했다고 했습니다. 그 방향과 어긋나는 낱말이 42번의 정답 자리입니다.",
+      },
+      {
+        id: "en-p41-q3",
+        prompt: "41·42번을 푸는 순서로 가장 알맞은 것은?",
+        choices: [
+          { value: "title-first", label: "41번 제목으로 방향을 먼저 정하고 그 방향으로 42번 어휘를 본다" },
+          { value: "vocab-first", label: "42번 어휘를 모두 확인한 뒤에 41번 제목을 고른다" },
+          { value: "twice", label: "지문을 두 번 읽고 나서 두 문제를 한꺼번에 본다" },
+          { value: "dictionary", label: "선택지 단어의 뜻을 모두 확인한 뒤에 지문을 읽는다" },
+        ],
+        answer: "title-first",
+        explanation:
+          "42번의 정답은 글 전체 방향과 어긋난 낱말입니다. 그 방향을 한 줄로 알려 주는 것이 41번 제목이므로, 제목을 먼저 확정하면 어휘는 O와 X로 갈립니다.",
+      },
+    ],
+  },
 ];

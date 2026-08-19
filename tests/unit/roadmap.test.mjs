@@ -172,8 +172,12 @@ test("2a. a beginner on day one is on track, not already behind", () => {
     const plan = planFor(subject, "2026-08-07");
     assert.equal(plan.pace, "onTrack", `${subject}: 첫날부터 밀렸다고 말하면 안 된다`);
     assert.equal(plan.nodesAhead, 0);
-    assert.equal(plan.nodesPerWeek, 1);
-    assert.equal(plan.weekGoalCumulative, 1);
+    // 집필이 늘면 주당 배정도 1칸에서 2칸으로 올라간다. 숫자를 1로 못 박으면
+    // 칸을 쓸 때마다 이 테스트가 깨지므로, 첫 주가 요구하는 양과 첫 주 목표가
+    // 서로 어긋나지 않는지로 확인한다 — 어긋나면 "이번 주 할 일"과 "이번 주
+    // 기준"이 다른 말을 하게 된다.
+    assert.ok(plan.nodesPerWeek >= 1, `${subject}: 첫 주에 할 일이 없다`);
+    assert.equal(plan.weekGoalCumulative, plan.nodesPerWeek);
   }
 });
 
