@@ -1063,4 +1063,64 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
       },
     ],
   },
+
+  {
+    id: "en-p43-set",
+    subject: "english",
+    title: "43~45번 복합 장문",
+    summary: "이야기 한 편으로 순서·지칭·내용 일치 세 문제를 한 번에 챙깁니다.",
+    explanation:
+      "43~45번은 이야기 한 편을 (A)~(D) 네 덩어리로 쪼개 놓고 문제 세 개를 붙입니다. 43번은 (A) 뒤에 올 순서, 44번은 밑줄 친 대명사 다섯 개 중 가리키는 대상이 다른 하나, 45번은 내용과 일치하지 않는 것입니다. 지문은 길지만 인물이 보통 둘뿐인 쉬운 이야기라 시험지에서 가장 확실하게 점수를 챙길 자리입니다. 세 문제 모두 인물 이름과 시간 표시만 정확히 따라가면 풀립니다.",
+    keyPoints: [
+      "(A)를 읽고 등장인물 이름을 지문 위에 적은 뒤, 네 덩어리에서 그 이름이 나올 때마다 사람별로 다른 표시를 합니다.",
+      "각 덩어리 첫 문장의 지시어와 시간 표시(the next day, that evening, after that)를 보고 43번 순서를 정합니다.",
+      "44번은 밑줄 친 대명사마다 표시해 둔 이름을 옆에 적어 하나만 다른 것을 찾고, 45번은 선택지마다 근거 문장에 번호를 적습니다.",
+    ],
+    mistake:
+      "글이 길다는 이유로 맨 마지막에 남겨 두었다가 시간에 쫓겨 찍습니다. 43~45번은 한 번 읽으면 세 문제를 다 가져가므로, 어려운 빈칸 문제보다 먼저 푸는 편이 낫습니다.",
+    questions: [
+      {
+        id: "en-p43-q1",
+        prompt:
+          "(A) ‘Mina walked home with a heavy bag. An old man was sitting alone on the bench near her house.’ 뒤에 (B) ‘The next evening she brought two cups of tea and sat down beside him.’ (C) ‘She said hello, but he only nodded and looked away.’ (D) ‘After that day they met on the same bench every week.’를 이어 쓸 때 알맞은 순서는?",
+        choices: [
+          { value: "cbd", label: "(C) - (B) - (D)" },
+          { value: "bcd", label: "(B) - (C) - (D)" },
+          { value: "cdb", label: "(C) - (D) - (B)" },
+          { value: "dbc", label: "(D) - (B) - (C)" },
+        ],
+        answer: "cbd",
+        explanation:
+          "(C)의 She said hello가 (A)에서 노인을 본 그 자리에 바로 이어집니다. (B)의 The next evening이 그다음 날을 가리키고, (D)의 After that day는 여러 주로 이어지는 마무리라 맨 뒤입니다.",
+      },
+      {
+        id: "en-p43-q2",
+        prompt:
+          "‘Mina’s grandfather kept a small garden. ①He planted a tree for his son on the day the boy was born. When ②he grew up, the son moved to the city. Every spring ③he sent a photo of the tree to the city. ④He wanted his son to remember home.’ 가리키는 대상이 나머지 셋과 다른 것은?",
+        choices: [
+          { value: "two", label: "②" },
+          { value: "one", label: "①" },
+          { value: "three", label: "③" },
+          { value: "four", label: "④" },
+        ],
+        answer: "two",
+        explanation:
+          "②가 든 절의 주어는 뒤에 나오는 the son이므로 ②는 아들입니다. ①, ③, ④는 모두 나무를 심고 사진을 보낸 할아버지를 가리킵니다.",
+      },
+      {
+        id: "en-p43-q3",
+        prompt:
+          "‘Mina’s grandfather planted a tree when his son was born. The son moved to the city at twenty. Every spring the grandfather sent him a photo of the tree. Last year the son came home and saw the tree again.’ 윗글의 내용과 일치하지 않는 것은?",
+        choices: [
+          { value: "son-sent", label: "아들이 봄마다 아버지에게 사진을 보냈다." },
+          { value: "planted", label: "할아버지는 아들이 태어났을 때 나무를 심었다." },
+          { value: "moved", label: "아들은 스무 살에 도시로 떠났다." },
+          { value: "came-home", label: "아들은 작년에 집에 돌아왔다." },
+        ],
+        answer: "son-sent",
+        explanation:
+          "사진을 보낸 사람은 할아버지이고 받은 사람이 아들입니다. 45번의 오답은 이렇게 주어와 목적어를 서로 바꿔 놓는 방식이 가장 흔합니다.",
+      },
+    ],
+  },
 ];
