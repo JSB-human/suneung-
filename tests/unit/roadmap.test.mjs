@@ -167,16 +167,27 @@ test("2. running ahead of the baseline reports 'ahead'", () => {
   assert.ok(aheadPlan.weeksAhead > 0);
 });
 
+/**
+ * 노베이스가 첫 주에 감당할 수 있는 새 칸 수의 상한.
+ * 로드맵의 하드 상한(MAX_NODES_PER_WEEK = 21)과 달리 이건 "무리 없는 양"의 기준이다.
+ */
+const BEGINNER_WEEKLY_LIMIT = 3;
+
 test("2a. a beginner on day one is on track, not already behind", () => {
   for (const subject of SUBJECTS) {
     const plan = planFor(subject, "2026-08-07");
     assert.equal(plan.pace, "onTrack", `${subject}: 첫날부터 밀렸다고 말하면 안 된다`);
     assert.equal(plan.nodesAhead, 0);
-    // 집필이 늘면 주당 배정도 1칸에서 2칸으로 올라간다. 숫자를 1로 못 박으면
-    // 칸을 쓸 때마다 이 테스트가 깨지므로, 첫 주가 요구하는 양과 첫 주 목표가
-    // 서로 어긋나지 않는지로 확인한다 — 어긋나면 "이번 주 할 일"과 "이번 주
-    // 기준"이 다른 말을 하게 된다.
+    // 집필이 늘면 주당 배정도 따라 올라가므로 숫자를 1로 못 박을 수는 없다.
+    // 대신 위아래를 다 막는다. 아래는 "이번 주 할 일 없음"을 막고, 위는 부담을
+    // 막는다 — 칸이 늘어난 결과가 조용히 "첫 주부터 주당 5칸"이 되면 안 된다.
+    // 상한에 걸리면 집필을 줄이거나 getNewNodeHorizonDate()를 늦춰야 한다는 뜻이다.
     assert.ok(plan.nodesPerWeek >= 1, `${subject}: 첫 주에 할 일이 없다`);
+    assert.ok(
+      plan.nodesPerWeek <= BEGINNER_WEEKLY_LIMIT,
+      `${subject}: 첫 주부터 ${plan.nodesPerWeek}칸을 요구한다. 노베이스에게 주당 ${BEGINNER_WEEKLY_LIMIT}칸이 상한이다`,
+    );
+    // 둘이 어긋나면 "이번 주 할 일"과 "이번 주 기준"이 다른 말을 하게 된다.
     assert.equal(plan.weekGoalCumulative, plan.nodesPerWeek);
   }
 });
