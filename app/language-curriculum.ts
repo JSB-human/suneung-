@@ -164,7 +164,7 @@ const EBSI_ENGLISH_LISTENING_BOOK: LanguageResourceLink = {
 const EBSI_SUNEUNG_SERIES: LanguageResourceLink = {
   id: "ebsi-suneung-series",
   title: "수능 연계 시리즈",
-  href: "https://www.ebsi.co.kr/ebs/pot/potg/retrieveSeriesSubjectList.ebs?seriesGrpKG_0336=&seriesId=PRO_1764",
+  href: "https://www.ebsi.co.kr/ebs/pot/potg/retrieveSeriesSubjectList.ebs?seriesGrpId=PKG_0336&seriesId=PRO_1764",
   label: "연계 교재",
   note: "EBS 연계 교재와 강좌를 묶어서 찾아 실전 적용으로 넘어갈 때 쓰는 공식 시리즈 페이지입니다.",
 };

@@ -135,7 +135,6 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       routine: ["개념 노트 10분", "문장 5개 표시 20분", "한 줄 요약 10분"],
       checkpoint: "처음 보는 문장 5개 중 4개에서 주어와 서술어를 찾으면 통과",
       noteIds: ["ko-sentence"],
-      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+윤혜정+문장성분",
     },
     {
       id: "ko-02",
@@ -152,7 +151,6 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       routine: ["접속어 분류 10분", "짧은 문단 3개 20분", "구조 화살표 10분"],
       checkpoint: "3문단 글을 ‘주장→근거→예시’처럼 구조화하면 통과",
       noteIds: ["ko-structure"],
-      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+문단관계",
     },
     {
       id: "ko-03",
@@ -169,7 +167,6 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       routine: ["기초 어휘 10분", "문맥 추론 5문항 20분", "근거 밑줄 10분"],
       checkpoint: "뜻을 몰랐던 단어 5개 중 3개 이상을 문맥 근거로 설명하면 통과",
       noteIds: ["ko-vocab-context"],
-      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+어휘추론",
     },
     {
       id: "ko-04",
@@ -186,7 +183,6 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       routine: ["개념 10분", "인문·사회 글 1개 25분", "선지 근거 15분"],
       checkpoint: "각 선지의 판단 근거가 있는 문장을 정확히 가리키면 통과",
       noteIds: ["ko-claim"],
-      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+윤혜정+주장과근거",
     },
     {
       id: "ko-05",
@@ -203,7 +199,6 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       routine: ["관계어 확인 10분", "과학·기술 글 1개 25분", "비교표 15분"],
       checkpoint: "두 개념을 기준 3개로 비교한 표를 완성하면 통과",
       noteIds: ["ko-structure", "ko-claim"],
-      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+비교대조",
     },
     {
       id: "ko-06",
@@ -220,7 +215,6 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       routine: ["인과 표현 10분", "지문 1개 25분", "과정도 15분"],
       checkpoint: "지문을 5칸 이내 순서도로 바꾸고 조건을 빠뜨리지 않으면 통과",
       noteIds: ["ko-process"],
-      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+과정지문",
     },
     {
       id: "ko-07",
@@ -237,7 +231,6 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       routine: ["개념어 10분", "작품 2편 25분", "근거 시어 표시 15분"],
       checkpoint: "정서를 말하고 그 근거가 되는 시어 2개를 찾으면 통과",
       noteIds: ["ko-poetry"],
-      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+윤혜정+시분석",
     },
     {
       id: "ko-08",
@@ -254,7 +247,6 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       routine: ["개념 10분", "짧은 장면 1개 25분", "인물 관계도 15분"],
       checkpoint: "갈등의 원인과 변화 전후를 인물 관계도로 설명하면 통과",
       noteIds: ["ko-fiction"],
-      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+소설시점",
     },
     {
       id: "ko-09",
@@ -271,7 +263,6 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       routine: ["고어 10개 10분", "작품 1편 25분", "현대어 요약 15분"],
       checkpoint: "작품 상황을 인물·장소·사건 3요소로 요약하면 통과",
       noteIds: ["ko-classic"],
-      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+윤혜정+고전시가",
     },
     {
       id: "ko-10",
@@ -288,7 +279,6 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       routine: ["개념표 15분", "분석 10문항 20분", "틀린 기준 복기 10분"],
       checkpoint: "단어 5개의 형태소와 품사를 근거와 함께 구분하면 통과",
       noteIds: ["ko-grammar"],
-      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+문법기초",
     },
     {
       id: "ko-11",
@@ -305,7 +295,6 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       routine: ["오답 유형 10분", "독서 4문항 20분", "선지 해부 20분"],
       checkpoint: "틀린 선지 3개의 오류 단어를 정확히 고치면 통과",
       noteIds: ["ko-options"],
-      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+국어+발문분석",
     },
     {
       id: "ko-12",
@@ -322,7 +311,6 @@ export const ROADMAPS: Record<SubjectKey, RoadmapUnit[]> = {
       routine: ["지문 먼저 15분", "EBS 강의 25분", "한 장 복습 15분"],
       checkpoint: "강의 없이 지문의 구조와 핵심 개념을 2분 안에 설명하면 통과",
       noteIds: ["ko-ebs-loop"],
-      youtubeUrl: "https://www.youtube.com/results?search_query=EBS+수능특강+국어",
     },
   ],
   english: [
@@ -633,6 +621,18 @@ export const CORE_NOTES: CoreNote[] = [
   { id: "ma-ebs-loop", subject: "math", category: "EBS", title: "EBS 개념 3문제", oneLine: "강의 한 구간마다 대표·유사·변형 문제를 직접 풉니다.", essentials: ["강의 전 예제 시도", "계산 장면에서 멈추고 직접 풀기", "오답은 틀린 첫 줄 기록"], mistake: "강사의 풀이를 이해한 느낌을 혼자 풀 수 있는 상태로 착각하지 않기", microPractice: "강의를 닫고 같은 유형 3문제를 연속으로 풀어 보세요." },
 ];
 
+/**
+ * 과목마다 하나씩 붙는 무료 공식 강의 링크.
+ *
+ * **EBSi 주소는 `seriesGrpId`가 목적지를 정한다. `seriesId`는 무시된다.**
+ * 존재하지 않는 seriesId를 넣어도 같은 페이지가 200으로 열리므로, 링크가
+ * 살아 있다는 것만으로는 아무것도 보장되지 않는다. 실제로 이 표의 수학
+ * 링크는 grpId가 국어 것이라 "정승제"라는 이름표를 달고 윤혜정 국어 강좌로
+ * 가고 있었다. 주소를 바꿀 때는 반드시 페이지의 seriesTitle을 확인할 것.
+ *
+ * 유튜브 채널도 핸들만 보고 믿으면 안 된다. `@EBSi`는 EBS가 아니라 개인
+ * 채널이고, 여기 있던 `@mathmath1`은 "수학의샘"이 아니라 과외 홍보 채널이었다.
+ */
 export const SUBJECT_MEDIA_LINKS: Record<
   SubjectKey,
   {
@@ -643,22 +643,25 @@ export const SUBJECT_MEDIA_LINKS: Record<
   }
 > = {
   korean: {
-    ebsUrl: "https://www.ebsi.co.kr/ebs/pot/potg/retrieveSeriesSubjectList.ebs?seriesGrpId=PKG_0187&seriesId=PRO_1617",
-    ebsTitle: "EBSi 윤혜정의 개념의 나비효과",
+    ebsUrl:
+      "https://www.ebsi.co.kr/ebs/pot/potg/retrieveSeriesSubjectList.ebs?seriesGrpId=PKG_0187&seriesId=PRO_1617",
+    ebsTitle: "EBSi 윤혜정의 나비효과",
     youtubeChannelUrl: "https://www.youtube.com/@michinKorean",
     youtubeChannelTitle: "미친국어 (@michinKorean)",
   },
   english: {
-    ebsUrl: "https://cloud-www.ebsi.co.kr/ebs/pot/potn/retrieveSbjtListByArea.ebs?categoryCode=A200",
-    ebsTitle: "EBSi 주혜연의 해석공식",
-    youtubeChannelUrl: "https://www.youtube.com/@studycore-spencer",
-    youtubeChannelTitle: "스터디코어 (@studycore-spencer)",
+    ebsUrl:
+      "https://www.ebsi.co.kr/ebs/pot/potg/retrieveSeriesSubjectList.ebs?seriesGrpId=PKG_0328&seriesId=PRO_1750",
+    ebsTitle: "EBSi 부동의 NO.1, 주혜연",
+    youtubeChannelUrl: "https://www.youtube.com/@EBS_i",
+    youtubeChannelTitle: "EBSi 공식 채널 (@EBS_i)",
   },
   math: {
-    ebsUrl: "https://www.ebsi.co.kr/ebs/pot/potg/retrieveSeriesSubjectList.ebs?seriesGrpId=PKG_0187&seriesId=PRO_1615",
-    ebsTitle: "EBSi 정승제의 50일 수학",
-    youtubeChannelUrl: "https://www.youtube.com/@mathmath1",
-    youtubeChannelTitle: "수학의샘 (@mathmath1)",
+    ebsUrl:
+      "https://www.ebsi.co.kr/ebs/pot/potg/retrieveSeriesSubjectList.ebs?seriesGrpId=PKG_0317&seriesId=PRO_1702",
+    ebsTitle: "EBSi 정승제의 숨겨진 진심",
+    youtubeChannelUrl: "https://www.youtube.com/@seungje_tube",
+    youtubeChannelTitle: "승제튜브 · 정승제 공식 (@seungje_tube)",
   },
 };
 
