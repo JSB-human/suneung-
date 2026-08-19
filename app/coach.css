@@ -57,15 +57,15 @@
 .encouragement-eyebrow {
   margin: 0 0 5px;
   color: var(--primary);
-  font-size: 11px;
-  font-weight: 950;
+  font-size: var(--fs-micro);
+  font-weight: 800;
   letter-spacing: 0.035em;
 }
 
 .encouragement-bubble h2 {
   margin: 0;
   color: var(--ink-strong);
-  font-size: 17px;
+  font-size: var(--fs-lead);
   line-height: 1.4;
   letter-spacing: -0.035em;
 }
@@ -73,7 +73,7 @@
 .encouragement-bubble > p:not(.encouragement-eyebrow) {
   margin: 8px 0 0;
   color: var(--muted);
-  font-size: 12px;
+  font-size: var(--fs-micro);
   line-height: 1.55;
 }
 
@@ -90,8 +90,8 @@
   border-radius: 999px;
   background: var(--surface);
   color: var(--muted);
-  font-size: 10px;
-  font-weight: 900;
+  font-size: var(--fs-micro);
+  font-weight: 800;
 }
 
 .encouragement-actions {
@@ -220,7 +220,7 @@
   }
 
   .encouragement-bubble h2 {
-    font-size: 19px;
+    font-size: var(--fs-lead);
   }
 
   .encouragement-actions {
@@ -249,22 +249,19 @@
     padding: 12px;
   }
 
-  .encouragement-bubble h2 {
-    font-size: 14px;
-  }
-
-  .encouragement-bubble > p:not(.encouragement-eyebrow) {
-    font-size: 11px;
-  }
+  /* 여기서 글자를 더 줄이지 않는다.
+     390px 이하는 예외적인 좁은 화면이 아니라 주력 기기다 — 아이폰 12·13·14가
+     390px, SE가 375px이라 대부분의 휴대폰이 이 블록에 걸린다. 그런데 이 블록이
+     본문을 12px로, 주요 버튼까지 12px로 줄이고 있었다. 화면에서 가장 중요한
+     버튼이 가장 작은 글자였던 것이다.
+     좁은 화면에서 줄일 것은 글자가 아니라 여백이다. */
 
   .encouragement-meta span {
     padding: 4px 6px;
-    font-size: 9px;
   }
 
   .encouragement-actions .primary-action,
   .encouragement-actions .secondary-action {
     padding: 0 10px;
-    font-size: 12px;
   }
 }

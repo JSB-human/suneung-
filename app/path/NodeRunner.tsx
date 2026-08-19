@@ -157,6 +157,15 @@ export default function NodeRunner({
           {content.lesson ? (
             <div className="node-lesson">
               <p className="node-lesson-hook">{content.lesson.hook}</p>
+              {/* 읽기 화면이 세 화면을 넘는다. 이미 읽은 사람이 다시 스크롤해
+                  내려가야 문제를 만나면 그것만으로 안 하게 된다. */}
+              <button
+                type="button"
+                className="node-lesson-skip"
+                onClick={() => setStage("check")}
+              >
+                이미 알아요 · 바로 문제 풀기
+              </button>
               {content.lesson.sections.map((section) => (
                 <section className="node-block is-lesson" key={section.heading}>
                   <h4 className="node-block-label">{section.heading}</h4>
@@ -177,28 +186,38 @@ export default function NodeRunner({
             </div>
           ) : null}
 
-          {content.formula ? (
-            <section className="node-block">
-              <h4 className="node-block-label">외워 둘 것</h4>
-              <p className="concept-sheet-formula">{content.formula}</p>
-            </section>
-          ) : null}
+          {/* 요약 카드. 강의가 붙은 칸에서는 이 셋이 강의 뒤에 낱개로 이어져,
+              "가지고 갈 한 줄"로 끝난 뒤에 또 세 덩어리가 나오는 모양이었다.
+              게다가 강의의 "여기서 거의 다 틀립니다"와 캡슐의 "여기서 자주
+              틀려요"가 따로 두 번 나왔다. 하나로 묶어 정리라는 신호를 준다. */}
+          {content.formula || content.keyPoints.length > 0 || content.mistake ? (
+            <section className="node-summary" aria-label="한눈에 정리">
+              <h4 className="node-summary-title">한눈에 정리</h4>
 
-          {content.keyPoints.length > 0 ? (
-            <section className="node-block">
-              <h4 className="node-block-label">순서대로 볼 것</h4>
-              <ol className="node-key-points">
-                {content.keyPoints.map((point) => (
-                  <li key={point}>{point}</li>
-                ))}
-              </ol>
-            </section>
-          ) : null}
+              {content.formula ? (
+                <div className="node-summary-row">
+                  <h5 className="node-summary-label">외워 둘 것</h5>
+                  <p className="concept-sheet-formula">{content.formula}</p>
+                </div>
+              ) : null}
 
-          {content.mistake ? (
-            <section className="node-block is-warning">
-              <h4 className="node-block-label">여기서 자주 틀려요</h4>
-              <p className="concept-sheet-mistake">{content.mistake}</p>
+              {content.keyPoints.length > 0 ? (
+                <div className="node-summary-row">
+                  <h5 className="node-summary-label">순서대로 볼 것</h5>
+                  <ol className="node-key-points">
+                    {content.keyPoints.map((point) => (
+                      <li key={point}>{point}</li>
+                    ))}
+                  </ol>
+                </div>
+              ) : null}
+
+              {content.mistake ? (
+                <div className="node-summary-row is-warning">
+                  <h5 className="node-summary-label">자주 하는 실수</h5>
+                  <p className="concept-sheet-mistake">{content.mistake}</p>
+                </div>
+              ) : null}
             </section>
           ) : null}
 

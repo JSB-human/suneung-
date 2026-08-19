@@ -738,7 +738,7 @@ export default function IpsiCoachApp() {
           <button
             type="button"
             className="primary-action"
-            style={{ minHeight: 36, padding: "0 12px", fontSize: 12, background: "#39c5bb", borderColor: "#00a496" }}
+            style={{ padding: "0 var(--space-3)", fontSize: "var(--fs-micro)", background: "#39c5bb", borderColor: "#00a496" }}
             onClick={() => setIsMikuBgmOpen(true)}
           >
             🎵 미쿠 BGM
@@ -1138,20 +1138,20 @@ export default function IpsiCoachApp() {
                   style={{ width: 54, height: 54, borderRadius: "50%", objectFit: "cover", border: "2px solid #39c5bb", boxShadow: "0 2px 8px rgba(57,197,187,0.3)" }}
                 />
                 <div>
-                  <h3 style={{ margin: 0, fontSize: 18, color: "#0f172a", fontWeight: 900 }}>🎵 미쿠 BGM & 수능 공부 명곡</h3>
-                  <p style={{ margin: 0, fontSize: 12, color: "#00a496", fontWeight: 800 }}>Hatsune Miku Study Playlist</p>
+                  <h3 style={{ margin: 0, fontSize: "var(--fs-lead)", color: "#0f172a", fontWeight: 800 }}>🎵 미쿠 BGM & 수능 공부 명곡</h3>
+                  <p style={{ margin: 0, fontSize: "var(--fs-micro)", color: "#00a496", fontWeight: 700 }}>Hatsune Miku Study Playlist</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setIsMikuBgmOpen(false)}
-                style={{ border: "none", background: "none", fontSize: 22, cursor: "pointer", color: "#64748b" }}
+                style={{ minWidth: "var(--tap)", minHeight: "var(--tap)", border: "none", background: "none", fontSize: "var(--fs-title)", cursor: "pointer", color: "#64748b" }}
               >
                 ✕
               </button>
             </div>
 
-            <p style={{ fontSize: 13, color: "#334155", lineHeight: 1.6, marginBottom: 16 }}>
+            <p style={{ fontSize: "var(--fs-small)", color: "#334155", lineHeight: 1.6, marginBottom: "var(--space-4)" }}>
               공부할 때 미쿠의 대표 명곡과 집중력을 높여주는 Chill Lo-Fi BGM을 들으며 함께 열공해요! 🎵✨
             </p>
 
@@ -1164,7 +1164,7 @@ export default function IpsiCoachApp() {
                 style={{ display: "flex", alignItems: "center", justifyContent: "space-between", textDecoration: "none", background: "#39c5bb", borderColor: "#00a496", padding: "12px 16px" }}
               >
                 <span>☕ Miku Lo-Fi Chill Study BGM ↗</span>
-                <span style={{ fontSize: 12, background: "rgba(255,255,255,0.25)", padding: "2px 8px", borderRadius: 8 }}>재생 🎵</span>
+                <span style={{ fontSize: "var(--fs-micro)", background: "rgba(255,255,255,0.25)", padding: "2px 8px", borderRadius: 8 }}>재생 🎵</span>
               </a>
 
               <a
@@ -1175,7 +1175,7 @@ export default function IpsiCoachApp() {
                 style={{ display: "flex", alignItems: "center", justifyContent: "space-between", textDecoration: "none", borderColor: "#a0ece7", padding: "12px 16px" }}
               >
                 <span>🎵 Tell Your World - kz (livetune) ↗</span>
-                <span style={{ fontSize: 12 }}>시청 ↗</span>
+                <span style={{ fontSize: "var(--fs-micro)" }}>시청 ↗</span>
               </a>
 
               <a
@@ -1186,7 +1186,7 @@ export default function IpsiCoachApp() {
                 style={{ display: "flex", alignItems: "center", justifyContent: "space-between", textDecoration: "none", borderColor: "#a0ece7", padding: "12px 16px" }}
               >
                 <span>💖 39 (Sanku) - DECO*27 x sasakure ↗</span>
-                <span style={{ fontSize: 12 }}>시청 ↗</span>
+                <span style={{ fontSize: "var(--fs-micro)" }}>시청 ↗</span>
               </a>
 
               <a
@@ -1197,7 +1197,7 @@ export default function IpsiCoachApp() {
                 style={{ display: "flex", alignItems: "center", justifyContent: "space-between", textDecoration: "none", borderColor: "#a0ece7", padding: "12px 16px" }}
               >
                 <span>✨ Melt (메르트) - ryo (supercell) ↗</span>
-                <span style={{ fontSize: 12 }}>시청 ↗</span>
+                <span style={{ fontSize: "var(--fs-micro)" }}>시청 ↗</span>
               </a>
             </div>
           </div>
