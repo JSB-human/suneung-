@@ -150,13 +150,12 @@ test("preserves and migrates local study state safely", async () => {
 });
 
 test("ships detailed curricula, practice, SRS vocabulary, and official EBS links", async () => {
-  const [app, content, mathData, mathMap, languageData, languageMap, trainer, vocabulary, nodeRunner, css, coachCss, foundation, nodeContent, visualCss] = await Promise.all([
+  const [app, content, mathData, languageData, knowledgeState, trainer, vocabulary, nodeRunner, css, coachCss, foundation, nodeContent, visualCss] = await Promise.all([
     readFile(new URL("../app/IpsiCoachApp.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/study-content.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/math-curriculum.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/MathKnowledgeMap.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/language-curriculum.ts", import.meta.url), "utf8"),
-    readFile(new URL("../app/LanguageKnowledgeMap.tsx", import.meta.url), "utf8"),
+    readFile(new URL("../app/knowledge-state.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/VocabTrainer.tsx", import.meta.url), "utf8"),
     readFile(new URL("../app/vocab-data.ts", import.meta.url), "utf8"),
     readFile(new URL("../app/path/NodeRunner.tsx", import.meta.url), "utf8"),
@@ -178,21 +177,12 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
   assert.ok((mathData.match(/practiceQuestions:/g) ?? []).length >= 12);
   assert.match(mathData, /corePrinciples/);
   assert.match(mathData, /workedExample/);
-  assert.match(mathMap, /role="status"/);
-  assert.match(mathMap, /aria-live="polite"/);
-  assert.match(mathMap, /correctQuestionIds/);
-  assert.match(mathMap, /rel="noreferrer noopener"/);
-  assert.match(mathMap, /renderConceptPractice/);
 
   for (const chapter of ["읽기 기초", "독서\/비문학", "문학", "언어", "화법\/작문\/매체", "문제 적용\/EBS", "어휘\/발음", "듣기", "문장 문법", "구문 독해", "독해 유형", "EBS\/실전"]) {
     assert.match(languageData, new RegExp(chapter));
   }
   assert.ok((languageData.match(/selfCheckQuestion:/g) ?? []).length >= 25);
   assert.match(languageData, /듣기 파트와 읽기 파트를 중심/);
-  assert.match(languageMap, /createEmptyLanguageKnowledgeMapValue/);
-  assert.match(languageMap, /completedConceptIds/);
-  assert.match(languageMap, /correctQuestionIds/);
-  assert.match(languageMap, /괜찮아요\. 지금 발견해서 이득이에요/);
 
   const capsuleCounts = {
     korean: (foundation.match(/subject: "korean"/g) ?? []).length,
@@ -218,9 +208,23 @@ test("ships detailed curricula, practice, SRS vocabulary, and official EBS links
       `${subject} 탭이 길을 렌더링해야 한다`,
     );
   }
-  // 아직 렌더링되는 컴포넌트는 남아 있어야 한다.
+  // 지식 지도 화면은 길로 대체되어 사라졌다. 이 단언은 원래 "아직 렌더링되는
+  // 컴포넌트는 남아 있어야 한다"며 파일 존재를 요구했는데, 실제로는 어디서도
+  // 렌더링되지 않은 지 오래였다. 파일이 있다는 것과 화면에 나온다는 것은 다르다.
+  //
+  // 지금 지켜야 할 것은 파일이 아니라 저장 구조다. 동생의 저장 데이터에 예전
+  // 값이 남아 있을 수 있고 백업이 없으므로, 값의 모양이 바뀌면 안 된다.
+  assert.match(knowledgeState, /completedConceptIds/);
+  assert.match(knowledgeState, /correctQuestionIds/);
+  assert.match(knowledgeState, /createEmptyLanguageKnowledgeMapValue/);
+  assert.match(knowledgeState, /createEmptyMathKnowledgeMapValue/);
+  assert.match(app, /from "\.\/knowledge-state\.ts"/);
+  // 사라진 화면이 되살아나 두 벌이 되는 일이 없도록 확인한다.
   for (const file of ["LanguageKnowledgeMap", "MathKnowledgeMap"]) {
-    await access(new URL(`../app/${file}.tsx`, import.meta.url));
+    await assert.rejects(
+      () => access(new URL(`../app/${file}.tsx`, import.meta.url)),
+      `${file}은 길로 대체되어 삭제됐다`,
+    );
   }
 
   const vocabularyCount = (vocabulary.match(/id: "[a-z-]+",/g) ?? []).length;

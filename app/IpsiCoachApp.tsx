@@ -8,12 +8,10 @@ import { hashString } from "./practice/rng";
 import { computeMikuMood, countActiveDaysLast7, resolveGreetingEvent } from "./miku/miku-mood";
 import {
   createEmptyLanguageKnowledgeMapValue,
-  type LanguageKnowledgeMapValue,
-} from "./LanguageKnowledgeMap";
-import {
   createEmptyMathKnowledgeMapValue,
+  type LanguageKnowledgeMapValue,
   type MathKnowledgeMapValue,
-} from "./MathKnowledgeMap";
+} from "./knowledge-state.ts";
 import TodayPractice from "./practice/TodayPractice";
 import WrongNotes from "./practice/WrongNotes";
 import type { PracticeOutcomeReport } from "./practice/PracticeRunner";
@@ -488,8 +486,12 @@ export default function IpsiCoachApp() {
     completedNodeCount * 20;
   const level = Math.floor(points / 100) + 1;
 
-  // 과목별 위치는 이제 길 진도가 기준이다. 로드맵 단원·지식 지도 값은
-  // 동생 데이터 보존을 위해 저장소에 그대로 남지만 화면 계산에는 쓰지 않는다.
+  // 과목별 위치는 이제 길 진도가 기준이다.
+  //
+  // 위 points 계산에 들어가는 language·math 값은 지식 지도 화면이 채우던
+  // 것인데, 그 화면이 길로 대체되면서 사라졌다. 그래서 새로 쌓이지는 않는다.
+  // 그래도 항을 빼지 않는 이유는 동생의 저장 데이터에 예전 값이 남아 있을 수
+  // 있어서다 — 빼면 이미 얻은 점수가 줄어든다.
   const subjectProgress = useMemo(
     () => ({
       korean: getSubjectProgress(appState.path, "korean"),
