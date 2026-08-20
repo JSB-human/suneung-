@@ -143,10 +143,20 @@ test("math concept and capsule nodes carry 60 fixed questions in total", () => {
   );
 });
 
-test("every math pattern node carries exactly 3 fixed questions", () => {
+test("every math pattern node carries enough fixed questions", () => {
+  // 원래 "정확히 3개"였다. 그런데 3문항은 형식을 채울 뿐 유형을 익히기에는
+  // 모자라서, 운이나 한 예의 패턴 맞추기로 셋 다 맞힐 수 있다. 숫자를 3으로
+  // 못 박으면 문항을 늘리는 개선 자체가 테스트를 깨뜨린다.
+  //
+  // 지켜야 할 것은 "3개"가 아니라 "빈약한 칸이 없다"이므로 하한으로 바꾼다.
+  const MIN_QUESTIONS = 3;
   const patterns = getNodesForSubject("math").filter((node) => node.kind === "pattern");
   assert.ok(patterns.length > 0, "수학 유형 칸이 하나도 없다");
   for (const node of patterns) {
-    assert.equal(resolveNodeContent(node.id).questions.length, 3, `${node.id}: 확인 문제가 3개가 아니다`);
+    const count = resolveNodeContent(node.id).questions.length;
+    assert.ok(
+      count >= MIN_QUESTIONS,
+      `${node.id}: 확인 문제가 ${count}개뿐이다 (최소 ${MIN_QUESTIONS}개)`,
+    );
   }
 });
