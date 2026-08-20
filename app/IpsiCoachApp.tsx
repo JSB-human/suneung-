@@ -115,7 +115,11 @@ const DEFAULT_APP_STATE: AppState = {
 const NAV_ITEMS: Array<{ id: TabId; label: string }> = [
   { id: "today", label: "오늘" },
   { id: "korean", label: "국어" },
-  { id: "english", label: "영어·단어" },
+  // "영어·단어"였는데 정작 이 탭에는 단어장이 없고, 탭 안내가 "단어는 오늘
+  // 탭에서"라고 딴 데를 가리켰다. 이름이 약속한 것을 그 자리에서 못 주면
+  // 찾다가 지친다. 단어는 매일 하는 것이라 오늘 탭에 두는 편이 맞으므로,
+  // 이름 쪽을 내용에 맞춘다.
+  { id: "english", label: "영어" },
   { id: "math", label: "수학" },
   { id: "records", label: "기록" },
 ];
@@ -460,9 +464,19 @@ export default function IpsiCoachApp() {
   const completedWords = Object.values(appState.vocab.progressById).filter(
     (progress) => progress.status === "completed",
   ).length;
+  // 복습은 이미 배운 것을 다시 보는 일이다. 한 번도 본 적 없는 단어까지 세면
+  // 아무것도 안 한 첫날 사용자에게 "오늘 복습 1500개"라고 말하게 된다 —
+  // 바로 옆 화면에서는 "오늘은 딱 한 칸만"이라고 해 놓고서다. 노베이스에게
+  // 그 숫자는 격려가 아니라 그만둘 이유다.
+  //
+  // 단어장 화면은 하루치를 10개로 잘라 내보내므로 원래 문제가 없었고,
+  // 자르지 않은 값을 그대로 보여 주던 이 통계만 문제였다.
   const dueWords = VOCAB_WORDS.filter((word) => {
     const progress = appState.vocab.progressById[word.id];
-    return !progress || !progress.dueDate || progress.dueDate <= todayKey;
+    if (!progress || progress.reviewCount <= 0) {
+      return false;
+    }
+    return !progress.dueDate || progress.dueDate <= todayKey;
   }).length;
   const dueReviewCount = listDueKeys(appState.practice.reviewById, todayKey, "skill").length;
   const dday = getDaysUntil2028Csat();

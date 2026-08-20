@@ -68,7 +68,7 @@ test("server-renders the expanded mobile study coach", async () => {
   assert.doesNotMatch(html, /🌱 기초 도서관/);
   assert.doesNotMatch(html, /12주 독해 로드맵/);
   assert.doesNotMatch(html, /50일수학 지식 지도/);
-  for (const tabLabel of ["오늘", "국어", "영어·단어", "수학", "기록"]) {
+  for (const tabLabel of ["오늘", "국어", "영어", "수학", "기록"]) {
     assert.match(html, new RegExp(`>${tabLabel}<`));
   }
   assert.doesNotMatch(html, /codex-preview|Your site is taking shape|react-loading-skeleton/i);
