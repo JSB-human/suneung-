@@ -587,6 +587,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         explanation:
           "제목은 주제와 같은 결론을 가리키되 비유나 대비를 써서 짧게 줄입니다. 그래서 지문 표현을 그대로 옮긴 선택지는 오히려 답이 아닌 경우가 많습니다.",
       },
+      {
+        id: "en-p24-q4",
+        prompt:
+          "‘Wild bees do not live in hives, and no farmer feeds them. Yet they visit more kinds of flowers than honeybees do. Losing them would cost farms far more than most people think.’ (낱말: hive 벌집, honeybee 꿀벌, cost ~에 대가를 치르게 하다) 이 글의 제목으로 가장 알맞은 것은?",
+        choices: [
+          { value: "free-workers", label: "Free Workers That Farms Cannot Lose" },
+          { value: "honey", label: "How Honeybees Make Honey" },
+          { value: "hive", label: "How to Build a Better Hive" },
+          { value: "flowers", label: "The Most Beautiful Flowers in Spring" },
+        ],
+        answer: "free-workers",
+        explanation:
+          "아무도 먹이를 주지 않는데도 농사에 큰 몫을 한다는 것이 글의 결론이고, 제목은 그 결론을 공짜 일꾼이라는 말로 줄인 것입니다. hive와 honeybee가 든 두 선택지는 지문에 나온 낱말을 그대로 옮겨 왔을 뿐이고, 글은 벌집을 짓는 법도 꿀을 만드는 법도 다루지 않습니다.",
+      },
+      {
+        id: "en-p24-q5",
+        prompt:
+          "‘Everyone knows that practice makes perfect. But hours alone do not help if you repeat the same mistake all day. What builds skill is practice that fixes one small error at a time.’ (낱말: practice makes perfect 연습이 완벽을 만든다는 속담, repeat 되풀이하다, fix 고치다, at a time 한 번에) 이 글의 제목으로 가장 알맞은 것은?",
+        choices: [
+          { value: "fix-error", label: "Practice Works Only When It Fixes Errors" },
+          { value: "perfect", label: "Practice Makes Perfect" },
+          { value: "hours", label: "How Many Hours a Day Should You Practice?" },
+          { value: "talent", label: "Talent Matters More Than Effort" },
+        ],
+        answer: "fix-error",
+        explanation:
+          "But 뒤가 필자의 말이고 마지막 문장이 결론입니다. 잘못을 하나씩 고치는 연습이라야 실력이 붙는다는 것이지요. Practice Makes Perfect는 첫 문장에 그대로 나오지만 필자가 반박하려고 꺼내 놓은 통념이라, 지문에서 본 표현이라는 이유로 고르면 글의 방향을 정반대로 잡게 됩니다.",
+      },
     ],
   },
 
@@ -644,6 +672,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         answer: "one-by-one",
         explanation:
           "도표는 문장마다 확인할 숫자가 정해져 있습니다. 문장 하나에 숫자 하나씩 짝지어 확인하면 도표를 여러 번 다시 볼 일이 없습니다.",
+      },
+      {
+        id: "en-p25-q4",
+        prompt:
+          "학생들이 고른 취미가 게임 45%, 운동 30%, 독서 15%, 음악 10%였습니다. (낱말: popular 인기 있는, chose choose의 과거) 도표와 일치하지 않는 문장은?",
+        choices: [
+          { value: "reading-second", label: "Reading was the second most popular hobby." },
+          { value: "gaming-first", label: "Gaming was the most popular hobby." },
+          { value: "music-smallest", label: "Music was chosen by the smallest number of students." },
+          { value: "sports-reading", label: "More students chose sports than reading." },
+        ],
+        answer: "reading-second",
+        explanation:
+          "두 번째로 많은 것은 30%인 운동이고 독서는 15%로 세 번째입니다. 독서가 음악보다 많다는 것은 맞지만 순위가 한 칸 밀렸습니다. the second, the third처럼 순서를 말하는 표현이 나오면 그 자리 숫자만이 아니라 위아래 숫자까지 함께 봐야 합니다.",
+      },
+      {
+        id: "en-p25-q5",
+        prompt:
+          "어느 도서관의 대출 권수가 2021년 800권, 2022년 1,200권, 2023년 1,600권이었습니다. (낱말: lent lend(빌려주다)의 과거, rose 올랐다) 도표와 일치하지 않는 문장은?",
+        choices: [
+          { value: "twice-2022", label: "The number in 2022 was twice the number in 2021." },
+          { value: "twice-2023", label: "The number in 2023 was twice the number in 2021." },
+          { value: "rose", label: "The number rose every year from 2021 to 2023." },
+          { value: "four-hundred", label: "The library lent 400 more books in 2023 than in 2022." },
+        ],
+        answer: "twice-2022",
+        explanation:
+          "800의 두 배는 1,600이므로 twice가 맞는 해는 2023년입니다. 2022년의 1,200권은 1.5배라서 늘어난 것은 맞아도 배수가 틀립니다. twice가 든 문장이 둘이니 둘 다 계산해 보아야 하고, 늘었다는 방향만 보고 넘기면 걸립니다.",
       },
     ],
   },
@@ -703,6 +759,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         answer: "in-order",
         explanation:
           "26번 선택지는 지문에 나온 순서를 그대로 따릅니다. 확인이 끝난 자리부터 이어서 읽으면 지문을 한 번만 훑고 끝낼 수 있습니다.",
+      },
+      {
+        id: "en-p26-q4",
+        prompt:
+          "‘Carlos Ruiz was born in 1955 in a small fishing village. He left school at fifteen and worked on his father’s boat for six years. He opened his own restaurant at thirty and wrote two cookbooks after he turned fifty.’ (낱말: fishing village 어촌, left school 학교를 그만두었다, turned fifty 쉰 살이 되었다) 윗글의 내용과 일치하지 않는 것은?",
+        choices: [
+          { value: "eighteen", label: "그는 열여덟 살에 학교를 그만두었다" },
+          { value: "born", label: "그는 1955년에 작은 어촌에서 태어났다" },
+          { value: "restaurant", label: "그는 서른 살에 자기 식당을 열었다" },
+          { value: "books", label: "그는 쉰 살이 넘어서 요리책 두 권을 썼다" },
+        ],
+        answer: "eighteen",
+        explanation:
+          "지문은 He left school at fifteen, 곧 열다섯 살이라고 했습니다. 학교를 그만두었다는 사실 자체는 맞아서 뜻이 비슷해 보이지만, 26번의 정답은 이렇게 숫자 하나만 바꿔 둔 자리입니다. 나이와 연도에는 반드시 동그라미를 치고 확인해야 합니다.",
+      },
+      {
+        id: "en-p26-q5",
+        prompt:
+          "‘The Hana Bridge was built in 1978 and is 1.2 kilometers long. Cars are not allowed on it; only people who walk or ride bicycles may cross. The bridge is closed in winter because of ice.’ (낱말: allowed 허용된, cross 건너다, because of ~ 때문에) 윗글의 내용과 일치하지 않는 것은?",
+        choices: [
+          { value: "cars", label: "자동차도 다리를 건널 수 있다" },
+          { value: "built", label: "1978년에 지어졌다" },
+          { value: "length", label: "길이는 1.2킬로미터다" },
+          { value: "winter", label: "겨울에는 다리를 건널 수 없다" },
+        ],
+        answer: "cars",
+        explanation:
+          "Cars are not allowed는 자동차는 안 된다는 뜻이고, 건널 수 있는 것은 걷거나 자전거를 타는 사람뿐입니다. not 하나를 흘려 읽으면 정반대의 뜻이 되는데, 이것이 26번에서 가장 자주 쓰이는 방식입니다.",
       },
     ],
   },
