@@ -1369,7 +1369,7 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
       {
         id: "en-p38-q4",
         prompt:
-          "상자 안 문장 ‘Such a small change saved the school 300,000 won a year.’을 넣을 자리는? ‘Our school printed every notice on paper. ① Most of them went straight into the recycling bin. ② Last March the office started sending notices by text message. ③ Now one teacher can reach every parent in a second. ④ That money now buys new books for the library. ⑤’ (낱말: notice 알림장, recycling bin 재활용 통, reach ~에게 닿다, save 아끼다)",
+          "상자 안 문장 ‘Such a small change saved the school 300,000 won a year.’을 넣을 자리는? ‘Our school printed every notice on paper. ① Most of them went straight into the recycling bin. ② Last March the office started sending notices by text message. ③ It also means one teacher can reach every parent in a second. ④ That money now buys new books for the library. ⑤’ (낱말: notice 알림장, recycling bin 재활용 통, reach ~에게 닿다, save 아끼다)",
         choices: [
           { value: "four", label: "④" },
           { value: "two", label: "②" },
@@ -1378,7 +1378,7 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         ],
         answer: "four",
         explanation:
-          "Such a small change는 앞에 그 변화가 다 설명되어 있어야 쓸 수 있는 말이고, 문자로 보내기 시작했다는 ②와 그래서 어떻게 되었다는 ③이 그 설명입니다. 게다가 ④ 뒤의 That money는 상자 문장의 300,000원을 받는 말이라, 상자 문장이 빠지면 돈이 어디서 나왔는지 알 수 없어 흐름이 끊깁니다. ③에 넣으면 변화 설명이 끝나기도 전에 결산부터 하는 셈입니다.",
+          "Such a small change는 앞에 그 변화가 다 설명되어 있어야 쓸 수 있는 말이고, 문자로 보내기 시작했다는 ②와 그래서 어떻게 되었다는 ③이 그 설명입니다. 게다가 ④ 뒤의 That money는 상자 문장의 300,000원을 받는 말이라, 상자 문장이 빠지면 돈이 어디서 나왔는지 알 수 없어 흐름이 끊깁니다. ③에는 넣을 수 없습니다. 뒤 문장이 It also means로 시작해 앞의 문자 발송을 곧바로 받고 있어서, 사이에 다른 문장이 끼면 It이 가리킬 것이 바뀌어 버립니다.",
       },
       {
         id: "en-p38-q5",

@@ -694,7 +694,13 @@
   font-size: var(--fs-lead);
   font-weight: 700;
   line-height: var(--lh-body);
+  /* 문항 42개가 발문과 지문을 줄바꿈으로 나눠 두었는데, HTML은 기본적으로
+     줄바꿈을 공백으로 접어 버려 전부 한 문단으로 뭉개지고 있었다. 대화문이
+     "학생 1: … 학생 2: …"처럼 한 줄로 이어지면 누가 한 말인지 알 수 없다.
+     pre-line은 줄바꿈만 살리고 나머지 공백은 그대로 접는다. */
+  white-space: pre-line;
 }
+
 
 .practice-choices {
   display: grid;
@@ -1996,6 +2002,8 @@
   margin: 0;
   font-weight: 700;
   line-height: var(--lh-body);
+  /* 강의 예제도 발문과 지문을 줄바꿈으로 나눈다. .practice-prompt와 같은 이유다. */
+  white-space: pre-line;
 }
 
 .node-lesson-steps {
