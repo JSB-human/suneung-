@@ -2013,6 +2013,26 @@
   line-height: var(--lh-body);
 }
 
+/* --- 오늘 화면의 위계 -----------------------------------------------
+   미쿠 카드의 버튼이 오늘의 한 칸이고, 과목 카드 셋은 "다른 걸 하고
+   싶으면"이다. 둘이 같은 무게로 보이면 처음 온 사람이 멈춘다. */
+
+.encouragement-next-title {
+  margin: var(--space-2) 0 0;
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  line-height: var(--lh-snug);
+  color: var(--muted);
+}
+
+.today-next-heading {
+  margin: 0 0 var(--space-1);
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+}
+
 /* --- 한눈에 정리 -------------------------------------------------------
    강의를 다 읽은 뒤에 나오는 요약 카드. 낱개 덩어리로 두면 "마무리" 다음에
    또 세 덩어리가 이어져 강의가 안 끝난 것처럼 보인다. 하나로 묶고 배경을

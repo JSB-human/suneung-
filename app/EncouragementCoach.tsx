@@ -10,6 +10,10 @@ type EncouragementCoachProps = {
   mood: MikuMood;
   streak: number;
   dday: number;
+  /** 다음에 할 과목 이름. 버튼이 무엇을 할지 이름을 말해야 한다. */
+  nextSubjectLabel: string;
+  /** 다음 칸 제목. 무엇이 기다리는지 보이면 누르기가 쉬워진다. */
+  nextNodeTitle?: string;
   onOpenEasyStep: () => void;
   className?: string;
 };
@@ -46,6 +50,8 @@ export function EncouragementCoach({
   mood,
   streak,
   dday,
+  nextSubjectLabel,
+  nextNodeTitle,
   onOpenEasyStep,
   className,
 }: EncouragementCoachProps) {
@@ -64,7 +70,11 @@ export function EncouragementCoach({
           <p className="miku-streak-line">{formatStreakLine(streak)}</p>
         </MikuPartner>
 
-        {/* 첫 화면의 주된 행동은 하나여야 한다. 타이머는 헤더에서 열 수 있다. */}
+        {/* 첫 화면의 주된 행동은 하나여야 한다. 타이머는 헤더에서 열 수 있다.
+            버튼이 "오늘 여기서 시작하기"라고만 하면 무엇이 열리는지 알 수 없어,
+            바로 아래 과목 카드 셋과 똑같은 무게로 보인다. 실제로 이 버튼과
+            과목 카드는 같은 동작(switchTab)이었다. 어디로 가는지 이름을 말하게
+            해서 이것이 오늘의 그 한 칸임을 분명히 한다. */}
         <div className="encouragement-actions">
           <button
             type="button"
@@ -72,8 +82,11 @@ export function EncouragementCoach({
             style={TOUCH_TARGET_STYLE}
             onClick={onOpenEasyStep}
           >
-            오늘 여기서 시작하기
+            {nextSubjectLabel} 한 칸 시작하기
           </button>
+          {nextNodeTitle ? (
+            <p className="encouragement-next-title">오늘은 · {nextNodeTitle}</p>
+          ) : null}
         </div>
       </div>
     </section>

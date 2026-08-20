@@ -779,6 +779,8 @@ export default function IpsiCoachApp() {
             mood={mikuMood}
             streak={streak}
             dday={dday}
+            nextSubjectLabel={SUBJECT_GUIDES[nextSubject].label}
+            nextNodeTitle={getNextNode(appState.path, nextSubject)?.title}
             onOpenEasyStep={() => switchTab(nextSubject)}
           />
 
@@ -793,7 +795,11 @@ export default function IpsiCoachApp() {
             </button>
           ) : null}
 
-          <section className="today-next-list" aria-label="오늘의 다음 칸">
+          {/* 위 버튼이 오늘의 한 칸이고, 여기는 "다른 걸 하고 싶으면"이다.
+              제목이 없으면 카드 셋이 위 버튼과 같은 무게의 시작 버튼 셋으로
+              보여, 처음 온 사람이 뭘 눌러야 할지 모른다. */}
+          <section className="today-next-list" aria-label="과목별 다음 칸">
+            <h2 className="today-next-heading">다른 과목부터 할래?</h2>
             {SUBJECT_KEYS.map((subject) => {
               const next = getNextNode(appState.path, subject);
               if (!next) {
