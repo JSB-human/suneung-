@@ -2,7 +2,7 @@ import type { FoundationLesson } from "./foundation-lesson-types.ts";
 
 /**
  * 표기는 개념 층(foundation-reference, math-curriculum)에 맞춰 위첨자(x²)를 쓴다.
- * 문제 층(pattern-nodes-math, node-questions)은 x^2를 쓰는데, 이 강의는 캡슐 설명
+ * 문제 층(pattern-nodes-math, node-questions)은 x²를 쓰는데, 이 강의는 캡슐 설명
  * 바로 아래에 붙으므로 같은 화면에 있는 쪽과 같아야 한다.
  */
 export const MATH_LESSONS: FoundationLesson[] = [

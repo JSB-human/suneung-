@@ -38,12 +38,12 @@ test("formatFraction hides denominator 1", () => {
 });
 
 test("formatQuadratic renders readable polynomials", () => {
-  assert.equal(formatQuadratic(1, 7, 12), "x^2 + 7x + 12");
-  assert.equal(formatQuadratic(1, -2, -15), "x^2 - 2x - 15");
-  assert.equal(formatQuadratic(2, -5, -12), "2x^2 - 5x - 12");
-  assert.equal(formatQuadratic(1, 0, -9), "x^2 - 9");
-  assert.equal(formatQuadratic(1, -1, 0), "x^2 - x");
-  assert.equal(formatQuadratic(-1, 3, 0), "-x^2 + 3x");
+  assert.equal(formatQuadratic(1, 7, 12), "x² + 7x + 12");
+  assert.equal(formatQuadratic(1, -2, -15), "x² - 2x - 15");
+  assert.equal(formatQuadratic(2, -5, -12), "2x² - 5x - 12");
+  assert.equal(formatQuadratic(1, 0, -9), "x² - 9");
+  assert.equal(formatQuadratic(1, -1, 0), "x² - x");
+  assert.equal(formatQuadratic(-1, 3, 0), "-x² + 3x");
   assert.equal(formatQuadratic(0, 0, 0), "0");
 });
 

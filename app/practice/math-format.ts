@@ -40,7 +40,10 @@ export function formatQuadratic(a: number, b: number, c: number): string {
   const parts: string[] = [];
 
   if (a !== 0) {
-    const body = Math.abs(a) === 1 ? "x^2" : `${Math.abs(a)}x^2`;
+    // 시험지에 나오는 모양을 그대로 쓴다. x^2는 코드에서나 쓰는 표기이고,
+    // 개념 층(foundation-reference, math-curriculum)은 이미 x²를 쓰고 있었다.
+    // 같은 앱 안에서 두 표기가 섞이면 같은 것을 다른 것으로 배우게 된다.
+    const body = Math.abs(a) === 1 ? "x²" : `${Math.abs(a)}x²`;
     parts.push(a < 0 ? `-${body}` : body);
   }
   if (b !== 0) {

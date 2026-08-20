@@ -1839,7 +1839,7 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
 
   // ── 수학 캡슐 ──────────────────────────────────────────────
   // 생성기(skillId)가 붙은 캡슐은 런타임에 문제가 무한히 나오므로 여기서 다루지 않는다.
-  // 거듭제곱은 생성기 출력과 같은 x^2 표기를 쓴다.
+  // 거듭제곱은 생성기 출력과 같은 x² 표기를 쓴다.
   "capsule:ma-expressions": [
     {
       id: "ma-expressions-x1",
@@ -1856,7 +1856,7 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
     },
     {
       id: "ma-expressions-x2",
-      prompt: "x = -2일 때 3x^2 - x의 값은?",
+      prompt: "x = -2일 때 3x² - x의 값은?",
       choices: [
         { value: "14", label: "14" },
         { value: "10", label: "10" },
@@ -1865,7 +1865,7 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
       ],
       answer: "14",
       explanation:
-        "문자 자리에 괄호째 넣어 3 × (-2)^2 - (-2)로 씁니다. (-2)^2 = 4라서 12가 되고 -x는 +2가 되므로 12 + 2 = 14입니다.",
+        "문자 자리에 괄호째 넣어 3 × (-2)² - (-2)로 씁니다. (-2)² = 4라서 12가 되고 -x는 +2가 되므로 12 + 2 = 14입니다.",
     },
   ],
 
@@ -1930,7 +1930,7 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
   "capsule:ma-coordinate-geometry": [
     {
       id: "ma-coordinate-geometry-x1",
-      prompt: "원 (x + 1)^2 + (y - 3)^2 = 16의 중심과 반지름은?",
+      prompt: "원 (x + 1)² + (y - 3)² = 16의 중심과 반지름은?",
       choices: [
         { value: "center-neg1-3-r4", label: "중심 (-1, 3), 반지름 4" },
         { value: "center-1-neg3-r4", label: "중심 (1, -3), 반지름 4" },
@@ -1939,7 +1939,7 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
       ],
       answer: "center-neg1-3-r4",
       explanation:
-        "(x - a)^2 + (y - b)^2 = r^2와 맞춰 보면 (x + 1)^2은 a = -1, (y - 3)^2은 b = 3입니다. 오른쪽 16은 r^2이므로 반지름은 4입니다.",
+        "(x - a)² + (y - b)² = r²와 맞춰 보면 (x + 1)²은 a = -1, (y - 3)²은 b = 3입니다. 오른쪽 16은 r²이므로 반지름은 4입니다.",
     },
     {
       id: "ma-coordinate-geometry-x2",
@@ -1952,7 +1952,7 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
       ],
       answer: "5",
       explanation:
-        "x좌표 차이는 2 - (-2) = 4, y좌표 차이는 4 - 1 = 3입니다. 피타고라스 정리로 √(4^2 + 3^2) = √25 = 5이며, 두 차이를 그냥 더한 7이 아닙니다.",
+        "x좌표 차이는 2 - (-2) = 4, y좌표 차이는 4 - 1 = 3입니다. 피타고라스 정리로 √(4² + 3²) = √25 = 5이며, 두 차이를 그냥 더한 7이 아닙니다.",
     },
   ],
 
@@ -1972,16 +1972,16 @@ export const NODE_QUESTIONS: Record<string, NodeQuestion[]> = {
     },
     {
       id: "ma-sets-propositions-x2",
-      prompt: "‘x = 2이면 x^2 = 4이다’의 대우는?",
+      prompt: "‘x = 2이면 x² = 4이다’의 대우는?",
       choices: [
-        { value: "contrapositive", label: "x^2 ≠ 4이면 x ≠ 2이다" },
-        { value: "converse", label: "x^2 = 4이면 x = 2이다" },
-        { value: "inverse", label: "x ≠ 2이면 x^2 ≠ 4이다" },
-        { value: "mixed", label: "x^2 = 4이면 x ≠ 2이다" },
+        { value: "contrapositive", label: "x² ≠ 4이면 x ≠ 2이다" },
+        { value: "converse", label: "x² = 4이면 x = 2이다" },
+        { value: "inverse", label: "x ≠ 2이면 x² ≠ 4이다" },
+        { value: "mixed", label: "x² = 4이면 x ≠ 2이다" },
       ],
       answer: "contrapositive",
       explanation:
-        "대우는 가정과 결론의 자리를 바꾸고 둘 다 부정한 문장이라 ‘x^2 ≠ 4이면 x ≠ 2’입니다. 자리만 바꾼 역 ‘x^2 = 4이면 x = 2’는 x = -2라는 반례가 있어 참이 아닙니다.",
+        "대우는 가정과 결론의 자리를 바꾸고 둘 다 부정한 문장이라 ‘x² ≠ 4이면 x ≠ 2’입니다. 자리만 바꾼 역 ‘x² = 4이면 x = 2’는 x = -2라는 반례가 있어 참이 아닙니다.",
     },
   ],
 

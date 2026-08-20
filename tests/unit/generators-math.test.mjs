@@ -77,7 +77,7 @@ test("ma-poly-expand answer equals the product of the printed factors", () => {
 function expandToString(a, b, c) {
   const parts = [];
   if (a !== 0) {
-    const body = Math.abs(a) === 1 ? "x^2" : `${Math.abs(a)}x^2`;
+    const body = Math.abs(a) === 1 ? "x²" : `${Math.abs(a)}x²`;
     parts.push(a < 0 ? `-${body}` : body);
   }
   if (b !== 0) {
@@ -104,7 +104,7 @@ test("ma-factor answer expands back to the printed polynomial", () => {
   for (let seed = 0; seed < 200; seed += 1) {
     const question = generate("ma-factor", seed, 2);
 
-    const promptMatch = question.prompt.match(/^x\^2 ([+-]) (\d*)x ([+-]) (\d+)/);
+    const promptMatch = question.prompt.match(/^x² ([+-]) (\d*)x ([+-]) (\d+)/);
     assert.ok(promptMatch, `unparseable prompt: ${question.prompt}`);
     const middleMagnitude = promptMatch[2] === "" ? 1 : Number(promptMatch[2]);
     const middle = promptMatch[1] === "-" ? -middleMagnitude : middleMagnitude;
@@ -179,7 +179,7 @@ test("ma-quad-eq roots satisfy the printed equation", () => {
   for (let seed = 0; seed < 200; seed += 1) {
     const question = generate("ma-quad-eq", seed, 2);
 
-    const promptMatch = question.prompt.match(/^x\^2 ([+-]) (\d*)x ([+-]) (\d+) = 0/);
+    const promptMatch = question.prompt.match(/^x² ([+-]) (\d*)x ([+-]) (\d+) = 0/);
     assert.ok(promptMatch, `unparseable prompt: ${question.prompt}`);
     const bMagnitude = promptMatch[2] === "" ? 1 : Number(promptMatch[2]);
     const b = promptMatch[1] === "-" ? -bMagnitude : bMagnitude;
@@ -275,8 +275,8 @@ test("ma-frac-arith level 1 uses only proper fractions", () => {
 
 // A choice "decorates" the answer when it keeps the whole answer as a prefix and
 // then adds only cosmetic noise. A remainder that starts with an alphanumeric
-// character continues the last token, so it changes the value ("x^2 - 4x + 4"
-// against "x^2 - 4", or "10" against "1"); a remainder that starts with an
+// character continues the last token, so it changes the value ("x² - 4x + 4"
+// against "x² - 4", or "10" against "1"); a remainder that starts with an
 // operator introduces a real new term ("5/2" against "5"). Anything else — a
 // space, a bracket, a suffix label — leaves the answer intact and is decoration.
 function decoratesAnswer(value, answer) {
@@ -331,7 +331,7 @@ test("ma-poly-expand never offers two mathematically identical choices", () => {
   const parseQuadratic = (value) => {
     const normalised = value.replace(/\s+/g, "");
     const match = normalised.match(
-      /^(-?\d*)x\^2(?:([+-])(\d*)x)?(?:([+-])(\d+))?$/,
+      /^(-?\d*)x²(?:([+-])(\d*)x)?(?:([+-])(\d+))?$/,
     );
     assert.ok(match, `unparseable quadratic: ${value}`);
     const readLead = (raw) => (raw === "" ? 1 : raw === "-" ? -1 : Number(raw));
@@ -359,7 +359,7 @@ test("ma-poly-expand still offers four choices for difference-of-squares questio
   for (const level of LEVELS) {
     for (let seed = 0; seed < 300; seed += 1) {
       const question = generate("ma-poly-expand", seed, level);
-      if (/^x\^2 [+-] \d+$/.test(question.acceptableAnswers[0])) {
+      if (/^x² [+-] \d+$/.test(question.acceptableAnswers[0])) {
         differenceOfSquaresSeen += 1;
         assert.equal(
           question.choices.length,
