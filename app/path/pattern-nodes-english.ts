@@ -1628,6 +1628,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         explanation:
           "사진을 보낸 사람은 할아버지이고 받은 사람이 아들입니다. 45번의 오답은 이렇게 주어와 목적어를 서로 바꿔 놓는 방식이 가장 흔합니다.",
       },
+      {
+        id: "en-p43-q4",
+        prompt:
+          "(A) ‘On his first day at the bakery, Minho dropped a whole tray of bread on the floor.’ 뒤에 (B) ‘The owner said nothing and simply handed him a broom.’ (C) ‘Years later Minho opened his own shop, and he kept a broom by the door.’ (D) ‘From then on he came an hour early every morning to practice carrying trays.’를 이어 쓸 때 알맞은 순서는? (낱말: bakery 빵집, tray 쟁반, hand 건네주다, broom 빗자루, from then on 그때부터)",
+        choices: [
+          { value: "bdc", label: "(B) - (D) - (C)" },
+          { value: "dbc", label: "(D) - (B) - (C)" },
+          { value: "cbd", label: "(C) - (B) - (D)" },
+          { value: "bcd", label: "(B) - (C) - (D)" },
+        ],
+        answer: "bdc",
+        explanation:
+          "(B)는 쟁반을 떨어뜨린 일에 주인이 어떻게 했는지를 바로 이어받으므로 (A) 다음입니다. (D)의 From then on은 그 일이 있고 난 뒤를 가리키니 (B) 뒤여야 하고, (C)의 Years later는 몇 해가 지난 마무리라 맨 끝입니다. (D)를 먼저 놓으면 그때부터가 가리킬 그때가 앞에 없습니다.",
+      },
+      {
+        id: "en-p43-q5",
+        prompt:
+          "‘Jia visited her old teacher, Ms. Han, at the hospital. ①She was sitting by the window with a blanket over her knees. When Jia held out a class photo, ②she took it with both hands. ③She had carried that photo in her bag for a week, waiting for a chance to bring it. ④She said it should stay on the small table by the bed.’ (낱말: blanket 담요, held out 내밀었다, with both hands 두 손으로, carry 지니고 다니다) 가리키는 대상이 나머지 셋과 다른 것은?",
+        choices: [
+          { value: "three", label: "③" },
+          { value: "one", label: "①" },
+          { value: "two", label: "②" },
+          { value: "four", label: "④" },
+        ],
+        answer: "three",
+        explanation:
+          "사진을 일주일이나 가방에 넣고 다니며 건넬 기회를 기다린 사람은 병실에 있는 Ms. Han이 아니라 찾아온 Jia이므로 ③만 Jia입니다. ①은 창가에 앉아 있고 ②는 사진을 받아 들고 ④는 그 사진을 두라고 말하니 모두 Ms. Han입니다. 대명사 옆에 이름을 하나씩 적어 두면 이렇게 하나만 다른 자리가 눈에 들어옵니다.",
+      },
     ],
   },
 ];
