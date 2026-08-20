@@ -328,6 +328,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         explanation:
           "필자는 비유를 던진 뒤 곧바로 그 뜻을 풀어 설명합니다. 그래서 앞뒤 문장이 사전보다 정확한 근거가 됩니다.",
       },
+      {
+        id: "en-p21-q4",
+        prompt:
+          "‘A good coach is a mirror. He does not tell players what to become. He shows them what they are already doing, so they can decide what to change.’ (낱말: mirror 거울, already 이미) 밑줄 친 a mirror의 의미로 가장 알맞은 것은?",
+        choices: [
+          { value: "reflect", label: "선수가 지금 하고 있는 모습을 그대로 보여 주는 사람" },
+          { value: "model", label: "선수가 그대로 따라 해야 할 본보기가 되는 사람" },
+          { value: "order", label: "선수에게 무엇이 될지 정해 주는 사람" },
+          { value: "glass", label: "연습실 벽에 걸어 둔 실제 거울" },
+        ],
+        answer: "reflect",
+        explanation:
+          "셋째 문장 He shows them what they are already doing이 밑줄을 그대로 풀어 줍니다. ‘무엇이 될지 정해 주는 사람’은 바로 앞 문장 He does not tell players what to become이 이미 아니라고 못 박은 쪽이고, ‘본보기’는 거울이라는 낱말에서 떠오르기 쉬운 짐작일 뿐 글에는 근거가 없습니다.",
+      },
+      {
+        id: "en-p21-q5",
+        prompt:
+          "‘When you learn a language, mistakes are the fuel, not the brake. Every wrong sentence shows you exactly which rule you have not learned yet.’ (낱말: fuel 연료, brake 제동 장치, exactly 정확히) 밑줄 친 the fuel의 의미로 가장 알맞은 것은?",
+        choices: [
+          { value: "push", label: "실수가 오히려 실력을 앞으로 밀어 주는 힘" },
+          { value: "stop", label: "실수가 실력이 느는 것을 멈춰 세우는 일" },
+          { value: "gas", label: "자동차에 넣는 실제 기름" },
+          { value: "rule-first", label: "규칙을 먼저 다 외워야 한다는 것" },
+        ],
+        answer: "push",
+        explanation:
+          "fuel을 brake와 맞세워 놓았으니 부호는 +이고, 뒤 문장이 실수가 무엇을 알려 주는지 설명해 줍니다. ‘멈춰 세우는 일’은 필자가 not the brake로 이미 부정한 쪽이라 정반대이고, ‘실제 기름’은 사전 뜻으로 고른 것입니다. 21번은 단어 시험이 아닙니다.",
+      },
     ],
   },
 
@@ -387,6 +415,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         explanation:
           "요지는 글이 실제로 다룬 범위와 크기가 같아야 합니다. 그 자체로 옳은 말이어도 글보다 넓으면 답이 될 수 없습니다.",
       },
+      {
+        id: "en-p22-q4",
+        prompt:
+          "‘Cities keep building wider roads to end traffic jams. Yet a wider road soon fills with more cars, and drivers wait just as long as before. What really shortens the wait is a bus that comes every five minutes.’ (낱말: traffic jam 교통 정체, fills with ~로 가득 찬다, shorten 줄이다) 이 글의 요지로 가장 알맞은 것은?",
+        choices: [
+          { value: "transit", label: "도로를 넓히기보다 버스를 자주 다니게 해야 정체가 줄어든다" },
+          { value: "wider", label: "도로를 넓히면 교통 정체를 없앨 수 있다" },
+          { value: "more-cars", label: "도시의 자동차 수가 해마다 늘고 있다" },
+          { value: "fare", label: "버스 요금을 더 내려야 한다" },
+        ],
+        answer: "transit",
+        explanation:
+          "Yet 뒤부터가 필자의 판단이고, 마지막 문장 What really shortens the wait이 결론을 못 박습니다. ‘도로를 넓히면 정체를 없앨 수 있다’는 필자가 반박하려고 첫 문장에 적어 둔 생각이라 방향이 정반대입니다.",
+      },
+      {
+        id: "en-p22-q5",
+        prompt:
+          "‘A famous chef once said he learned more from a burnt dish than from a perfect one. Scientists say the same thing about failed experiments. A result that surprises you is the one that changes what you know.’ (낱말: burnt 태운, failed 실패한, surprise 놀라게 하다) 이 글의 요지로 가장 알맞은 것은?",
+        choices: [
+          { value: "failure", label: "예상을 벗어난 실패한 결과가 더 큰 배움을 준다" },
+          { value: "chef", label: "요리사는 요리를 태워 봐야 실력이 는다" },
+          { value: "repeat", label: "과학 실험은 여러 번 반복해야 믿을 수 있다" },
+          { value: "perfect", label: "완벽한 결과를 내려면 오래 연습해야 한다" },
+        ],
+        answer: "failure",
+        explanation:
+          "요리사 이야기와 과학 실험 이야기는 같은 말을 두 번 든 예시이고, 마지막 문장이 둘을 묶은 결론입니다. ‘요리사는 요리를 태워 봐야 실력이 는다’는 예시 하나만 옮겨 적은 것이라, 맞는 말처럼 보여도 글 전체를 덮지 못합니다.",
+      },
     ],
   },
 
@@ -444,6 +500,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         answer: "form",
         explanation:
           "같은 글이라면 두 답이 사실상 겹치지만 묻는 모양이 다릅니다. 요지는 결론을 문장으로 말하고, 주제는 그 결론이 덮는 범위를 명사구로 말합니다.",
+      },
+      {
+        id: "en-p23-q4",
+        prompt:
+          "‘Paper books never run out of battery, and no message pops up in the middle of a page. Readers also remember where on the page a fact appeared. For long reading, paper still beats the screen.’ (낱말: run out of battery 배터리가 다 되다, pop up 불쑥 뜨다, beat ~보다 낫다) 이 글의 주제로 가장 알맞은 것은?",
+        choices: [
+          { value: "paper-long", label: "the advantages of paper books for long reading" },
+          { value: "battery", label: "how to save the battery of an e-reader" },
+          { value: "screen-eyes", label: "the effect of screen light on the eyes" },
+          { value: "printing", label: "the history of printing" },
+        ],
+        answer: "paper-long",
+        explanation:
+          "되풀이되는 명사는 paper books와 reading이고 둘을 잇는 관계는 낫다는 것입니다. battery와 screen은 종이책의 장점을 설명하려고 한 번씩 꺼낸 낱말일 뿐이라, 그 낱말이 든 선택지를 고르면 글이 다루지 않은 이야기로 넘어가게 됩니다.",
+      },
+      {
+        id: "en-p23-q5",
+        prompt:
+          "‘Wolves returned to the park after seventy years. Deer stopped eating every young tree, so the trees grew tall again. Birds came back to nest in the new forest.’ (낱말: wolf 늑대, deer 사슴, nest 둥지를 틀다, predator 포식자) 이 글의 주제로 가장 알맞은 것은?",
+        choices: [
+          { value: "return-effect", label: "how the return of one predator changed a whole park" },
+          { value: "hunt", label: "how wolves hunt deer in winter" },
+          { value: "plant", label: "the best way to plant young trees" },
+          { value: "birds-south", label: "why birds fly south in autumn" },
+        ],
+        answer: "return-effect",
+        explanation:
+          "늑대가 돌아오자 나무가 자라고 새가 돌아왔으므로, 두 축은 한 동물의 복귀와 공원 전체의 변화이고 관계는 원인과 결과입니다. wolves, trees, birds라는 낱말이 든 나머지 셋은 지문의 단어만 빌려 왔을 뿐 그 원인과 결과를 말하지 않습니다.",
       },
     ],
   },
