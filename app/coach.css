@@ -1,11 +1,11 @@
 .encouragement-coach {
-  margin: 0 0 16px;
+  margin: 0 0 var(--space-4);
 }
 
 .encouragement-card {
   position: relative;
   overflow: hidden;
-  padding: 18px;
+  padding: var(--space-4);
   border: 1px solid var(--line);
   border-radius: 24px;
   background: var(--surface-soft);
@@ -28,14 +28,14 @@
   z-index: 1;
   display: grid;
   grid-template-columns: 84px minmax(0, 1fr);
-  gap: 14px;
+  gap: var(--space-4);
   align-items: center;
 }
 
 .encouragement-bubble {
   position: relative;
   min-width: 0;
-  padding: 15px;
+  padding: var(--space-4);
   border: 1px solid var(--line);
   border-radius: 18px 18px 18px 6px;
   background: var(--surface);
@@ -55,7 +55,7 @@
 }
 
 .encouragement-eyebrow {
-  margin: 0 0 5px;
+  margin: 0 0 var(--space-1);
   color: var(--primary);
   font-size: var(--fs-micro);
   font-weight: 800;
@@ -66,26 +66,26 @@
   margin: 0;
   color: var(--ink-strong);
   font-size: var(--fs-lead);
-  line-height: 1.4;
+  line-height: var(--lh-snug);
   letter-spacing: -0.035em;
 }
 
 .encouragement-bubble > p:not(.encouragement-eyebrow) {
-  margin: 8px 0 0;
+  margin: var(--space-2) 0 0;
   color: var(--muted);
   font-size: var(--fs-micro);
-  line-height: 1.55;
+  line-height: var(--lh-body);
 }
 
 .encouragement-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 10px;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
 }
 
 .encouragement-meta span {
-  padding: 5px 8px;
+  padding: var(--space-1) var(--space-2);
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
@@ -99,8 +99,8 @@
   z-index: 1;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
-  margin-top: 14px;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
 }
 
 .coach-mascot {
@@ -206,9 +206,9 @@
   .encouragement-card {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
-    gap: 18px;
+    gap: var(--space-4);
     align-items: center;
-    padding: 22px;
+    padding: var(--space-5);
   }
 
   .encouragement-visual {
@@ -232,13 +232,13 @@
 
 @media (max-width: 390px) {
   .encouragement-card {
-    padding: 14px;
+    padding: var(--space-4);
     border-radius: 21px;
   }
 
   .encouragement-visual {
     grid-template-columns: 68px minmax(0, 1fr);
-    gap: 9px;
+    gap: var(--space-2);
   }
 
   .coach-mascot {
@@ -246,7 +246,7 @@
   }
 
   .encouragement-bubble {
-    padding: 12px;
+    padding: var(--space-3);
   }
 
   /* 여기서 글자를 더 줄이지 않는다.
@@ -257,11 +257,11 @@
      좁은 화면에서 줄일 것은 글자가 아니라 여백이다. */
 
   .encouragement-meta span {
-    padding: 4px 6px;
+    padding: var(--space-1) var(--space-2);
   }
 
   .encouragement-actions .primary-action,
   .encouragement-actions .secondary-action {
-    padding: 0 10px;
+    padding: 0 var(--space-3);
   }
 }

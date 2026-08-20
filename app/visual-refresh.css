@@ -2,7 +2,7 @@
 .today-agenda {
   position: relative;
   overflow: hidden;
-  padding: 20px;
+  padding: var(--space-5);
   border: 1px solid var(--line);
   border-radius: 28px;
   background: var(--surface);
@@ -31,11 +31,11 @@
 
 .agenda-header {
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .agenda-header .hero-kicker {
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2);
   border-color: #d8e1f8;
   background: var(--accent-soft);
   color: var(--primary);
@@ -43,10 +43,10 @@
 
 .agenda-header h1 {
   max-width: 680px;
-  margin: 0 0 6px;
+  margin: 0 0 var(--space-2);
   color: var(--ink-strong);
   font-size: clamp(var(--fs-display), 7vw, 39px);
-  line-height: 1.18;
+  line-height: var(--lh-tight);
   letter-spacing: -0.052em;
 }
 
@@ -60,11 +60,11 @@
 .agenda-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: var(--space-2);
 }
 
 .agenda-meta span {
-  padding: 6px 9px;
+  padding: var(--space-2) var(--space-2);
   border: 1px solid var(--line);
   border-radius: 999px;
   background: white;
@@ -75,7 +75,7 @@
 
 .agenda-progress {
   max-width: none;
-  margin-top: 18px;
+  margin-top: var(--space-4);
 }
 
 .agenda-progress .progress-track {
@@ -92,8 +92,8 @@
 
 .agenda-task-list {
   display: grid;
-  gap: 8px;
-  margin-top: 14px;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
 }
 
 .agenda-task {
@@ -122,11 +122,11 @@
 .agenda-task-open {
   display: grid;
   grid-template-columns: 42px minmax(0, 1fr) auto;
-  gap: 11px;
+  gap: var(--space-3);
   align-items: center;
   min-width: 0;
   min-height: 72px;
-  padding: 10px 8px 10px 11px;
+  padding: var(--space-3) var(--space-2) var(--space-3) var(--space-3);
   border: 0;
   background: transparent;
   text-align: left;
@@ -147,8 +147,8 @@
 .agenda-task-check {
   min-width: 58px;
   min-height: 44px;
-  margin: 10px 10px 10px 2px;
-  padding: 0 9px;
+  margin: var(--space-3) var(--space-3) var(--space-3) var(--space-1);
+  padding: 0 var(--space-2);
   border: 1px solid #d7dce5;
   border-radius: 12px;
   background: #f8f9fb;
@@ -166,7 +166,7 @@
 
 .compact-dashboard,
 .progress-dashboard {
-  margin-top: 12px;
+  margin-top: var(--space-3);
 }
 
 .compact-dashboard,
@@ -177,7 +177,7 @@
 .compact-dashboard .next-step-card {
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  padding: 16px 18px;
+  padding: var(--space-4) var(--space-4);
   background: #f7f8fc;
 }
 
@@ -186,7 +186,7 @@
 }
 
 .study-page-intro {
-  margin-bottom: 14px;
+  margin-bottom: var(--space-4);
 }
 
 .study-subject-switch {
@@ -194,7 +194,7 @@
   z-index: 12;
   top: 68px;
   margin: 0 -4px 12px;
-  padding: 7px 5px;
+  padding: var(--space-2) var(--space-1);
   background: var(--topbar-bg);
   backdrop-filter: blur(14px);
 }
@@ -202,8 +202,8 @@
 .study-start-card {
   display: grid;
   grid-template-columns: 48px minmax(0, 1fr);
-  gap: 13px;
-  padding: 18px;
+  gap: var(--space-3);
+  padding: var(--space-4);
   border: 1px solid var(--line);
   border-radius: 22px;
   background: var(--surface);
@@ -211,14 +211,14 @@
 }
 
 .study-start-card > div > p:first-child {
-  margin: 0 0 3px;
+  margin: 0 0 var(--space-1);
   color: var(--muted);
   font-size: var(--fs-micro);
   font-weight: 850;
 }
 
 .study-start-card h2 {
-  margin: 0 0 5px;
+  margin: 0 0 var(--space-1);
   color: var(--ink-strong);
   font-size: var(--fs-lead);
   letter-spacing: -0.035em;
@@ -234,17 +234,17 @@
   display: grid;
   grid-column: 1 / -1;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 7px;
-  margin: 2px 0 0;
+  gap: var(--space-2);
+  margin: var(--space-1) 0 0;
   padding: 0;
   list-style: none;
 }
 
 .study-flow li {
   display: grid;
-  gap: 2px;
+  gap: var(--space-1);
   min-width: 0;
-  padding: 11px;
+  padding: var(--space-3);
   border-radius: 13px;
   background: var(--surface-soft);
 }
@@ -266,19 +266,19 @@
 }
 
 .study-detail-section {
-  margin-top: 22px;
+  margin-top: var(--space-5);
 }
 
 .content-section-heading {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr);
-  gap: 12px;
+  gap: var(--space-3);
   align-items: start;
-  margin: 0 2px 11px;
+  margin: 0 var(--space-1) var(--space-3);
 }
 
 .content-section-heading > span {
-  padding-top: 4px;
+  padding-top: var(--space-1);
   color: var(--primary);
   font-size: var(--fs-micro);
   font-weight: 800;
@@ -286,7 +286,7 @@
 }
 
 .content-section-heading h2 {
-  margin: 0 0 2px;
+  margin: 0 0 var(--space-1);
   color: var(--ink-strong);
   font-size: var(--fs-title);
   letter-spacing: -0.035em;
@@ -300,7 +300,7 @@
 
 .notes-panel.is-embedded,
 .ebs-rail.is-embedded {
-  padding: 16px;
+  padding: var(--space-4);
   border-radius: 20px;
 }
 
@@ -308,7 +308,7 @@
   position: sticky;
   z-index: 5;
   top: 126px;
-  padding: 8px;
+  padding: var(--space-2);
   border: 1px solid var(--line);
   border-radius: 15px;
   background: rgb(255 255 255 / 95%);
@@ -328,9 +328,9 @@
 
 .roadmap-now {
   display: grid;
-  gap: 10px;
-  margin: 14px 0;
-  padding: 16px;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+  padding: var(--space-4);
   border: 1px solid var(--line);
   border-radius: 20px;
   background: var(--accent-soft);
@@ -338,7 +338,7 @@
 
 .roadmap-now > div {
   display: grid;
-  gap: 2px;
+  gap: var(--space-1);
 }
 
 .roadmap-now span {
@@ -357,11 +357,11 @@
 }
 
 .encouragement-coach {
-  margin: 12px 0;
+  margin: var(--space-3) 0;
 }
 
 .encouragement-card {
-  padding: 14px 16px;
+  padding: var(--space-4) var(--space-4);
   border: 1px solid var(--line);
   border-radius: 20px;
   background: var(--surface-soft);
@@ -373,7 +373,7 @@
 
 .encouragement-visual {
   grid-template-columns: 58px minmax(0, 1fr);
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .encouragement-bubble {
@@ -391,7 +391,7 @@
 }
 
 .encouragement-bubble > p:not(.encouragement-eyebrow) {
-  margin-top: 6px;
+  margin-top: var(--space-2);
   color: var(--muted);
 }
 
@@ -406,7 +406,7 @@
 }
 
 .encouragement-actions {
-  margin-top: 10px;
+  margin-top: var(--space-3);
 }
 
 .coach-mascot {
@@ -478,7 +478,7 @@
   }
 
   .encouragement-card {
-    padding: 16px 18px;
+    padding: var(--space-4) var(--space-4);
   }
 
   .encouragement-visual {
@@ -492,7 +492,7 @@
 
 @media (max-width: 390px) {
   .today-agenda {
-    padding: 16px 13px;
+    padding: var(--space-4) var(--space-3);
     border-radius: 23px;
   }
 
@@ -502,7 +502,7 @@
 
   .agenda-task-open {
     grid-template-columns: 38px minmax(0, 1fr);
-    gap: 9px;
+    gap: var(--space-2);
   }
 
   .agenda-task-open .subject-badge {
@@ -516,8 +516,8 @@
 
   .agenda-task-check {
     min-width: 52px;
-    margin-right: 7px;
-    padding: 0 6px;
+    margin-right: var(--space-2);
+    padding: 0 var(--space-2);
   }
 
   .compact-dashboard .next-step-card {
@@ -529,7 +529,7 @@
   }
 
   .panel-block {
-    padding: 16px;
+    padding: var(--space-4);
   }
 
   .mini-stats {
@@ -541,13 +541,13 @@
   }
 
   .encouragement-card {
-    padding: 13px;
+    padding: var(--space-3);
     border-radius: 18px;
   }
 
   .encouragement-visual {
     grid-template-columns: 52px minmax(0, 1fr);
-    gap: 8px;
+    gap: var(--space-2);
   }
 
   .coach-mascot {
@@ -557,9 +557,9 @@
 
 .concept-sheet {
   display: grid;
-  gap: 10px;
-  padding: 16px;
-  margin-top: 12px;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  margin-top: var(--space-3);
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--surface);
@@ -568,7 +568,7 @@
 
 .concept-sheet-head {
   display: flex;
-  gap: 10px;
+  gap: var(--space-3);
   align-items: flex-start;
   justify-content: space-between;
 }
@@ -585,7 +585,7 @@
 .concept-sheet-close {
   min-height: 44px;
   min-width: 44px;
-  padding: 0 14px;
+  padding: 0 var(--space-4);
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--surface);
@@ -593,12 +593,12 @@
 
 .concept-sheet-oneline {
   margin: 0;
-  line-height: 1.6;
+  line-height: var(--lh-body);
 }
 
 .concept-sheet-formula {
   margin: 0;
-  padding: 10px 12px;
+  padding: var(--space-3) var(--space-3);
   border-radius: 12px;
   background: var(--accent);
   font-weight: 700;
@@ -606,14 +606,14 @@
 
 .concept-sheet-points {
   margin: 0;
-  padding-left: 18px;
-  line-height: 1.7;
+  padding-left: var(--space-4);
+  line-height: var(--lh-relaxed);
 }
 
 .concept-sheet-example {
   display: grid;
-  gap: 6px;
-  padding: 12px;
+  gap: var(--space-2);
+  padding: var(--space-3);
   border-radius: 12px;
   border: 1px dashed var(--line);
 }
@@ -621,7 +621,7 @@
 .concept-sheet-example p,
 .concept-sheet-example span {
   margin: 0;
-  line-height: 1.6;
+  line-height: var(--lh-body);
 }
 
 .concept-sheet-mistake {
@@ -632,14 +632,14 @@
 
 @media (max-width: 390px) {
   .concept-sheet {
-    padding: 14px;
+    padding: var(--space-4);
   }
 }
 
 .practice-runner {
   display: grid;
-  gap: 12px;
-  padding: 16px;
+  gap: var(--space-3);
+  padding: var(--space-4);
   border: 1px solid var(--math-border);
   border-radius: 18px;
   background: var(--math-surface);
@@ -647,7 +647,7 @@
 
 .practice-head {
   display: flex;
-  gap: 10px;
+  gap: var(--space-3);
   align-items: flex-start;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -667,7 +667,7 @@
 .practice-secondary {
   min-height: 44px;
   min-width: 44px;
-  padding: 0 16px;
+  padding: 0 var(--space-4);
   border-radius: 12px;
   font-weight: 700;
 }
@@ -693,17 +693,17 @@
   margin: 0;
   font-size: var(--fs-lead);
   font-weight: 700;
-  line-height: 1.6;
+  line-height: var(--lh-body);
 }
 
 .practice-choices {
   display: grid;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .practice-choice {
   min-height: 48px;
-  padding: 0 14px;
+  padding: 0 var(--space-4);
   text-align: left;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -719,20 +719,20 @@
 
 .practice-actions {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 
 .practice-hints {
   margin: 0;
-  padding-left: 20px;
-  line-height: 1.7;
+  padding-left: var(--space-5);
+  line-height: var(--lh-relaxed);
 }
 
 .practice-result {
   display: grid;
-  gap: 10px;
-  padding: 14px;
+  gap: var(--space-3);
+  padding: var(--space-4);
   border-radius: 14px;
   border: 1px solid var(--line);
   background: var(--surface);
@@ -749,21 +749,21 @@
 
 .practice-steps {
   margin: 0;
-  padding-left: 20px;
-  line-height: 1.7;
+  padding-left: var(--space-5);
+  line-height: var(--lh-relaxed);
 }
 
 .practice-empty {
   margin: 0;
-  padding: 14px;
+  padding: var(--space-4);
   border-radius: 12px;
   border: 1px dashed var(--line);
-  line-height: 1.6;
+  line-height: var(--lh-body);
 }
 
 @media (max-width: 390px) {
   .practice-runner {
-    padding: 14px;
+    padding: var(--space-4);
   }
 
   .practice-prompt {
@@ -773,7 +773,7 @@
 
 .wrong-notes {
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .wrong-notes-count {
@@ -783,7 +783,7 @@
 
 .wrong-notes-list {
   display: grid;
-  gap: 8px;
+  gap: var(--space-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -791,31 +791,31 @@
 
 .wrong-note {
   display: flex;
-  gap: 10px;
+  gap: var(--space-3);
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  padding: 12px 14px;
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--surface);
 }
 
 .wrong-note-date {
-  margin-left: 8px;
+  margin-left: var(--space-2);
   font-size: var(--fs-small);
   opacity: 0.7;
 }
 
 .wrong-note-actions {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 
 .wrong-notes-retry {
   display: grid;
-  gap: 10px;
+  gap: var(--space-3);
   justify-items: start;
 }
 
@@ -827,8 +827,8 @@
 
 .today-practice {
   display: grid;
-  gap: 12px;
-  padding: 16px;
+  gap: var(--space-3);
+  padding: var(--space-4);
   border: 1px solid var(--math-border);
   border-radius: 18px;
   background: var(--math-surface);
@@ -836,7 +836,7 @@
 
 .today-practice-head {
   display: flex;
-  gap: 12px;
+  gap: var(--space-3);
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
@@ -848,15 +848,15 @@
 }
 
 .today-practice-sub {
-  margin: 4px 0 0;
+  margin: var(--space-1) 0 0;
   font-size: var(--fs-small);
   opacity: 0.8;
 }
 
 .node-runner {
   display: grid;
-  gap: 12px;
-  padding: 16px;
+  gap: var(--space-3);
+  padding: var(--space-4);
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--surface);
@@ -864,7 +864,7 @@
 
 .node-runner-head {
   display: flex;
-  gap: 10px;
+  gap: var(--space-3);
   align-items: flex-start;
   justify-content: space-between;
 }
@@ -872,17 +872,17 @@
 .node-runner-head h3 {
   margin: 0;
   font-size: var(--fs-lead);
-  line-height: 1.35;
+  line-height: var(--lh-snug);
 }
 
 .node-explanation {
   margin: 0;
-  line-height: 1.7;
+  line-height: var(--lh-relaxed);
 }
 
 .node-check {
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .node-progress {
@@ -894,7 +894,7 @@
 
 .node-input {
   min-height: 48px;
-  padding: 0 14px;
+  padding: 0 var(--space-4);
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--surface);
@@ -903,13 +903,13 @@
 
 @media (max-width: 390px) {
   .node-runner {
-    padding: 14px;
+    padding: var(--space-4);
   }
 }
 
 .path-view {
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .path-progress {
@@ -919,7 +919,7 @@
 
 .path-list {
   display: grid;
-  gap: 8px;
+  gap: var(--space-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -928,11 +928,11 @@
 .path-node-button {
   display: grid;
   grid-template-columns: 40px minmax(0, 1fr);
-  gap: 12px;
+  gap: var(--space-3);
   align-items: center;
   width: 100%;
   min-height: 64px;
-  padding: 12px 14px;
+  padding: var(--space-3) var(--space-4);
   text-align: left;
   border: 1px solid var(--line);
   border-radius: 16px;
@@ -951,18 +951,18 @@
 
 .path-node-body {
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
   min-width: 0;
 }
 
 .path-node-body strong {
   font-size: var(--fs-body);
-  line-height: 1.35;
+  line-height: var(--lh-snug);
 }
 
 .path-node-body small {
   font-size: var(--fs-small);
-  line-height: 1.5;
+  line-height: var(--lh-body);
   opacity: 0.8;
 }
 
@@ -990,16 +990,16 @@
 
 .today-next-list {
   display: grid;
-  gap: 8px;
-  margin-bottom: 14px;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
 }
 
 .today-next-node {
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
   width: 100%;
   min-height: 64px;
-  padding: 12px 14px;
+  padding: var(--space-3) var(--space-4);
   text-align: left;
   border: 1px solid var(--line);
   border-radius: 16px;
@@ -1008,18 +1008,18 @@
 
 .today-next-node strong {
   font-size: var(--fs-body);
-  line-height: 1.35;
+  line-height: var(--lh-snug);
 }
 
 .today-review-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
+  gap: var(--space-2);
   width: 100%;
   min-height: 44px;
-  margin-bottom: 14px;
-  padding: 10px 14px;
+  margin-bottom: var(--space-4);
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--accent-soft);
@@ -1043,8 +1043,8 @@
 
 .week-card {
   display: grid;
-  gap: 10px;
-  padding: 16px;
+  gap: var(--space-3);
+  padding: var(--space-4);
   border: 1px solid var(--line);
   border-radius: 20px;
   background: var(--surface);
@@ -1062,13 +1062,13 @@
 .week-card-head {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: var(--space-2);
   align-items: center;
   justify-content: space-between;
 }
 
 .week-card-phase {
-  padding: 4px 10px;
+  padding: var(--space-1) var(--space-3);
   border-radius: 999px;
   background: var(--accent);
   color: var(--primary-dark);
@@ -1086,7 +1086,7 @@
   margin: 0;
   color: var(--ink-strong);
   font-size: var(--fs-title);
-  line-height: 1.25;
+  line-height: var(--lh-tight);
   letter-spacing: -0.03em;
 }
 
@@ -1098,7 +1098,7 @@
   margin: 0;
   color: var(--muted);
   font-size: var(--fs-small);
-  line-height: 1.6;
+  line-height: var(--lh-body);
 }
 
 .week-card.is-warning .week-card-pace {
@@ -1113,7 +1113,7 @@
 
 .week-card-nodes {
   display: grid;
-  gap: 8px;
+  gap: var(--space-2);
   padding: 0;
   list-style: none;
 }
@@ -1121,11 +1121,11 @@
 .week-card-node {
   display: grid;
   grid-template-columns: 34px minmax(0, 1fr);
-  gap: 10px;
+  gap: var(--space-3);
   align-items: center;
   width: 100%;
   min-height: 56px;
-  padding: 10px 12px;
+  padding: var(--space-3) var(--space-3);
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--surface-soft);
@@ -1146,13 +1146,13 @@
 
 .week-card-node-body {
   display: grid;
-  gap: 2px;
+  gap: var(--space-1);
   min-width: 0;
 }
 
 .week-card-node-body strong {
   font-size: var(--fs-body);
-  line-height: 1.35;
+  line-height: var(--lh-snug);
 }
 
 .week-card-node-body small {
@@ -1160,23 +1160,23 @@
   overflow: hidden;
   color: var(--muted);
   font-size: var(--fs-micro);
-  line-height: 1.5;
+  line-height: var(--lh-body);
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
 .week-card-empty {
-  padding: 10px 12px;
+  padding: var(--space-3) var(--space-3);
   border: 1px dashed var(--line);
   border-radius: 14px;
   color: var(--muted);
   font-size: var(--fs-small);
-  line-height: 1.6;
+  line-height: var(--lh-body);
 }
 
 .week-card-progress {
   display: grid;
-  gap: 6px;
+  gap: var(--space-2);
 }
 
 .week-card-bar {
@@ -1195,7 +1195,7 @@
 
 .week-card-progress p {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   align-items: baseline;
   justify-content: space-between;
   margin: 0;
@@ -1210,7 +1210,7 @@
 .week-card-toggle {
   width: 100%;
   min-height: 44px;
-  padding: 10px 12px;
+  padding: var(--space-3) var(--space-3);
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--accent-soft);
@@ -1221,21 +1221,21 @@
 
 .roadmap-sheet {
   display: grid;
-  gap: 14px;
-  margin-top: 12px;
+  gap: var(--space-4);
+  margin-top: var(--space-3);
 }
 
 .roadmap-sheet-lead {
   margin: 0;
   color: var(--muted);
   font-size: var(--fs-small);
-  line-height: 1.7;
+  line-height: var(--lh-relaxed);
 }
 
 .roadmap-phase {
   display: grid;
-  gap: 8px;
-  padding: 12px;
+  gap: var(--space-2);
+  padding: var(--space-3);
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--surface-soft);
@@ -1243,14 +1243,14 @@
 
 .roadmap-phase-head {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   align-items: flex-start;
   justify-content: space-between;
 }
 
 .roadmap-phase-title {
   display: grid;
-  gap: 2px;
+  gap: var(--space-1);
   min-width: 0;
 }
 
@@ -1267,7 +1267,7 @@
 
 .roadmap-phase-count {
   flex-shrink: 0;
-  padding: 4px 10px;
+  padding: var(--space-1) var(--space-3);
   border-radius: 999px;
   background: var(--accent);
   color: var(--primary-dark);
@@ -1279,12 +1279,12 @@
   margin: 0;
   color: var(--muted);
   font-size: var(--fs-micro);
-  line-height: 1.6;
+  line-height: var(--lh-body);
 }
 
 .roadmap-week-list {
   display: grid;
-  gap: 6px;
+  gap: var(--space-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1292,8 +1292,8 @@
 
 .roadmap-week {
   display: grid;
-  gap: 6px;
-  padding: 10px 12px;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-3);
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--surface);
@@ -1311,7 +1311,7 @@
 .roadmap-week-head {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: var(--space-2);
   align-items: baseline;
   justify-content: space-between;
 }
@@ -1327,7 +1327,7 @@
 
 .roadmap-week-nodes {
   display: grid;
-  gap: 4px;
+  gap: var(--space-1);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1336,11 +1336,11 @@
 .roadmap-week-nodes li {
   display: grid;
   grid-template-columns: 22px minmax(0, 1fr);
-  gap: 8px;
+  gap: var(--space-2);
   align-items: center;
   min-width: 0;
   font-size: var(--fs-small);
-  line-height: 1.45;
+  line-height: var(--lh-snug);
 }
 
 .roadmap-week-node-order {
@@ -1364,7 +1364,7 @@
 
 @media (max-width: 390px) {
   .week-card {
-    padding: 14px;
+    padding: var(--space-4);
   }
 
   .week-card-title {
@@ -1381,14 +1381,14 @@
   z-index: 1;
   display: grid;
   grid-template-columns: 84px minmax(0, 1fr);
-  gap: 14px;
+  gap: var(--space-4);
   align-items: start;
   min-width: 0;
 }
 
 .miku-partner.is-compact {
   grid-template-columns: 44px minmax(0, 1fr);
-  gap: 10px;
+  gap: var(--space-3);
   align-items: center;
 }
 
@@ -1447,7 +1447,7 @@
   position: absolute;
   right: -6px;
   bottom: -4px;
-  padding: 2px 7px;
+  padding: var(--space-1) var(--space-2);
   border-radius: 10px;
   background: var(--miku-accent);
   color: #fff;
@@ -1463,7 +1463,7 @@
 .miku-bubble {
   position: relative;
   min-width: 0;
-  padding: 12px 14px;
+  padding: var(--space-3) var(--space-4);
   border: 2px solid var(--miku-accent);
   border-radius: 16px;
   background: var(--surface);
@@ -1497,7 +1497,7 @@
   color: var(--ink-strong);
   font-size: var(--fs-body);
   font-weight: 700;
-  line-height: 1.5;
+  line-height: var(--lh-body);
 }
 
 .miku-partner.is-compact .miku-line {
@@ -1506,16 +1506,16 @@
 }
 
 .miku-streak-line {
-  margin: 10px 0 0;
+  margin: var(--space-3) 0 0;
   color: var(--muted);
   font-size: var(--fs-micro);
-  line-height: 1.55;
+  line-height: var(--lh-body);
 }
 
 /* 문제 화면 안에서 미쿠 반응이 결과 카드와 섞이지 않게 감싸는 자리. */
 .miku-reaction {
-  margin-top: 12px;
-  padding: 10px;
+  margin-top: var(--space-3);
+  padding: var(--space-3);
   border-radius: 14px;
   background: var(--surface-soft);
 }
@@ -1523,7 +1523,7 @@
 @media (max-width: 390px) {
   .miku-partner {
     grid-template-columns: 64px minmax(0, 1fr);
-    gap: 10px;
+    gap: var(--space-3);
   }
 
   .miku-avatar {
@@ -1547,7 +1547,7 @@
   min-height: 44px;
   display: flex;
   align-items: center;
-  padding: 0 14px;
+  padding: 0 var(--space-4);
   font-size: var(--fs-small);
   font-weight: 700;
   cursor: pointer;
@@ -1555,15 +1555,15 @@
 
 .node-links ul {
   display: grid;
-  gap: 10px;
+  gap: var(--space-3);
   margin: 0;
-  padding: 0 14px 14px;
+  padding: 0 var(--space-4) var(--space-4);
   list-style: none;
 }
 
 .node-links li {
   display: grid;
-  gap: 2px;
+  gap: var(--space-1);
   min-width: 0;
 }
 
@@ -1572,22 +1572,22 @@
   display: flex;
   align-items: center;
   font-size: var(--fs-body);
-  line-height: 1.4;
+  line-height: var(--lh-snug);
   word-break: keep-all;
   overflow-wrap: anywhere;
 }
 
 .node-links small {
   font-size: var(--fs-small);
-  line-height: 1.5;
+  line-height: var(--lh-body);
   opacity: 0.75;
 }
 
 /* 단어 목록 "더 보기". 1500장을 한 번에 그리지 않기 위한 장치다. */
 .trainer-more-button {
   width: 100%;
-  margin-top: 10px;
-  padding: 0 16px;
+  margin-top: var(--space-3);
+  padding: 0 var(--space-4);
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--surface);
@@ -1598,7 +1598,7 @@
 .weak-spot-list,
 .accuracy-list {
   display: grid;
-  gap: 8px;
+  gap: var(--space-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -1607,11 +1607,11 @@
 .weak-spot-list li,
 .accuracy-list li {
   display: flex;
-  gap: 12px;
+  gap: var(--space-3);
   align-items: baseline;
   justify-content: space-between;
   min-height: 44px;
-  padding: 10px 14px;
+  padding: var(--space-3) var(--space-4);
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--surface);
@@ -1621,7 +1621,7 @@
 .accuracy-list strong {
   min-width: 0;
   font-size: var(--fs-body);
-  line-height: 1.4;
+  line-height: var(--lh-snug);
   word-break: keep-all;
 }
 
@@ -1636,13 +1636,13 @@
 /* 기록 탭 상단의 누적 지표. 첫 화면에서 옮겨 온 자리다. */
 .record-score-row {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   flex-wrap: wrap;
-  margin-bottom: 12px;
+  margin-bottom: var(--space-3);
 }
 
 .record-score-row span {
-  padding: 8px 12px;
+  padding: var(--space-2) var(--space-3);
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
@@ -1657,13 +1657,13 @@
   z-index: 50;
   display: grid;
   place-items: end center;
-  padding: 16px;
+  padding: var(--space-4);
   background: rgb(15 23 42 / 45%);
 }
 
 .onboarding-sheet {
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
   width: 100%;
   max-width: 480px;
   max-height: 85vh;
@@ -1677,25 +1677,25 @@
 .onboarding-sheet h2 {
   margin: 0;
   font-size: var(--fs-title);
-  line-height: 1.3;
+  line-height: var(--lh-snug);
 }
 
 .onboarding-steps {
   display: grid;
-  gap: 14px;
+  gap: var(--space-4);
   margin: 0;
-  padding-left: 20px;
+  padding-left: var(--space-5);
 }
 
 .onboarding-steps strong {
   display: block;
   font-size: var(--fs-body);
-  line-height: 1.4;
+  line-height: var(--lh-snug);
 }
 
 .onboarding-steps p {
-  margin: 4px 0 0;
-  line-height: 1.65;
+  margin: var(--space-1) 0 0;
+  line-height: var(--lh-body);
 }
 
 /* ==========================================================================
@@ -1711,6 +1711,7 @@
   --space-3: 12px;
   --space-4: 16px;
   --space-5: 24px;
+  --space-6: 32px;
 
   /* 반경 3단계. 14/16/20/22px이 섞여 있던 것을 정리한다. */
   --radius-sm: 12px;
@@ -1730,6 +1731,15 @@
   --fs-title: 22px;   /* 구역 제목 */
   --fs-display: 28px; /* 화면 제목 */
 
+
+  /* 줄 간격 4단계. 15종이 섞여 있어 문단마다 숨 쉬는 간격이 달랐다.
+     한글은 글자가 촘촘해 영문보다 여유가 더 필요하다. 특히 강의처럼 길게
+     읽는 글은 relaxed를 쓴다 — 여기서 줄이면 글벽이 된다. */
+  --lh-tight: 1.25;   /* 큰 제목 */
+  --lh-snug: 1.45;    /* 카드 제목, 짧은 라벨 */
+  --lh-body: 1.65;    /* 본문 기본 */
+  --lh-relaxed: 1.8;  /* 길게 읽는 글 */
+
   /* 터치 영역 최소치. 이 값보다 작은 버튼을 만들지 않는다. */
   --tap: 44px;
 }
@@ -1748,7 +1758,7 @@
 .trainer-eyebrow,
 .concept-sheet-eyebrow,
 .encouragement-eyebrow {
-  line-height: 1.4;
+  line-height: var(--lh-snug);
 }
 
 /* --- 버튼 4종 ---------------------------------------------------------- */
@@ -1969,7 +1979,7 @@
   background: var(--miku-soft);
   font-size: var(--fs-body);
   font-weight: 700;
-  line-height: 1.6;
+  line-height: var(--lh-body);
   color: var(--ink-strong);
 }
 
@@ -1985,7 +1995,7 @@
 .node-lesson-question {
   margin: 0;
   font-weight: 700;
-  line-height: 1.65;
+  line-height: var(--lh-body);
 }
 
 .node-lesson-steps {
@@ -1993,14 +2003,14 @@
   gap: var(--space-1);
   margin: 0;
   padding-left: var(--space-5);
-  line-height: 1.7;
+  line-height: var(--lh-relaxed);
 }
 
 .node-lesson-answer {
   margin: 0;
   font-weight: 800;
   color: var(--miku-teal-dark);
-  line-height: 1.6;
+  line-height: var(--lh-body);
 }
 
 /* --- 한눈에 정리 -------------------------------------------------------
@@ -2074,7 +2084,7 @@
   gap: var(--space-2);
   margin: 0;
   padding-left: var(--space-5);
-  line-height: 1.7;
+  line-height: var(--lh-relaxed);
 }
 
 .node-key-points li {
@@ -2084,6 +2094,6 @@
 /* 본문은 길게 읽는 글이라 줄간격을 넉넉히 준다. */
 .node-explanation {
   font-size: var(--fs-body);
-  line-height: 1.8;
+  line-height: var(--lh-relaxed);
   word-break: keep-all;
 }

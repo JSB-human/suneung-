@@ -132,7 +132,7 @@ body {
   color: var(--ink);
   font-family: "Pretendard Variable", Pretendard, "Noto Sans KR", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   letter-spacing: -0.025em;
-  line-height: 1.6;
+  line-height: var(--lh-body);
   word-break: keep-all;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -191,7 +191,7 @@ p {
 .brand-lockup {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-3);
   color: inherit;
   text-decoration: none;
 }
@@ -211,7 +211,7 @@ p {
 
 .brand-copy {
   display: grid;
-  line-height: 1.15;
+  line-height: var(--lh-tight);
 }
 
 .brand-copy strong {
@@ -220,7 +220,7 @@ p {
 }
 
 .brand-copy span {
-  margin-top: 3px;
+  margin-top: var(--space-1);
   color: var(--muted);
   font-size: var(--fs-micro);
   font-weight: 700;
@@ -230,8 +230,8 @@ p {
   display: inline-flex;
   min-height: 44px;
   align-items: center;
-  gap: 7px;
-  padding: 0 14px;
+  gap: var(--space-2);
+  padding: 0 var(--space-4);
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
@@ -289,16 +289,16 @@ p {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 20px;
-  margin: 4px 2px 20px;
+  gap: var(--space-5);
+  margin: var(--space-1) var(--space-1) var(--space-5);
 }
 
 .page-intro h1,
 .page-intro h2 {
-  margin: 3px 0 6px;
+  margin: var(--space-1) 0 var(--space-2);
   color: var(--ink-strong);
   font-size: clamp(var(--fs-display), 7vw, 40px);
-  line-height: 1.2;
+  line-height: var(--lh-tight);
   letter-spacing: -0.045em;
 }
 
@@ -318,8 +318,8 @@ p {
   position: relative;
   display: grid;
   overflow: hidden;
-  margin-bottom: 16px;
-  padding: 26px;
+  margin-bottom: var(--space-4);
+  padding: var(--space-5);
   border-radius: var(--radius-xl);
   background: var(--ink-strong);
   color: #f8fff9;
@@ -340,8 +340,8 @@ p {
 .hero-kicker {
   display: inline-flex;
   width: fit-content;
-  margin-bottom: 16px;
-  padding: 5px 9px;
+  margin-bottom: var(--space-4);
+  padding: var(--space-1) var(--space-2);
   border: 1px solid rgb(234 248 201 / 28%);
   border-radius: 999px;
   background: rgb(255 255 255 / 8%);
@@ -352,10 +352,10 @@ p {
 
 .hero-card h2 {
   max-width: 740px;
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2);
   font-family: Georgia, "Noto Serif KR", serif;
   font-size: clamp(var(--fs-display), 7vw, 48px);
-  line-height: 1.15;
+  line-height: var(--lh-tight);
   letter-spacing: -0.055em;
 }
 
@@ -363,7 +363,7 @@ p {
   position: relative;
   z-index: 1;
   max-width: 650px;
-  margin-bottom: 18px;
+  margin-bottom: var(--space-4);
   color: #cbdcd4;
   font-size: var(--fs-small);
 }
@@ -373,7 +373,7 @@ p {
   z-index: 1;
   display: grid;
   grid-template-columns: 1fr auto;
-  gap: 8px 14px;
+  gap: var(--space-2) var(--space-4);
   align-items: center;
   max-width: 560px;
 }
@@ -410,8 +410,8 @@ p {
   z-index: 1;
   display: flex;
   flex-wrap: wrap;
-  gap: 9px;
-  margin-top: 20px;
+  gap: var(--space-2);
+  margin-top: var(--space-5);
 }
 
 .primary-action,
@@ -419,7 +419,7 @@ p {
 .quiet-action,
 .danger-action {
   min-height: 46px;
-  padding: 0 17px;
+  padding: 0 var(--space-4);
   border-radius: 14px;
   cursor: pointer;
   font-size: var(--fs-small);
@@ -466,11 +466,11 @@ p {
 .dashboard-grid,
 .stats-grid {
   display: grid;
-  gap: 14px;
+  gap: var(--space-4);
 }
 
 .dashboard-grid {
-  margin-top: 16px;
+  margin-top: var(--space-4);
 }
 
 .primary-action,
@@ -502,7 +502,7 @@ a,
 }
 
 .panel-block {
-  padding: 20px;
+  padding: var(--space-5);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--surface);
@@ -513,13 +513,13 @@ a,
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
 }
 
 .section-heading h2,
 .section-heading h3 {
-  margin-bottom: 3px;
+  margin-bottom: var(--space-1);
   color: var(--ink-strong);
   letter-spacing: -0.035em;
 }
@@ -540,18 +540,18 @@ a,
 
 .course-list {
   display: grid;
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .course-card {
   position: relative;
   display: grid;
   grid-template-columns: 43px 1fr auto;
-  gap: 12px;
+  gap: var(--space-3);
   align-items: center;
   width: 100%;
   min-height: 78px;
-  padding: 12px;
+  padding: var(--space-3);
   border: 1px solid var(--line);
   border-radius: 18px;
   background: var(--surface);
@@ -614,7 +614,7 @@ a,
 
 .course-copy span {
   overflow: hidden;
-  margin-top: 3px;
+  margin-top: var(--space-1);
   color: var(--muted);
   font-size: var(--fs-micro);
   text-overflow: ellipsis;
@@ -629,7 +629,7 @@ a,
 
 .next-step-card {
   display: grid;
-  gap: 14px;
+  gap: var(--space-4);
   align-content: space-between;
   background: var(--accent-soft);
   border-color: #dce4f7;
@@ -640,7 +640,7 @@ a,
 }
 
 .next-step-card h3 {
-  margin-bottom: 6px;
+  margin-bottom: var(--space-2);
   font-size: var(--fs-title);
   letter-spacing: -0.04em;
 }
@@ -654,13 +654,13 @@ a,
 .mini-stats {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .mini-stat,
 .stat-card,
 .trainer-summary-card {
-  padding: 14px;
+  padding: var(--space-4);
   border: 1px solid var(--line);
   border-radius: 16px;
   background: var(--surface);
@@ -670,7 +670,7 @@ a,
 .stat-card p,
 .trainer-summary-card p {
   display: block;
-  margin-bottom: 3px;
+  margin-bottom: var(--space-1);
   color: var(--muted);
   font-size: var(--fs-micro);
 }
@@ -687,9 +687,9 @@ a,
 .trainer-filter-row,
 .math-domain-tabs {
   display: flex;
-  gap: 8px;
+  gap: var(--space-2);
   overflow-x: auto;
-  padding: 3px 2px 8px;
+  padding: var(--space-1) var(--space-1) var(--space-2);
   scrollbar-width: none;
 }
 
@@ -706,7 +706,7 @@ a,
 .math-domain-tab {
   flex: 0 0 auto;
   min-height: 44px;
-  padding: 0 16px;
+  padding: 0 var(--space-4);
   border: 1px solid var(--line);
   border-radius: 999px;
   background: var(--surface);
@@ -727,16 +727,16 @@ a,
 
 .subject-guide {
   display: grid;
-  gap: 16px;
-  margin: 13px 0 18px;
-  padding: 20px;
+  gap: var(--space-4);
+  margin: var(--space-3) 0 var(--space-4);
+  padding: var(--space-5);
   border-radius: var(--radius-lg);
   background: var(--primary-dark);
   color: white;
 }
 
 .subject-guide h3 {
-  margin-bottom: 5px;
+  margin-bottom: var(--space-1);
   font-size: var(--fs-title);
 }
 
@@ -750,7 +750,7 @@ a,
 .essential-list,
 .math-formula-list {
   display: grid;
-  gap: 7px;
+  gap: var(--space-2);
   margin: 0;
   padding: 0;
   list-style: none;
@@ -759,7 +759,7 @@ a,
 .method-list li,
 .essential-list li {
   position: relative;
-  padding-left: 18px;
+  padding-left: var(--space-4);
   font-size: var(--fs-small);
 }
 
@@ -773,7 +773,7 @@ a,
 }
 
 .weekly-rule {
-  padding-top: 13px;
+  padding-top: var(--space-3);
   border-top: 1px solid rgb(255 255 255 / 15%);
   font-size: var(--fs-micro);
   font-weight: 800;
@@ -781,7 +781,7 @@ a,
 
 .roadmap-timeline {
   display: grid;
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .roadmap-unit,
@@ -812,9 +812,9 @@ a,
 
 .roadmap-unit > summary {
   grid-template-columns: 43px 1fr auto;
-  gap: 12px;
+  gap: var(--space-3);
   align-items: center;
-  padding: 15px;
+  padding: var(--space-4);
 }
 
 .week-badge {
@@ -862,21 +862,21 @@ details[open] > summary .chevron {
 .unit-body,
 .note-body,
 .math-topic-body {
-  padding: 0 16px 18px;
+  padding: 0 var(--space-4) var(--space-4);
   border-top: 1px solid var(--line);
 }
 
 .unit-goal {
-  margin: 15px 0 10px;
-  padding: 13px;
+  margin: var(--space-4) 0 var(--space-3);
+  padding: var(--space-3);
   border-radius: 13px;
   background: var(--surface-soft);
   font-size: var(--fs-small);
 }
 
 .unit-summary-box {
-  margin: 10px 0 16px;
-  padding: 14px 16px;
+  margin: var(--space-3) 0 var(--space-4);
+  padding: var(--space-4) var(--space-4);
   border-radius: 14px;
   background: var(--accent-soft);
   border: 1px solid var(--line);
@@ -884,7 +884,7 @@ details[open] > summary .chevron {
 
 .unit-summary-box strong {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: var(--space-2);
   color: var(--primary);
   font-size: var(--fs-small);
   font-weight: 800;
@@ -892,20 +892,20 @@ details[open] > summary .chevron {
 
 .unit-summary-box ul {
   margin: 0;
-  padding-left: 18px;
+  padding-left: var(--space-4);
   color: var(--ink);
   font-size: var(--fs-small);
-  line-height: 1.65;
+  line-height: var(--lh-body);
 }
 
 .unit-columns {
   display: grid;
-  gap: 14px;
+  gap: var(--space-4);
 }
 
 .unit-section h4,
 .note-section h4 {
-  margin-bottom: 6px;
+  margin-bottom: var(--space-2);
   color: var(--ink-strong);
   font-size: var(--fs-small);
 }
@@ -913,14 +913,14 @@ details[open] > summary .chevron {
 .unit-section ul,
 .unit-section ol {
   margin: 0;
-  padding-left: 20px;
+  padding-left: var(--space-5);
   color: var(--muted);
   font-size: var(--fs-micro);
 }
 
 .checkpoint {
-  margin-top: 14px;
-  padding: 13px;
+  margin-top: var(--space-4);
+  padding: var(--space-3);
   border-left: 4px solid var(--primary);
   border-radius: 0 12px 12px 0;
   background: var(--accent-soft);
@@ -931,15 +931,15 @@ details[open] > summary .chevron {
 .unit-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 14px;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
 }
 
 .complete-button,
 .bookmark-button,
 .math-complete-button {
   min-height: 44px;
-  padding: 0 14px;
+  padding: 0 var(--space-4);
   border: 1px solid var(--line);
   border-radius: 12px;
   background: var(--surface);
@@ -970,8 +970,8 @@ details[open] > summary .chevron {
 }
 
 .curriculum-notice {
-  margin: 14px 0;
-  padding: 13px 15px;
+  margin: var(--space-4) 0;
+  padding: var(--space-3) var(--space-4);
   border: 1px solid #ead9ab;
   border-radius: 14px;
   background: #fff9e9;
@@ -982,13 +982,13 @@ details[open] > summary .chevron {
 .note-toolbar {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 10px;
-  margin-bottom: 14px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
 }
 
 .search-field {
   display: grid;
-  gap: 6px;
+  gap: var(--space-2);
   color: var(--muted);
   font-size: var(--fs-micro);
   font-weight: 800;
@@ -1000,7 +1000,7 @@ details[open] > summary .chevron {
 .math-answer-input {
   width: 100%;
   min-height: 48px;
-  padding: 0 14px;
+  padding: 0 var(--space-4);
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--surface);
@@ -1017,18 +1017,18 @@ details[open] > summary .chevron {
 
 .note-grid {
   display: grid;
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .note-card > summary {
   grid-template-columns: 1fr auto;
-  gap: 12px;
-  padding: 16px;
+  gap: var(--space-3);
+  padding: var(--space-4);
 }
 
 .note-card-title span {
   display: block;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
   color: var(--muted);
   font-size: var(--fs-micro);
   font-weight: 800;
@@ -1040,20 +1040,20 @@ details[open] > summary .chevron {
 }
 
 .note-card-title p {
-  margin: 5px 0 0;
+  margin: var(--space-1) 0 0;
   color: var(--muted);
   font-size: var(--fs-micro);
 }
 
 .note-body {
   display: grid;
-  gap: 14px;
-  padding-top: 16px;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
 }
 
 .formula-box,
 .math-formula-box {
-  padding: 15px;
+  padding: var(--space-4);
   border: 1px solid #cde1d8;
   border-radius: 14px;
   background: var(--math-soft);
@@ -1061,12 +1061,12 @@ details[open] > summary .chevron {
   font-family: "SFMono-Regular", Consolas, monospace;
   font-size: var(--fs-small);
   font-weight: 800;
-  line-height: 1.6;
+  line-height: var(--lh-body);
   word-break: break-word;
 }
 
 .mistake-box {
-  padding: 13px;
+  padding: var(--space-3);
   border-radius: 13px;
   background: #fff2ef;
   color: #8c4336;
@@ -1074,7 +1074,7 @@ details[open] > summary .chevron {
 }
 
 .practice-box {
-  padding: 13px;
+  padding: var(--space-3);
   border-radius: 13px;
   background: var(--accent-soft);
   color: #3f527e;
@@ -1083,16 +1083,16 @@ details[open] > summary .chevron {
 
 .ebs-grid {
   display: grid;
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .ebs-card {
   display: grid;
   grid-template-columns: 40px 1fr auto;
-  gap: 12px;
+  gap: var(--space-3);
   align-items: center;
   min-height: 76px;
-  padding: 12px;
+  padding: var(--space-3);
   border: 1px solid var(--line);
   border-radius: 17px;
   background: var(--surface);
@@ -1120,7 +1120,7 @@ details[open] > summary .chevron {
 }
 
 .ebs-card span {
-  margin-top: 3px;
+  margin-top: var(--space-1);
   color: var(--muted);
   font-size: var(--fs-micro);
 }
@@ -1134,7 +1134,7 @@ details[open] > summary .chevron {
 .vocab-trainer {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  gap: 14px;
+  gap: var(--space-4);
 }
 
 .trainer-header,
@@ -1148,8 +1148,8 @@ details[open] > summary .chevron {
 
 .trainer-header {
   display: grid;
-  gap: 16px;
-  padding: 20px;
+  gap: var(--space-4);
+  padding: var(--space-5);
   background: var(--english-soft);
   border-color: #d9ddfa;
 }
@@ -1159,7 +1159,7 @@ details[open] > summary .chevron {
 }
 
 .trainer-header h2 {
-  margin-bottom: 6px;
+  margin-bottom: var(--space-2);
   color: #29346d;
   font-size: var(--fs-display);
   letter-spacing: -0.045em;
@@ -1174,7 +1174,7 @@ details[open] > summary .chevron {
 .trainer-start-button,
 .trainer-reveal-button {
   min-height: 48px;
-  padding: 0 18px;
+  padding: 0 var(--space-4);
   border: 0;
   border-radius: 14px;
   background: var(--english);
@@ -1186,11 +1186,11 @@ details[open] > summary .chevron {
 .trainer-summary-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 7px;
+  gap: var(--space-2);
 }
 
 .trainer-summary-card {
-  padding: 11px 8px;
+  padding: var(--space-3) var(--space-2);
   text-align: center;
 }
 
@@ -1201,11 +1201,11 @@ details[open] > summary .chevron {
 .trainer-summary-strip {
   display: flex;
   flex-wrap: wrap;
-  gap: 7px;
+  gap: var(--space-2);
 }
 
 .trainer-summary-strip span {
-  padding: 6px 10px;
+  padding: var(--space-2) var(--space-3);
   border-radius: 999px;
   background: var(--surface-soft);
   color: var(--muted);
@@ -1215,13 +1215,13 @@ details[open] > summary .chevron {
 
 .trainer-session-card {
   overflow: hidden;
-  padding: 18px;
+  padding: var(--space-4);
 }
 
 .trainer-session-head {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: var(--space-3);
   color: var(--muted);
   font-size: var(--fs-micro);
   font-weight: 800;
@@ -1236,12 +1236,12 @@ details[open] > summary .chevron {
   min-height: 250px;
   place-content: center;
   justify-items: center;
-  padding: 24px 10px;
+  padding: var(--space-5) var(--space-3);
   text-align: center;
 }
 
 .trainer-word-face h3 {
-  margin: 10px 0 15px;
+  margin: var(--space-3) 0 var(--space-4);
   color: #27326e;
   font-family: Georgia, serif;
   font-size: clamp(42px, 13vw, 68px);
@@ -1251,7 +1251,7 @@ details[open] > summary .chevron {
 
 .trainer-word-face p {
   max-width: 620px;
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
   color: var(--muted);
   font-size: var(--fs-small);
 }
@@ -1261,7 +1261,7 @@ details[open] > summary .chevron {
 .trainer-due-chip {
   display: inline-flex;
   width: fit-content;
-  padding: 4px 8px;
+  padding: var(--space-1) var(--space-2);
   border-radius: 999px;
   background: var(--english-soft);
   color: var(--english);
@@ -1270,7 +1270,7 @@ details[open] > summary .chevron {
 }
 
 .trainer-due-chip {
-  margin-left: 5px;
+  margin-left: var(--space-1);
   background: #fff3df;
   color: var(--warning);
 }
@@ -1281,8 +1281,8 @@ details[open] > summary .chevron {
 
 .trainer-answer-panel {
   display: grid;
-  gap: 14px;
-  padding-top: 16px;
+  gap: var(--space-4);
+  padding-top: var(--space-4);
   border-top: 1px solid var(--line);
   text-align: center;
 }
@@ -1301,14 +1301,14 @@ details[open] > summary .chevron {
 .trainer-rating-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 .trainer-rating-button {
   display: grid;
-  gap: 2px;
+  gap: var(--space-1);
   min-height: 62px;
-  padding: 9px;
+  padding: var(--space-2);
   border: 1px solid var(--line);
   border-radius: 13px;
   background: var(--surface);
@@ -1340,28 +1340,28 @@ details[open] > summary .chevron {
 }
 
 .trainer-empty-session h3 {
-  margin-bottom: 7px;
+  margin-bottom: var(--space-2);
   font-size: var(--fs-title);
 }
 
 .trainer-empty-session p {
-  margin-bottom: 3px;
+  margin-bottom: var(--space-1);
   color: var(--muted);
   font-size: var(--fs-micro);
 }
 
 .trainer-library {
-  padding: 18px;
+  padding: var(--space-4);
 }
 
 .trainer-library-head {
   display: grid;
-  gap: 12px;
-  margin-bottom: 10px;
+  gap: var(--space-3);
+  margin-bottom: var(--space-3);
 }
 
 .trainer-library-head h3 {
-  margin-bottom: 4px;
+  margin-bottom: var(--space-1);
   font-size: var(--fs-lead);
 }
 
@@ -1373,7 +1373,7 @@ details[open] > summary .chevron {
 
 .trainer-search-field {
   display: grid;
-  gap: 5px;
+  gap: var(--space-1);
   color: var(--muted);
   font-size: var(--fs-micro);
   font-weight: 800;
@@ -1381,11 +1381,11 @@ details[open] > summary .chevron {
 
 .trainer-word-list {
   display: grid;
-  gap: 9px;
+  gap: var(--space-2);
 }
 
 .trainer-word-card {
-  padding: 15px;
+  padding: var(--space-4);
   border: 1px solid var(--line);
   border-radius: 16px;
   background: #fff;
@@ -1395,7 +1395,7 @@ details[open] > summary .chevron {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: var(--space-3);
 }
 
 .trainer-favorite-button {
@@ -1422,20 +1422,20 @@ details[open] > summary .chevron {
 }
 
 .trainer-word-card h4 {
-  margin: 8px 0 2px;
+  margin: var(--space-2) 0 var(--space-1);
   color: #28336c;
   font-family: Georgia, serif;
   font-size: var(--fs-title);
 }
 
 .trainer-word-meaning {
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2);
   font-weight: 800;
 }
 
 .trainer-word-example,
 .trainer-word-translation {
-  margin-bottom: 2px;
+  margin-bottom: var(--space-1);
   color: var(--muted);
   font-size: var(--fs-micro);
 }
@@ -1443,12 +1443,12 @@ details[open] > summary .chevron {
 .trainer-word-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
-  margin-top: 11px;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
 }
 
 .trainer-word-meta span {
-  padding: 4px 7px;
+  padding: var(--space-1) var(--space-2);
   border-radius: 8px;
   background: var(--surface-soft);
   color: var(--muted);
@@ -1456,14 +1456,14 @@ details[open] > summary .chevron {
 }
 
 .trainer-empty-library {
-  padding: 30px 16px;
+  padding: var(--space-6) var(--space-4);
   border: 1px dashed var(--line);
   border-radius: 15px;
   text-align: center;
 }
 
 .trainer-empty-library p {
-  margin-bottom: 3px;
+  margin-bottom: var(--space-1);
   color: var(--muted);
   font-size: var(--fs-micro);
 }
@@ -1471,14 +1471,14 @@ details[open] > summary .chevron {
 /* Math knowledge map: intentionally supports component-local class names. */
 .math-knowledge-map {
   display: grid;
-  gap: 14px;
+  gap: var(--space-4);
 }
 
 .math-map-header,
 .math-map-overview,
 .math-practice-card,
 .math-problem-card {
-  padding: 18px;
+  padding: var(--space-4);
   border: 1px solid var(--line);
   border-radius: var(--radius-lg);
   background: var(--surface);
@@ -1491,7 +1491,7 @@ details[open] > summary .chevron {
 
 .math-map-header h2,
 .math-map-header h3 {
-  margin-bottom: 6px;
+  margin-bottom: var(--space-2);
   color: #0c5e57;
 }
 
@@ -1505,15 +1505,15 @@ details[open] > summary .chevron {
 .math-topic-list,
 .math-problem-list {
   display: grid;
-  gap: 9px;
+  gap: var(--space-2);
 }
 
 .math-chapter > summary,
 .math-topic > summary {
   grid-template-columns: 1fr auto;
-  gap: 12px;
+  gap: var(--space-3);
   align-items: center;
-  padding: 15px;
+  padding: var(--space-4);
 }
 
 .math-chapter-title,
@@ -1535,15 +1535,15 @@ details[open] > summary .chevron {
 
 .math-chapter-body {
   display: grid;
-  gap: 9px;
-  padding: 0 12px 12px;
+  gap: var(--space-2);
+  padding: 0 var(--space-3) var(--space-3);
 }
 
 .math-prerequisite,
 .math-example,
 .math-explanation,
 .math-problem-feedback {
-  padding: 12px;
+  padding: var(--space-3);
   border-radius: 12px;
   background: var(--surface-soft);
   color: var(--muted);
@@ -1551,13 +1551,13 @@ details[open] > summary .chevron {
 }
 
 .math-problem-card {
-  padding: 14px;
+  padding: var(--space-4);
   border-radius: 15px;
 }
 
 .math-problem-card legend,
 .math-problem-card h4 {
-  margin-bottom: 8px;
+  margin-bottom: var(--space-2);
   color: var(--ink-strong);
   font-size: var(--fs-small);
   font-weight: 800;
@@ -1565,15 +1565,15 @@ details[open] > summary .chevron {
 
 .math-choice-list {
   display: grid;
-  gap: 7px;
+  gap: var(--space-2);
 }
 
 .math-choice {
   display: flex;
   min-height: 44px;
   align-items: center;
-  gap: 9px;
-  padding: 9px 11px;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
   border: 1px solid var(--line);
   border-radius: 11px;
   cursor: pointer;
@@ -1581,8 +1581,8 @@ details[open] > summary .chevron {
 
 .math-submit-button {
   min-height: 44px;
-  margin-top: 10px;
-  padding: 0 14px;
+  margin-top: var(--space-3);
+  padding: 0 var(--space-4);
   border: 0;
   border-radius: 12px;
   background: var(--math);
@@ -1595,7 +1595,7 @@ details[open] > summary .chevron {
 /* Records */
 .stats-grid {
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  margin-bottom: 14px;
+  margin-bottom: var(--space-4);
 }
 
 .stat-card {
@@ -1609,14 +1609,14 @@ details[open] > summary .chevron {
 .weekly-chart {
   display: grid;
   grid-template-columns: repeat(7, minmax(28px, 1fr));
-  gap: 6px;
+  gap: var(--space-2);
   align-items: end;
   min-height: 180px;
 }
 
 .chart-column {
   display: grid;
-  gap: 5px;
+  gap: var(--space-1);
   justify-items: center;
 }
 
@@ -1641,11 +1641,11 @@ details[open] > summary .chevron {
 
 .subject-progress-list {
   display: grid;
-  gap: 12px;
+  gap: var(--space-3);
 }
 
 .subject-progress-card {
-  padding: 14px;
+  padding: var(--space-4);
   border: 1px solid var(--line);
   border-radius: 15px;
 }
@@ -1660,12 +1660,12 @@ details[open] > summary .chevron {
 
 .profile-panel {
   display: grid;
-  gap: 14px;
+  gap: var(--space-4);
 }
 
 .field-label {
   display: grid;
-  gap: 6px;
+  gap: var(--space-2);
   color: var(--muted);
   font-size: var(--fs-micro);
   font-weight: 800;
@@ -1673,9 +1673,9 @@ details[open] > summary .chevron {
 
 .trust-note {
   display: flex;
-  gap: 9px;
+  gap: var(--space-2);
   align-items: flex-start;
-  padding: 13px;
+  padding: var(--space-3);
   border-radius: 13px;
   background: var(--surface-soft);
   color: var(--muted);
@@ -1694,7 +1694,7 @@ details[open] > summary .chevron {
   width: min(calc(100% - 20px), 640px);
   min-height: 68px;
   margin: 0 auto;
-  padding: 6px;
+  padding: var(--space-2);
   border: 1px solid var(--line);
   border-radius: 22px;
   background: var(--bottomnav-bg);
@@ -1709,7 +1709,7 @@ details[open] > summary .chevron {
   justify-content: center;
   min-width: 0;
   min-height: 54px;
-  padding: 4px 2px;
+  padding: var(--space-1) var(--space-1);
   border: 0;
   border-radius: 16px;
   background: transparent;
@@ -1777,7 +1777,7 @@ details[open] > summary .chevron {
 
 .sheet-content {
   display: grid;
-  gap: 14px;
+  gap: var(--space-4);
   text-align: center;
 }
 
@@ -1799,7 +1799,7 @@ details[open] > summary .chevron {
 .timer-presets {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 7px;
+  gap: var(--space-2);
 }
 
 .timer-preset {
@@ -1821,12 +1821,12 @@ details[open] > summary .chevron {
 .sheet-actions {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 8px;
+  gap: var(--space-2);
 }
 
 @media (min-width: 680px) {
   .app-content {
-    padding: 32px 24px 60px;
+    padding: var(--space-6) var(--space-5) 60px;
   }
 
   .hero-card,
@@ -1834,7 +1834,7 @@ details[open] > summary .chevron {
   .trainer-header,
   .trainer-library,
   .trainer-session-card {
-    padding: 26px;
+    padding: var(--space-5);
   }
 
   .dashboard-grid {
@@ -1895,7 +1895,7 @@ details[open] > summary .chevron {
   }
 
   .hero-card {
-    padding: 34px;
+    padding: var(--space-6);
   }
 
   .note-grid {
@@ -1931,7 +1931,7 @@ details[open] > summary .chevron {
   .trainer-header,
   .trainer-library,
   .trainer-session-card {
-    padding: 17px;
+    padding: var(--space-4);
     border-radius: 22px;
   }
 
