@@ -1557,7 +1557,7 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
       {
         id: "en-p41-q5",
         prompt:
-          "공장이 문을 닫자 강은 맑아졌지만 사백 명이 일자리를 잃었다는 위 글에서, ‘The town learned that a clean river and full jobs were ① harder to hold together than expected. Some families ② stayed after the factory closed, but half of them ③ moved away. The water itself grew ④ dirtier every year after the closing.’ 밑줄 친 낱말 중 문맥에 맞지 않는 것은? (낱말: expected 예상한, closing 문을 닫음)",
+          "공장이 문을 닫자 강은 맑아졌지만 사백 명이 일자리를 잃었다는 위 글에서, ‘The town learned that a clean river and full jobs were ① harder to hold together than expected. Half of the families who lost their jobs ② stayed, and the other half ③ moved away. The water itself grew ④ dirtier every year after the closing.’ 밑줄 친 낱말 중 문맥에 맞지 않는 것은? (낱말: expected 예상한, the other half 나머지 절반, closing 문을 닫음)",
         choices: [
           { value: "four", label: "④ dirtier" },
           { value: "one", label: "① harder" },
@@ -1566,7 +1566,7 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         ],
         answer: "four",
         explanation:
-          "41번에서 잡아 둔 방향은 공장이 사라진 뒤 강은 맑아지고 사람은 줄었다는 것입니다. 그러니 물은 해마다 맑아졌다고 해야 하고 dirtier는 방향이 정반대입니다. 절반이 떠났다는 말은 절반이 남았다는 뜻이기도 하므로 ②와 ③은 서로 어긋나지 않습니다.",
+          "41번에서 잡아 둔 방향은 공장이 사라진 뒤 강은 맑아지고 사람은 줄었다는 것입니다. 그러니 물은 해마다 맑아졌다(cleaner)고 해야 하고 dirtier는 방향이 정반대입니다. ②와 ③은 절반은 남고 나머지 절반은 떠났다는 원문 그대로라 서로 부딪치지 않습니다.",
       },
     ],
   },
@@ -1645,7 +1645,7 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
       {
         id: "en-p43-q5",
         prompt:
-          "‘Jia visited her old teacher, Ms. Han, at the hospital. ①She was sitting by the window with a blanket over her knees. When Jia held out a class photo, ②she took it with both hands. ③She had carried that photo in her bag for a week, waiting for a chance to bring it. ④She said it should stay on the small table by the bed.’ (낱말: blanket 담요, held out 내밀었다, with both hands 두 손으로, carry 지니고 다니다) 가리키는 대상이 나머지 셋과 다른 것은?",
+          "‘Jia visited her old teacher, Ms. Han, at the hospital. ①She was already sitting up in the hospital bed, with a blanket over her knees. When Jia held out a class photo, ②she took it with both hands. ③She had carried that photo in her bag for a week, waiting for a chance to bring it. ④She said it should stay on the small table by the bed.’ (낱말: sit up 몸을 일으켜 앉다, blanket 담요, held out 내밀었다, carry 지니고 다니다) 가리키는 대상이 나머지 셋과 다른 것은?",
         choices: [
           { value: "three", label: "③" },
           { value: "one", label: "①" },
@@ -1654,7 +1654,7 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         ],
         answer: "three",
         explanation:
-          "사진을 일주일이나 가방에 넣고 다니며 건넬 기회를 기다린 사람은 병실에 있는 Ms. Han이 아니라 찾아온 Jia이므로 ③만 Jia입니다. ①은 창가에 앉아 있고 ②는 사진을 받아 들고 ④는 그 사진을 두라고 말하니 모두 Ms. Han입니다. 대명사 옆에 이름을 하나씩 적어 두면 이렇게 하나만 다른 자리가 눈에 들어옵니다.",
+          "사진을 일주일이나 가방에 넣고 다니며 건넬 기회를 기다린 사람은 병상에 누워 있던 Ms. Han이 아니라 찾아온 Jia이므로 ③만 Jia입니다. ①은 병상에 앉아 있고 ②는 사진을 받아 들고 ④는 그 사진을 두라고 말하니 모두 Ms. Han입니다. 대명사 옆에 이름을 하나씩 적어 두면 이렇게 하나만 다른 자리가 눈에 들어옵니다.",
       },
     ],
   },
