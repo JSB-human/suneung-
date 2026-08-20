@@ -1366,6 +1366,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         explanation:
           "So는 앞의 원인을 받는 말이라 아침이면 기억하지 못한다는 문장 뒤에 와야 하고, them은 그 앞의 dreams를 가리킵니다. 공책 이야기가 시작되기 바로 앞인 ②가 자리입니다.",
       },
+      {
+        id: "en-p38-q4",
+        prompt:
+          "상자 안 문장 ‘Such a small change saved the school 300,000 won a year.’을 넣을 자리는? ‘Our school printed every notice on paper. ① Most of them went straight into the recycling bin. ② Last March the office started sending notices by text message. ③ Now one teacher can reach every parent in a second. ④ That money now buys new books for the library. ⑤’ (낱말: notice 알림장, recycling bin 재활용 통, reach ~에게 닿다, save 아끼다)",
+        choices: [
+          { value: "four", label: "④" },
+          { value: "two", label: "②" },
+          { value: "three", label: "③" },
+          { value: "five", label: "⑤" },
+        ],
+        answer: "four",
+        explanation:
+          "Such a small change는 앞에 그 변화가 다 설명되어 있어야 쓸 수 있는 말이고, 문자로 보내기 시작했다는 ②와 그래서 어떻게 되었다는 ③이 그 설명입니다. 게다가 ④ 뒤의 That money는 상자 문장의 300,000원을 받는 말이라, 상자 문장이 빠지면 돈이 어디서 나왔는지 알 수 없어 흐름이 끊깁니다. ③에 넣으면 변화 설명이 끝나기도 전에 결산부터 하는 셈입니다.",
+      },
+      {
+        id: "en-p38-q5",
+        prompt:
+          "상자 안 문장 ‘But she could not read a single word of it.’을 넣을 자리는? ‘On her tenth birthday Suji got a letter from her grandmother in Japan. ① She carried the envelope to her father, who read it out loud for her. ② From that day she asked him to teach her ten Japanese words a week. ③ Two years later she wrote her first letter back. ④’ (낱말: envelope 봉투, out loud 소리 내어, a single word 단 한 글자도)",
+        choices: [
+          { value: "one", label: "①" },
+          { value: "two", label: "②" },
+          { value: "three", label: "③" },
+          { value: "four", label: "④" },
+        ],
+        answer: "one",
+        explanation:
+          "But이 편지를 받은 기쁜 상황을 뒤집고, it은 그 편지를 가리키므로 상자 문장은 편지를 받았다는 첫 문장 바로 뒤여야 합니다. 상자 문장이 없으면 편지를 받자마자 아버지에게 들고 갔다는 말이 까닭 없이 튀는데, 그렇게 살짝 끊기는 자리가 답입니다. 정답 자리는 앞뒤가 매끄러운 곳이 아닙니다.",
+      },
     ],
   },
 
@@ -1425,6 +1453,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         explanation:
           "느린 음악이 걸음을 늦추고 더 오래 머물게 해서 더 많이 샀다고 했습니다. (A)는 그대로 slowly이고 (B)는 그 결과인 raises입니다.",
       },
+      {
+        id: "en-p40-q4",
+        prompt:
+          "‘Two groups read the same list of words. One group had to look for the letter e in each word. The other group had to decide whether each word felt pleasant. Later the second group remembered far more words, though no one had asked them to memorize anything.’ 요약문 ‘Thinking about the (A) of a word, rather than its shape, makes it (B) to remember later.’의 (A)와 (B)로 알맞은 것은? (낱말: pleasant 기분 좋은, memorize 외우다, rather than ~이 아니라)",
+        choices: [
+          { value: "meaning-easier", label: "(A) meaning ... (B) easier" },
+          { value: "meaning-harder", label: "(A) meaning ... (B) harder" },
+          { value: "shape-easier", label: "(A) shape ... (B) easier" },
+          { value: "sound-harder", label: "(A) sound ... (B) harder" },
+        ],
+        answer: "meaning-easier",
+        explanation:
+          "낱말이 기분 좋게 느껴지는지 판단한 쪽은 뜻을 생각한 것이고, 그 조가 더 많이 기억했으니 (A)는 meaning, (B)는 easier입니다. (A)에 shape을 넣으면 요약문 안의 rather than its shape과 부딪쳐 한 문장 안에서 말이 어긋나고, harder는 결과를 정반대로 뒤집은 것입니다. 두 칸 중 확실한 (B)부터 정하면 후보가 절반으로 줄어듭니다.",
+      },
+      {
+        id: "en-p40-q5",
+        prompt:
+          "‘A store moved its fruit from the back wall to the front door. Nothing else changed: the same fruit at the same price. That month fruit sales rose by a third.’ 요약문 ‘Simply changing where the fruit was (A) increased sales, even though the price stayed (B).’의 (A)와 (B)로 알맞은 것은? (낱말: rose by a third 3분의 1만큼 늘었다, place 놓다)",
+        choices: [
+          { value: "placed-same", label: "(A) placed ... (B) the same" },
+          { value: "placed-lower", label: "(A) placed ... (B) lower" },
+          { value: "grown-same", label: "(A) grown ... (B) the same" },
+          { value: "grown-lower", label: "(A) grown ... (B) lower" },
+        ],
+        answer: "placed-same",
+        explanation:
+          "가게가 바꾼 것은 과일을 놓아둔 자리뿐이므로 (A)는 placed이고, 값은 그대로였다고 못 박았으니 (B)는 the same입니다. lower를 고르면 값을 내려서 더 팔렸다는 말이 되어, 자리만 바꿨다는 이 글의 핵심이 통째로 사라집니다.",
+      },
     ],
   },
 
@@ -1483,6 +1539,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         answer: "title-first",
         explanation:
           "42번의 정답은 글 전체 방향과 어긋난 낱말입니다. 그 방향을 한 줄로 알려 주는 것이 41번 제목이므로, 제목을 먼저 확정하면 어휘는 O와 X로 갈립니다.",
+      },
+      {
+        id: "en-p41-q4",
+        prompt:
+          "‘When the factory near our town closed, the river below it slowly grew clear. Fish came back within three years, and children swam there again. But four hundred people lost their jobs, and half of those families left town. A clean river and a full town were harder to have at the same time than anyone had promised.’ (낱말: factory 공장, grew clear 맑아졌다, promise 장담하다) 이 글의 제목으로 가장 알맞은 것은?",
+        choices: [
+          { value: "price", label: "A Clean River at the Price of Jobs" },
+          { value: "fish", label: "How to Bring Fish Back to a River" },
+          { value: "need-factory", label: "Why Every Town Needs a Factory" },
+          { value: "swim", label: "The Best Places to Swim in Summer" },
+        ],
+        answer: "price",
+        explanation:
+          "앞 문단은 강이 맑아진 좋은 쪽, 뒤 문단은 일자리를 잃은 나쁜 쪽이고 마지막 문장이 둘을 한꺼번에 갖기 어렵다고 묶습니다. 제목은 그 두 쪽을 다 담아야 하므로 대가를 말한 것이 맞습니다. 물고기와 수영은 앞 문단에만 있는 이야기라 글의 절반밖에 덮지 못합니다.",
+      },
+      {
+        id: "en-p41-q5",
+        prompt:
+          "공장이 문을 닫자 강은 맑아졌지만 사백 명이 일자리를 잃었다는 위 글에서, ‘The town learned that a clean river and full jobs were ① harder to hold together than expected. Some families ② stayed after the factory closed, but half of them ③ moved away. The water itself grew ④ dirtier every year after the closing.’ 밑줄 친 낱말 중 문맥에 맞지 않는 것은? (낱말: expected 예상한, closing 문을 닫음)",
+        choices: [
+          { value: "four", label: "④ dirtier" },
+          { value: "one", label: "① harder" },
+          { value: "two", label: "② stayed" },
+          { value: "three", label: "③ moved" },
+        ],
+        answer: "four",
+        explanation:
+          "41번에서 잡아 둔 방향은 공장이 사라진 뒤 강은 맑아지고 사람은 줄었다는 것입니다. 그러니 물은 해마다 맑아졌다고 해야 하고 dirtier는 방향이 정반대입니다. 절반이 떠났다는 말은 절반이 남았다는 뜻이기도 하므로 ②와 ③은 서로 어긋나지 않습니다.",
       },
     ],
   },
