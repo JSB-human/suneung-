@@ -1105,6 +1105,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         explanation:
           "빈칸 문장은 글의 요지를 압축한 자리라 근거는 글이 되풀이한 말에 있습니다. 바로 옆 단어와 잘 붙는지로 고르면 함정에 걸립니다.",
       },
+      {
+        id: "en-p31-q4",
+        prompt:
+          "‘A museum guide once said that her hardest job is not adding information but ____. Visitors who try to read every label leave tired and remember nothing. The ones who look closely at five works remember them for years.’ (낱말: label 작품 옆 설명표, closely 자세히, work 작품) 빈칸에 알맞은 것은?",
+        choices: [
+          { value: "taking-away", label: "taking most of it away" },
+          { value: "adding-more", label: "adding more labels to every room" },
+          { value: "longer-hours", label: "opening the museum for longer hours" },
+          { value: "famous-works", label: "buying more famous works" },
+        ],
+        answer: "taking-away",
+        explanation:
+          "not A but B는 A가 아니라 B라는 뜻이라, 빈칸에는 정보를 더하는 것과 반대되는 말이 와야 합니다. 뒤 두 문장이 다 읽으면 아무것도 남지 않고 다섯 점만 보면 오래 남는다며 같은 말을 되풀이해 줍니다. adding more labels는 빈칸 바로 앞 adding과 매끄럽게 이어져서 손이 가지만, not이 이미 아니라고 막아 놓은 쪽입니다.",
+      },
+      {
+        id: "en-p31-q5",
+        prompt:
+          "‘A young tree tied to a strong pole grows straight, but its trunk stays thin. Wind is what makes a trunk thick. A tree that never bends never becomes ____.’ (낱말: pole 지지대, trunk 줄기, bend 휘다) 빈칸에 알맞은 것은?",
+        choices: [
+          { value: "strong", label: "strong" },
+          { value: "straight", label: "straight" },
+          { value: "tall", label: "tall" },
+          { value: "green", label: "green" },
+        ],
+        answer: "strong",
+        explanation:
+          "둘째 문장이 줄기를 굵게 만드는 것은 바람이라고 못 박았으므로, 휘어 본 적이 없는 나무에게 없는 것은 굵기, 곧 힘입니다. straight는 첫 문장에 그대로 나오지만 지지대에 묶인 나무가 이미 갖고 있는 성질이라 뜻이 정반대가 되고, tall과 green은 글이 한 번도 다루지 않았습니다.",
+      },
     ],
   },
 
@@ -1164,6 +1192,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         explanation:
           "글은 집에서 빵을 굽는 이야기로 이어지는데 ③만 쌀을 말합니다. ③을 빼고 ②와 ④를 이어 읽으면 흐름이 자연스럽게 붙습니다.",
       },
+      {
+        id: "en-p35-q4",
+        prompt:
+          "‘Honey does not go bad if you keep it dry. ① Jars of honey found in old tombs were still safe to eat. ② A tomb is a place where a dead person is buried. ③ Water is what lets bacteria grow, and honey holds almost none. ④ So a closed jar of honey can last for thousands of years.’ (낱말: go bad 상하다, tomb 무덤, bacteria 세균, jar 병) 흐름과 관계없는 문장은?",
+        choices: [
+          { value: "two", label: "②" },
+          { value: "one", label: "①" },
+          { value: "three", label: "③" },
+          { value: "four", label: "④" },
+        ],
+        answer: "two",
+        explanation:
+          "번호 없는 첫 문장이 정한 방향은 꿀이 왜 상하지 않는가입니다. ②는 앞 문장에 나온 tomb라는 낱말의 뜻을 설명할 뿐이라 그 방향과 이어지지 않습니다. ②를 빼고 ①과 ③을 붙여 읽으면 오래된 병이 멀쩡했다는 사실과 그 까닭이 곧바로 이어집니다.",
+      },
+      {
+        id: "en-p35-q5",
+        prompt:
+          "‘Left-handed players have an edge in tennis. ① Most opponents have practiced against right-handers all their lives. ② So the spin of a left-hander feels strange to them. ③ In a fast rally that strangeness costs a point. ④ Tennis balls are usually sold in cans of three.’ (낱말: left-handed 왼손잡이의, edge 유리한 점, opponent 상대, spin 공의 회전, rally 공을 주고받기) 흐름과 관계없는 문장은?",
+        choices: [
+          { value: "four", label: "④" },
+          { value: "one", label: "①" },
+          { value: "two", label: "②" },
+          { value: "three", label: "③" },
+        ],
+        answer: "four",
+        explanation:
+          "첫 문장이 정한 방향은 왼손잡이 선수가 유리한 까닭입니다. ①②③은 상대가 익숙하지 않다 → 회전이 낯설다 → 점수를 잃는다로 한 줄로 이어지는데, ④는 공을 파는 방식이라 테니스라는 소재만 같습니다. 앞의 두 문항은 답이 ③이었지만 무관한 문장이 늘 가운데 있는 것은 아닙니다.",
+      },
     ],
   },
 
@@ -1222,6 +1278,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         answer: "abc",
         explanation:
           "(A)의 However가 주어진 글의 통념을 뒤집어 글의 방향을 정합니다. (B)의 In one test가 그 말을 뒷받침할 실험을 꺼내고, (C)의 The slow group은 (B)의 two speeds 중 하나를 받으므로 마지막입니다.",
+      },
+      {
+        id: "en-p36-q4",
+        prompt:
+          "주어진 글 ‘Last spring our class decided to grow vegetables on the school roof.’ 뒤에 (A) ‘The soil arrived a week later, and everyone carried one bag up the stairs.’ (B) ‘By September we were eating our own tomatoes at lunch.’ (C) ‘First we had to ask the principal, who told us to buy proper soil for the boxes.’를 이어 쓸 때 알맞은 순서는? (낱말: principal 교장, soil 흙, proper 알맞은, carry 나르다)",
+        choices: [
+          { value: "cab", label: "(C) - (A) - (B)" },
+          { value: "abc", label: "(A) - (B) - (C)" },
+          { value: "bca", label: "(B) - (C) - (A)" },
+          { value: "acb", label: "(A) - (C) - (B)" },
+        ],
+        answer: "cab",
+        explanation:
+          "(C)의 First가 맨 처음 할 일을 알리므로 (C)가 앞입니다. (A)의 The soil은 (C)에서 교장이 사라고 한 그 흙을 받는 말이라 (C) 뒤여야 하고, (B)의 By September는 다 자란 뒤의 일이라 맨 끝입니다. (A)를 먼저 놓으면 The soil이 가리킬 흙이 앞에 없습니다.",
+      },
+      {
+        id: "en-p36-q5",
+        prompt:
+          "주어진 글 ‘A man put a box of free books outside his gate.’ 뒤에 (A) ‘Now the whole street uses the shelf, and the books change almost every day.’ (B) ‘So he built a small wooden shelf with a roof over it.’ (C) ‘One night of rain ruined every book in the box.’를 이어 쓸 때 알맞은 순서는? (낱말: gate 대문, ruin 망가뜨리다, shelf 선반, roof 지붕)",
+        choices: [
+          { value: "cba", label: "(C) - (B) - (A)" },
+          { value: "bca", label: "(B) - (C) - (A)" },
+          { value: "acb", label: "(A) - (C) - (B)" },
+          { value: "cab", label: "(C) - (A) - (B)" },
+        ],
+        answer: "cba",
+        explanation:
+          "(C)의 every book in the box가 주어진 글의 상자와 책을 그대로 받으므로 (C)가 맨 앞입니다. (B)의 So는 비에 젖었다는 원인을 받아 지붕 달린 선반을 만든 결과를 말하고, (A)의 the shelf는 (B)에서 처음 나온 그 선반이라 마지막입니다. 세 덩어리를 다 해석하지 않아도 첫 문장의 지시어만 따라가면 순서가 정해집니다.",
       },
     ],
   },
