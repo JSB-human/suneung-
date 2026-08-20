@@ -846,6 +846,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         explanation:
           "두 문항 중 하나는 일치를, 다른 하나는 불일치를 묻는 일이 많습니다. 발문을 확인하지 않으면 정확히 읽고도 반대쪽을 고르게 됩니다.",
       },
+      {
+        id: "en-p27-q4",
+        prompt:
+          "‘Night Sky Camp — When: July 12 (Fri), 8 p.m. to 11 p.m. Where: Green Hill Park. Who: Students aged 13 to 18. Cost: 5,000 won per person. Sign-up: Online only, by July 5.’ (낱말: aged 13 to 18 열세 살부터 열여덟 살까지, sign-up 신청, by ~까지) 안내문과 일치하는 것은?",
+        choices: [
+          { value: "online", label: "신청은 7월 5일까지 인터넷으로만 받는다" },
+          { value: "free", label: "참가비는 없다" },
+          { value: "adults", label: "성인도 참가할 수 있다" },
+          { value: "saturday", label: "토요일 저녁에 열린다" },
+        ],
+        answer: "online",
+        explanation:
+          "맨 아랫줄 Sign-up: Online only, by July 5가 신청 방법과 마감을 한꺼번에 말해 줍니다. 참가비는 5,000원이라 없다고 할 수 없고, 대상은 13~18세 학생이며, (Fri)는 금요일이라 토요일이 아닙니다. 이 문항은 일치하는 것을 묻고 있으니 하나만 남기고 셋을 지워야 합니다.",
+      },
+      {
+        id: "en-p27-q5",
+        prompt:
+          "‘Winter Cooking Class — Date: Dec 3 (Tue), 2 p.m. Place: Community Center Kitchen. Fee: 20,000 won (aprons provided). Note: No refund after Nov 30.’ (낱말: apron 앞치마, provided 제공되는, refund 환불) 안내문과 일치하지 않는 것은?",
+        choices: [
+          { value: "refund", label: "11월 30일이 지나도 환불을 받을 수 있다" },
+          { value: "apron", label: "앞치마는 제공된다" },
+          { value: "fee", label: "참가비는 2만 원이다" },
+          { value: "place", label: "주민센터 주방에서 열린다" },
+        ],
+        answer: "refund",
+        explanation:
+          "맨 아랫줄 No refund after Nov 30은 11월 30일이 지나면 환불이 안 된다는 뜻입니다. 날짜와 장소, 참가비만 확인하고 Note 줄을 건너뛰면 바로 이 자리를 놓칩니다. 안내문의 정답이 가장 자주 숨는 곳이 마지막 한 줄입니다.",
+      },
     ],
   },
 
@@ -902,6 +930,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         answer: "sitting",
         explanation:
           "이 문장의 동사는 is 하나뿐이므로 빈칸은 동사 자리가 아닙니다. 앞의 girl을 꾸미는 자리라 분사 sitting이 들어갑니다.",
+      },
+      {
+        id: "en-p29-q4",
+        prompt:
+          "‘The letter ____ by my grandfather in 1950.’ (뜻: 그 편지는 1950년에 할아버지가 쓰신 것이다.) 빈칸에 어법상 알맞은 것은?",
+        choices: [
+          { value: "was-written", label: "was written" },
+          { value: "wrote", label: "wrote" },
+          { value: "has-written", label: "has written" },
+          { value: "writing", label: "writing" },
+        ],
+        answer: "was-written",
+        explanation:
+          "주어 The letter는 쓰는 쪽이 아니라 쓰이는 쪽이므로 수동인 was written을 씁니다. 뒤에 by my grandfather가 붙어 있는 것이 행위를 한 사람이 따로 있다는 표시입니다. wrote를 고르면 편지가 스스로 무언가를 썼다는 말이 됩니다.",
+      },
+      {
+        id: "en-p29-q5",
+        prompt:
+          "‘This is the room ____ my father was born.’ (뜻: 여기가 아버지가 태어나신 방이다.) 빈칸에 어법상 알맞은 것은?",
+        choices: [
+          { value: "where", label: "where" },
+          { value: "which", label: "which" },
+          { value: "what", label: "what" },
+          { value: "whose", label: "whose" },
+        ],
+        answer: "where",
+        explanation:
+          "뒤 절 my father was born은 주어와 동사가 다 있고 빠진 자리가 없으므로 관계부사 where를 씁니다. 앞의 en-p29-q2에서는 in의 목적어가 비어 있어서 which였습니다. 두 문제를 나란히 두고, 뒤 절에 빈자리가 있으면 which, 없으면 where라고 정해 두면 됩니다.",
       },
     ],
   },
@@ -961,6 +1017,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         answer: "worry",
         explanation:
           "However는 앞 문장의 방향을 뒤집습니다. 앞이 행복이라는 좋은 방향이므로 뒤에는 걱정처럼 반대 방향의 말이 와야 합니다.",
+      },
+      {
+        id: "en-p30-q4",
+        prompt:
+          "‘Plastic bags are cheap, so shops give them away freely. But a bag used for ten minutes stays in the ground for hundreds of years. The ① short use and ② long life together make plastic a ③ small problem for the earth. Many countries now ④ charge money for each bag.’ (낱말: give away 거저 주다, stay in the ground 땅속에 남다, charge money 돈을 받다) 밑줄 친 낱말 중 문맥에 맞지 않는 것은?",
+        choices: [
+          { value: "three", label: "③ small" },
+          { value: "one", label: "① short" },
+          { value: "two", label: "② long" },
+          { value: "four", label: "④ charge" },
+        ],
+        answer: "three",
+        explanation:
+          "십 분 쓰고 수백 년 남는다는 앞 문장이 이미 나쁜 방향(−)을 정해 두었고, 여러 나라가 돈을 받기 시작했다는 뒷 문장도 문제가 크다는 쪽입니다. 그 사이에 small이 들어가면 혼자만 부호가 +로 뒤집힙니다. ①과 ②는 앞 문장의 ten minutes와 hundreds of years를 그대로 옮긴 말이라 맞습니다.",
+      },
+      {
+        id: "en-p30-q5",
+        prompt:
+          "‘Reading in a moving car makes many people feel sick. The eyes see a ① still page, but the ears feel the car ② moving. The brain gets two ③ matching messages and cannot decide which one is true. Closing your eyes often ④ helps.’ (낱말: still 움직이지 않는, matching 서로 들어맞는, decide 판단하다) 밑줄 친 낱말 중 문맥에 맞지 않는 것은?",
+        choices: [
+          { value: "three", label: "③ matching" },
+          { value: "one", label: "① still" },
+          { value: "two", label: "② moving" },
+          { value: "four", label: "④ helps" },
+        ],
+        answer: "three",
+        explanation:
+          "바로 뒤에 cannot decide which one is true, 곧 어느 쪽이 참인지 판단하지 못한다고 했습니다. 두 신호가 서로 들어맞는다면 판단할 일도 없으니 matching은 정반대이고 different 같은 말이 와야 합니다. 눈은 멈춘 종이를, 귀는 움직임을 느낀다는 ①과 ②가 바로 그 어긋남을 설명하는 자리입니다.",
       },
     ],
   },
