@@ -65,6 +65,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         explanation:
           "가입 소식과 모임 시간은 상황을 알려 주는 배경입니다. 상대에게 실제로 바라는 것은 마지막 물음표 문장 Would you be able to join us이므로 목적은 참여 요청입니다.",
       },
+      {
+        id: "en-p18-q4",
+        prompt:
+          "‘Dear Ms. Park, I am writing about the desk you ordered last week. Our delivery truck broke down on the way, so your desk did not arrive on time. We are very sorry for the delay, and we will send it again this Friday.’ (낱말: broke down 고장 났다, delay 늦어짐) 이 글의 목적으로 가장 알맞은 것은?",
+        choices: [
+          { value: "apology", label: "배송이 늦어진 것을 사과하려고" },
+          { value: "order", label: "새 책상을 주문하려고" },
+          { value: "ad", label: "새로 나온 책상을 광고하려고" },
+          { value: "address", label: "배송 주소를 다시 확인하려고" },
+        ],
+        answer: "apology",
+        explanation:
+          "트럭이 고장 나 책상이 제때 가지 못했고 그 점이 미안하다는 것이 이 편지의 용건입니다. desk와 ordered라는 낱말이 그대로 보인다고 ‘새 책상을 주문하려고’를 고르면 안 됩니다. 주문한 사람은 편지를 받는 Ms. Park이고 글쓴이는 물건을 보내는 쪽입니다.",
+      },
+      {
+        id: "en-p18-q5",
+        prompt:
+          "‘Dear Manager, I stayed at your hotel on May 3. The room was clean and your staff were very kind. However, the noise from the road kept me awake all night. I hope you will give guests a room on the quiet side of the building next time.’ (낱말: staff 직원, kept me awake 나를 잠들지 못하게 했다) 이 글의 목적으로 가장 알맞은 것은?",
+        choices: [
+          { value: "noise", label: "도로 소음 문제를 알리고 조용한 객실을 요청하려고" },
+          { value: "staff", label: "직원의 친절에 감사하려고" },
+          { value: "book", label: "다음 숙박을 예약하려고" },
+          { value: "clean", label: "객실 청소 상태를 칭찬하려고" },
+        ],
+        answer: "noise",
+        explanation:
+          "앞의 두 문장은 예의를 갖춘 칭찬이고 용건은 However 뒤부터입니다. 소음 때문에 잠을 못 잤다는 문제와 I hope you will give ...라는 바람이 이어지므로 목적은 소음을 알리고 조용한 방을 요청하는 것입니다. 방이 깨끗했다는 말이 앞에 있다고 ‘청소 상태를 칭찬하려고’를 고르면, 편지를 쓴 이유가 아니라 예의로 붙인 말을 목적으로 삼는 셈입니다.",
+      },
     ],
   },
 
@@ -124,6 +152,34 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         explanation:
           "심장이 뛰고 입이 마른다는 몸의 반응은 결과를 기다리는 초조함을 보여 줍니다. 19번은 감정 단어 대신 이런 몸의 반응으로 심경을 알려 주는 일이 많습니다.",
       },
+      {
+        id: "en-p19-q4",
+        prompt:
+          "‘Jun ran to the gate with the ticket he had kept for a year. Tonight he would finally hear his favorite singer. At the gate a guard said the show was cancelled because the singer was ill. Jun walked home slowly, still holding the useless ticket.’ (낱말: cancelled 취소된, useless 이제 쓸모없는) Jun의 심경 변화로 가장 알맞은 것은?",
+        choices: [
+          { value: "excited-disappointed", label: "들뜬 → 실망한" },
+          { value: "excited-satisfied", label: "들뜬 → 만족한" },
+          { value: "worried-relieved", label: "걱정하는 → 안도한" },
+          { value: "calm-angry", label: "차분한 → 화난" },
+        ],
+        answer: "excited-disappointed",
+        explanation:
+          "표를 일 년이나 간직했고 문까지 뛰어갔다는 것이 앞 장면의 들뜬 마음입니다. 공연이 취소되었다는 말 뒤에는 쓸모없어진 표를 든 채 천천히 걸어 돌아오므로 뒤 장면은 실망입니다. 앞 단어가 같은 ‘들뜬 → 만족한’에 걸리기 쉬운데, 뒤 장면에는 만족할 일이 하나도 일어나지 않았습니다.",
+      },
+      {
+        id: "en-p19-q5",
+        prompt:
+          "‘Sora sat at the back of the museum tour and checked the time again and again. Nothing in the room looked interesting. Then the guide opened a small box and held up a coin two thousand years old. Sora leaned forward and asked question after question.’ (낱말: leaned forward 몸을 앞으로 기울였다, question after question 질문을 계속) Sora의 심경 변화로 가장 알맞은 것은?",
+        choices: [
+          { value: "bored-interested", label: "지루한 → 흥미를 느낀" },
+          { value: "interested-bored", label: "흥미를 느낀 → 지루한" },
+          { value: "bored-tired", label: "지루한 → 피곤한" },
+          { value: "angry-sorry", label: "화난 → 미안한" },
+        ],
+        answer: "bored-interested",
+        explanation:
+          "시계를 자꾸 확인하고 볼 것이 없다고 느끼는 것은 지루함입니다. Then 뒤에서 몸을 앞으로 기울이고 질문을 계속했으므로 흥미로 바뀝니다. ‘흥미를 느낀 → 지루한’은 두 감정을 맞게 찾고도 앞뒤를 뒤집은 것이라, Then 앞에 세로선을 긋고 어느 장면이 먼저인지부터 정해야 걸리지 않습니다.",
+      },
     ],
   },
 
@@ -181,6 +237,37 @@ export const ENGLISH_PATTERNS: PatternNode[] = [
         answer: "action",
         explanation:
           "두 유형 모두 한국어 선택지를 쓰지만, 20번은 ‘~해야 한다’처럼 독자가 할 행동을 시키고 22번은 글 전체가 도달한 결론을 정리합니다.",
+      },
+      {
+        id: "en-p20-q4",
+        prompt:
+          "‘A study found that people who write down their goals finish more of them. Writing turns a vague wish into a plan you can see. So tonight, write down three tasks for tomorrow in a small notebook.’ (낱말: goal 목표, vague 막연한, task 할 일) 필자의 주장으로 가장 알맞은 것은?",
+        choices: [
+          { value: "write-down", label: "할 일을 종이에 적어 두어야 한다" },
+          { value: "buy-notebook", label: "좋은 공책을 사야 한다" },
+          { value: "big-goal", label: "목표를 크게 세워야 한다" },
+          { value: "more-study", label: "연구 결과를 더 찾아봐야 한다" },
+        ],
+        answer: "write-down",
+        explanation:
+          "첫 문장의 연구 결과는 주장을 믿게 하려고 붙인 근거입니다. 필자가 시키는 행동은 마지막 명령문 write down three tasks이므로 주장은 할 일을 적어 두라는 것입니다. notebook이라는 낱말이 보인다고 ‘좋은 공책을 사야 한다’를 고르면, 글이 말한 것은 공책의 품질이 아니라 적는 행동이라는 점을 놓치게 됩니다.",
+      },
+      {
+        id: "en-p20-q5",
+        prompt:
+          "‘Many drivers check their phone while they wait at a red light. It feels safe because the car is not moving. But your attention does not come back the moment the light turns green. Put the phone out of reach before you start the engine.’ (낱말: attention 주의, out of reach 손이 닿지 않는 곳에) 필자의 주장으로 가장 알맞은 것은?",
+        choices: [
+          {
+            value: "out-of-reach",
+            label: "운전을 시작하기 전에 휴대전화를 손이 닿지 않는 곳에 두어야 한다",
+          },
+          { value: "red-light-ok", label: "빨간불에 서 있을 때는 휴대전화를 봐도 된다" },
+          { value: "start-fast", label: "초록불로 바뀌면 곧바로 출발해야 한다" },
+          { value: "avoid-driving", label: "되도록 운전을 하지 말아야 한다" },
+        ],
+        answer: "out-of-reach",
+        explanation:
+          "앞 두 문장은 많은 운전자가 그렇게 믿는다는 통념이고 필자의 말은 But 뒤부터입니다. 마지막 명령문 Put the phone out of reach가 독자에게 시키는 행동이므로 그것이 주장입니다. ‘빨간불에 서 있을 때는 봐도 된다’는 필자가 반박하려고 일부러 먼저 적어 둔 생각이라 주장이 될 수 없습니다.",
       },
     ],
   },
