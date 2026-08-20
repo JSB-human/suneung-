@@ -65,7 +65,33 @@ export const MATH_PATTERNS: PatternNode[] = [
         explanation:
           "괄호 안 3 - 5 = -2가 먼저입니다. -2 × (-2) = 4이고, -(-4) = +4이므로 4 + 4 = 8입니다. 0은 -(-4)를 -4로 본 경우, -12는 -2를 분배할 때 -2 × (-5)를 -10으로 쓴 경우입니다.",
       },
-    ],
+          {
+        id: "ma-p-number-calc-q4",
+        prompt: "12 ÷ 4 × 3의 값은 무엇인가요?",
+        choices: [
+          { value: "9", label: "9" },
+          { value: "1", label: "1" },
+          { value: "16", label: "16" },
+          { value: "36", label: "36" },
+        ],
+        answer: "9",
+        explanation:
+          "곱셈과 나눗셈은 순위가 같아서 왼쪽부터 차례로 합니다. 12 ÷ 4 = 3이고, 3 × 3 = 9입니다. 1은 곱셈을 먼저 해 12 ÷ 12로 계산한 값입니다. 곱셈이 나눗셈보다 먼저라고 외우면 이 함정에 걸립니다.",
+      },
+      {
+        id: "ma-p-number-calc-q5",
+        prompt: "(-1)⁵ × (-2)²의 값은 무엇인가요?",
+        choices: [
+          { value: "-4", label: "-4" },
+          { value: "4", label: "4" },
+          { value: "-2", label: "-2" },
+          { value: "2", label: "2" },
+        ],
+        answer: "-4",
+        explanation:
+          "음수의 거듭제곱은 지수가 홀수면 음수, 짝수면 양수입니다. (-1)⁵는 -1을 다섯 번 곱한 것이라 -1이고, (-2)²는 (-2) × (-2) = 4입니다. -1 × 4 = -4입니다. 4는 (-1)⁵도 양수로 본 값입니다.",
+      },
+],
   },
   {
     id: "ma-p-expression-value",
@@ -121,7 +147,33 @@ export const MATH_PATTERNS: PatternNode[] = [
         explanation:
           "x²끼리 3x² + x² = 4x², x끼리 -2x + 5x = 3x입니다. 차수가 다르면 더 합칠 수 없으므로 4x² + 3x에서 멈춥니다. 4x⁴은 동류항을 더할 때 지수까지 더한 경우, 7x²은 차수가 다른 4x²과 3x를 억지로 합친 경우입니다.",
       },
-    ],
+          {
+        id: "ma-p-expression-value-q4",
+        prompt: "x = -3일 때 -x²의 값은 무엇인가요?",
+        choices: [
+          { value: "-9", label: "-9" },
+          { value: "9", label: "9" },
+          { value: "-6", label: "-6" },
+          { value: "6", label: "6" },
+        ],
+        answer: "-9",
+        explanation:
+          "-x²에서 제곱은 x에만 붙어 있습니다. 먼저 x² = (-3)² = 9를 구하고, 앞의 마이너스를 붙여 -9입니다. 9는 (-x)²로 잘못 읽어 부호까지 제곱한 값입니다. 대입할 때 음수는 괄호를 씌워 (-3)²처럼 적으면 이 실수가 줄어듭니다.",
+      },
+      {
+        id: "ma-p-expression-value-q5",
+        prompt: "a = 2, b = -1일 때 3a - 2b의 값은 무엇인가요?",
+        choices: [
+          { value: "8", label: "8" },
+          { value: "4", label: "4" },
+          { value: "6", label: "6" },
+          { value: "-8", label: "-8" },
+        ],
+        answer: "8",
+        explanation:
+          "3 × 2 = 6이고, -2 × (-1) = +2입니다. 6 + 2 = 8입니다. 4는 -2b를 -2로 계산해 뺀 값으로, 빼기와 음수가 겹치면 부호가 플러스가 된다는 점을 놓친 것입니다.",
+      },
+],
   },
   {
     id: "ma-p-factor-shape",
@@ -177,7 +229,33 @@ export const MATH_PATTERNS: PatternNode[] = [
         explanation:
           "(a - b)² = a² - 2ab + b²에 a = 2x, b = 3을 넣습니다. a² = 4x², 2ab = 2 × 2x × 3 = 12x, b² = 9이므로 4x² - 12x + 9입니다. 4x² - 6x + 9는 가운데 항에서 2를 곱하지 않은 경우, 4x² + 9는 가운데 항을 통째로 빠뜨린 경우입니다.",
       },
-    ],
+          {
+        id: "ma-p-factor-shape-q4",
+        prompt: "2x² - 8을 인수분해하면 무엇인가요?",
+        choices: [
+          { value: "2(x+2)(x-2)", label: "2(x + 2)(x - 2)" },
+          { value: "(x+2)(x-2)", label: "(x + 2)(x - 2)" },
+          { value: "2(x-2)²", label: "2(x - 2)²" },
+          { value: "(x+4)(x-2)", label: "(x + 4)(x - 2)" },
+        ],
+        answer: "2(x+2)(x-2)",
+        explanation:
+          "공통인수 2를 먼저 묶으면 2(x² - 4)가 되고, 남은 x² - 4가 두 제곱의 차라 (x + 2)(x - 2)로 갈라집니다. (x + 2)(x - 2)만 쓰면 앞에 묶어 둔 2를 빠뜨린 것이라, 펼쳐 보면 x² - 4가 되어 원래 식과 다릅니다. 인수분해는 공통인수부터 묶고, 마지막에 되펼쳐 원래 식이 나오는지 확인합니다.",
+      },
+      {
+        id: "ma-p-factor-shape-q5",
+        prompt: "x² + 6x + 9를 인수분해하면 무엇인가요?",
+        choices: [
+          { value: "(x+3)²", label: "(x + 3)²" },
+          { value: "(x+9)(x-1)", label: "(x + 9)(x - 1)" },
+          { value: "(x-3)²", label: "(x - 3)²" },
+          { value: "(x+6)(x+3)", label: "(x + 6)(x + 3)" },
+        ],
+        answer: "(x+3)²",
+        explanation:
+          "곱해서 9, 더해서 6이 되는 두 수는 3과 3입니다. 같은 수가 두 번 나오므로 (x + 3)(x + 3) = (x + 3)²입니다. (x - 3)²을 펼치면 가운데가 -6x라 부호가 다릅니다. 맨 뒤가 양수이고 가운데도 양수면 두 수 모두 양수입니다.",
+      },
+],
   },
   {
     id: "ma-p-linear-word",
@@ -234,7 +312,33 @@ export const MATH_PATTERNS: PatternNode[] = [
         explanation:
           "x년 후라 하면 형은 12 + x살, 동생은 4 + x살입니다. 두 사람 모두 x살씩 먹는다는 점이 핵심입니다. 12 + x = 2(4 + x)에서 12 + x = 8 + 2x, x = 4입니다. 4년 후 형은 16살, 동생은 8살이고 16 = 2 × 8이 맞습니다. 2는 형에게만 x를 더하지 않은 경우, 8과 16은 그때의 나이를 답한 경우입니다.",
       },
-    ],
+          {
+        id: "ma-p-linear-word-q4",
+        prompt: "한 개에 800원인 빵을 몇 개 사고 5000원을 냈더니 거스름돈이 1800원이었습니다. 산 빵은 몇 개인가요?",
+        choices: [
+          { value: "4", label: "4개" },
+          { value: "6", label: "6개" },
+          { value: "3", label: "3개" },
+          { value: "5", label: "5개" },
+        ],
+        answer: "4",
+        explanation:
+          "쓴 돈은 5000 - 1800 = 3200원입니다. 빵 개수를 x라 하면 800x = 3200이므로 x = 4입니다. 거스름돈을 그대로 800으로 나누면 안 됩니다. 먼저 얼마를 썼는지부터 구해야 합니다.",
+      },
+      {
+        id: "ma-p-linear-word-q5",
+        prompt: "연속하는 두 자연수의 합이 37입니다. 두 수 중 작은 수는 무엇인가요?",
+        choices: [
+          { value: "18", label: "18" },
+          { value: "19", label: "19" },
+          { value: "17", label: "17" },
+          { value: "20", label: "20" },
+        ],
+        answer: "18",
+        explanation:
+          "연속한다는 것은 1만큼 차이 난다는 뜻이므로 작은 수를 x라 하면 큰 수는 x + 1입니다. x + (x + 1) = 37에서 2x = 36, x = 18입니다. 19는 큰 수입니다. 무엇을 x로 두었는지 마지막에 다시 확인해야 묻는 것을 답하게 됩니다.",
+      },
+],
   },
   {
     id: "ma-p-system-word",
@@ -292,7 +396,33 @@ export const MATH_PATTERNS: PatternNode[] = [
         explanation:
           "어른을 x명, 학생을 y명이라 하면 x + y = 10, 3000x + 1500y = 24000입니다. y = 10 - x를 대입하면 3000x + 1500(10 - x) = 24000, 1500x + 15000 = 24000이므로 x = 6입니다. 어른 6명 18000원과 학생 4명 6000원을 더하면 24000원이 맞습니다. 4는 학생 수, 8과 16은 총액을 한 종류 입장료로만 나눈 값입니다.",
       },
-    ],
+          {
+        id: "ma-p-system-word-q4",
+        prompt: "닭과 토끼가 모두 10마리 있고 다리는 모두 26개입니다. 토끼는 몇 마리인가요?",
+        choices: [
+          { value: "3", label: "3마리" },
+          { value: "7", label: "7마리" },
+          { value: "5", label: "5마리" },
+          { value: "6", label: "6마리" },
+        ],
+        answer: "3",
+        explanation:
+          "닭을 x, 토끼를 y라 하면 마리 수에서 x + y = 10, 다리 수에서 2x + 4y = 26입니다. 위 식을 2배 한 2x + 2y = 20을 아래에서 빼면 2y = 6이므로 y = 3, 닭은 7마리입니다. 확인하면 2×7 + 4×3 = 14 + 12 = 26으로 맞습니다. 7은 닭의 수라 묻는 것과 다릅니다.",
+      },
+      {
+        id: "ma-p-system-word-q5",
+        prompt: "두 수의 합이 15이고, 큰 수는 작은 수의 2배보다 3만큼 작습니다. 작은 수는 무엇인가요?",
+        choices: [
+          { value: "6", label: "6" },
+          { value: "9", label: "9" },
+          { value: "5", label: "5" },
+          { value: "4", label: "4" },
+        ],
+        answer: "6",
+        explanation:
+          "작은 수를 x, 큰 수를 y라 하면 x + y = 15이고 y = 2x - 3입니다. 둘째 식을 첫째에 넣으면 x + 2x - 3 = 15, 3x = 18, x = 6입니다. 그러면 y = 9로 합이 15가 되고 2×6 - 3 = 9도 맞습니다. 9는 큰 수입니다. ‘2배보다 3만큼 작다’를 2x + 3으로 쓰면 부호가 반대가 됩니다.",
+      },
+],
   },
   {
     id: "ma-p-inequality-range",
@@ -348,7 +478,33 @@ export const MATH_PATTERNS: PatternNode[] = [
         explanation:
           "첫 식은 x > 2, 둘째 식은 x ≤ 5입니다. 두 범위를 수직선에 그려 겹치는 부분을 읽으면 2 < x ≤ 5입니다. x = 2는 2 + 1 > 3이 거짓이라 빠지고, x = 5는 5 + 1 > 3과 10 ≤ 10이 모두 참이라 들어갑니다. x > 2나 x ≤ 5만 고르면 조건 하나를 버린 것입니다.",
       },
-    ],
+          {
+        id: "ma-p-inequality-range-q4",
+        prompt: "3x - 4 ≤ 11의 해는 무엇인가요?",
+        choices: [
+          { value: "x<=5", label: "x ≤ 5" },
+          { value: "x>=5", label: "x ≥ 5" },
+          { value: "x<=7", label: "x ≤ 7" },
+          { value: "x>=-5", label: "x ≥ -5" },
+        ],
+        answer: "x<=5",
+        explanation:
+          "양변에 4를 더해 3x ≤ 15, 양변을 3으로 나눠 x ≤ 5입니다. 3은 양수이므로 부등호 방향은 그대로입니다. 음수로 나눌 때만 뒤집는데, 뒤집는 규칙을 외우다 보면 나눌 때마다 뒤집는 실수가 생깁니다.",
+      },
+      {
+        id: "ma-p-inequality-range-q5",
+        prompt: "한 개에 700원인 사탕을 5000원으로 살 때, 최대 몇 개까지 살 수 있나요?",
+        choices: [
+          { value: "7", label: "7개" },
+          { value: "8", label: "8개" },
+          { value: "6", label: "6개" },
+          { value: "5", label: "5개" },
+        ],
+        answer: "7",
+        explanation:
+          "개수를 x라 하면 700x ≤ 5000이므로 x ≤ 7.14…입니다. 개수는 자연수여야 하므로 조건을 만족하는 가장 큰 수는 7입니다. 8개면 5600원이라 돈이 모자랍니다. 나눈 값을 반올림해 8로 쓰면 안 되고, 부등식이므로 넘지 않는 쪽으로 내려야 합니다.",
+      },
+],
   },
   {
     id: "ma-p-quadratic-roots",
@@ -404,7 +560,33 @@ export const MATH_PATTERNS: PatternNode[] = [
         explanation:
           "곱이 1, 합이 -4인 정수가 없으므로 근의 공식으로 갑니다. a = 1, b = -4, c = 1이고 b² - 4ac = 16 - 4 = 12입니다. x = (4 ± √12)/2 = (4 ± 2√3)/2 = 2 ± √3입니다. 2 ± √5는 -4ac의 부호를 +로 본 경우, 4 ± 2√3은 마지막에 2로 나누는 것을 빠뜨린 경우입니다.",
       },
-    ],
+          {
+        id: "ma-p-quadratic-roots-q4",
+        prompt: "(x - 2)² = 9의 해는 무엇인가요?",
+        choices: [
+          { value: "5,-1", label: "x = 5 또는 x = -1" },
+          { value: "5", label: "x = 5" },
+          { value: "11,-7", label: "x = 11 또는 x = -7" },
+          { value: "3,-3", label: "x = 3 또는 x = -3" },
+        ],
+        answer: "5,-1",
+        explanation:
+          "제곱해서 9가 되는 수는 3과 -3 둘입니다. 그래서 x - 2 = 3 또는 x - 2 = -3이고, 각각 x = 5, x = -1입니다. x = 5만 답하면 음수 쪽을 빠뜨린 것입니다. 제곱을 풀 때 ± 를 붙이는 이유가 여기 있습니다.",
+      },
+      {
+        id: "ma-p-quadratic-roots-q5",
+        prompt: "x² + 4x + 2 = 0의 해는 무엇인가요?",
+        choices: [
+          { value: "-2±√2", label: "x = -2 ± √2" },
+          { value: "2±√2", label: "x = 2 ± √2" },
+          { value: "-4±√2", label: "x = -4 ± √2" },
+          { value: "-2±√14", label: "x = -2 ± √14" },
+        ],
+        answer: "-2±√2",
+        explanation:
+          "곱해서 2, 더해서 4가 되는 정수가 없으므로 근의 공식을 씁니다. x = (-4 ± √(16 - 8)) / 2 = (-4 ± √8) / 2이고, √8 = 2√2이므로 (-4 ± 2√2) / 2 = -2 ± √2입니다. 2 ± √2는 앞의 부호를 빠뜨린 값입니다. 인수분해가 안 되면 억지로 하지 말고 공식으로 넘어가는 판단이 먼저입니다.",
+      },
+],
   },
   {
     id: "ma-p-discriminant",
@@ -460,7 +642,33 @@ export const MATH_PATTERNS: PatternNode[] = [
         explanation:
           "x축과 만나는 점은 x² - 4x + k = 0의 실근입니다. 서로 다른 두 점이므로 b² - 4ac > 0, 즉 16 - 4k > 0이고 -4k > -16, 양변을 -4로 나누며 부등호를 뒤집으면 k < 4입니다. k = 0이면 x = 0, 4의 두 점에서 만나고, k = 4이면 (x - 2)²이라 한 점에서만 만나므로 맞습니다.",
       },
-    ],
+          {
+        id: "ma-p-discriminant-q4",
+        prompt: "x² + 2x + 5 = 0의 서로 다른 실근은 몇 개인가요?",
+        choices: [
+          { value: "0", label: "0개" },
+          { value: "1", label: "1개" },
+          { value: "2", label: "2개" },
+          { value: "3", label: "3개" },
+        ],
+        answer: "0",
+        explanation:
+          "판별식 D = 2² - 4×1×5 = 4 - 20 = -16입니다. D가 음수이면 실근이 없습니다. 이 식은 인수분해도 안 되는데, 그때 ‘못 풀겠다’가 아니라 ‘근이 없구나’로 읽어야 합니다. 개수만 묻는 문제는 근을 구하지 않고 D의 부호만 보면 끝납니다.",
+      },
+      {
+        id: "ma-p-discriminant-q5",
+        prompt: "이차방정식 x² + kx + 9 = 0이 중근을 가질 때, k의 값은 무엇인가요?",
+        choices: [
+          { value: "±6", label: "k = 6 또는 k = -6" },
+          { value: "6", label: "k = 6" },
+          { value: "±3", label: "k = 3 또는 k = -3" },
+          { value: "±9", label: "k = 9 또는 k = -9" },
+        ],
+        answer: "±6",
+        explanation:
+          "중근은 D = 0일 때입니다. D = k² - 4×1×9 = k² - 36 = 0이므로 k² = 36, k = 6 또는 k = -6입니다. k = 6만 답하면 음수 쪽을 빠뜨린 것입니다. k = 6이면 (x + 3)², k = -6이면 (x - 3)²으로 둘 다 중근을 가집니다.",
+      },
+],
   },
   {
     id: "ma-p-quadratic-extremum",
