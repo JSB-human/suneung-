@@ -3,19 +3,37 @@
 import { useEffect, useId, useMemo, useRef, useState } from "react";
 import type { PracticeOutcomeReport } from "../practice/PracticeRunner";
 import type { Subject } from "../practice/types.ts";
+import type { PathNode, PathNodeKind } from "./types.ts";
 import NodeRunner from "./NodeRunner";
 import { getNode, getNodesForSubject } from "./path-nodes.ts";
-import { getNodeStatus, getSubjectProgress, type PathState } from "./path-state.ts";
+import {
+  getNodeStatus,
+  getSubjectProgress,
+  type PathState,
+} from "./path-state.ts";
 import { getPhase } from "./phases.ts";
 import RoadmapSheet from "./RoadmapSheet";
+import { shouldScrollToCurrent } from "./scroll-into-view.ts";
 import { buildRoadmap, formatWeekRange, type Roadmap } from "./roadmap.ts";
 
 export type PathViewProps = {
+  /**
+   * 이 탭이 지금 보이는지.
+   *
+   * 탭은 숨겨질 뿐 마운트된 채로 남는다(hidden -> display:none). 그래서 마운트
+   * 시점에 현재 칸으로 스크롤해도 아무 일이 일어나지 않는다 — 숨은 요소는
+   * 위치가 없다. 실제로 보이게 된 순간을 알아야 스크롤할 수 있다.
+   */
+  isActive?: boolean;
   subject: Subject;
   state: PathState;
   /** 오늘 날짜(YYYY-MM-DD). 렌더 중 `new Date()`를 부르지 않으려고 프롭으로 받는다. */
   todayKey: string;
-  onCompleteNode: (nodeId: string, correctCount: number, totalCount: number) => void;
+  onCompleteNode: (
+    nodeId: string,
+    correctCount: number,
+    totalCount: number,
+  ) => void;
   onOutcome?: (report: PracticeOutcomeReport) => void;
 };
 
@@ -57,12 +75,50 @@ function headline(roadmap: Roadmap): string {
   return `이번 주 ${roadmap.nodesPerWeek}칸`;
 }
 
+/**
+ * 길을 세 구간으로 나눈다: 기초 → 개념 → 유형.
+ *
+ * 칸 목록은 한 과목이 50칸까지 가고 화면으로 6000px가 넘는다. 한 줄로 이어
+ * 놓으면 지금 어디쯤인지, 앞으로 뭐가 남았는지 가늠이 안 된다. 구간 제목이
+ * 있으면 훑으면서 위치를 잡을 수 있다.
+ *
+ * kind가 이미 학습 순서대로 연속해 있어(기초 전부 → 개념 전부 → 유형 전부)
+ * 따로 정렬하지 않고 이어진 덩어리로 자르기만 하면 된다.
+ */
+const SECTION_LABELS: Record<PathNodeKind, { title: string; hint: string }> = {
+  capsule: {
+    title: "기초 다지기",
+    hint: "여기부터. 몰라도 되는 걸 먼저 덜어 냅니다.",
+  },
+  concept: { title: "개념 익히기", hint: "시험에 나오는 개념을 한 칸씩." },
+  pattern: {
+    title: "문제 유형 익히기",
+    hint: "문제가 어떻게 나오는지, 뭘 먼저 볼지.",
+  },
+};
+
+function groupByKind(
+  nodes: PathNode[],
+): { kind: PathNodeKind; nodes: PathNode[] }[] {
+  const groups: { kind: PathNodeKind; nodes: PathNode[] }[] = [];
+  for (const node of nodes) {
+    const last = groups[groups.length - 1];
+    if (last && last.kind === node.kind) {
+      last.nodes.push(node);
+      continue;
+    }
+    groups.push({ kind: node.kind, nodes: [node] });
+  }
+  return groups;
+}
+
 export default function PathView({
   subject,
   state,
   todayKey,
   onCompleteNode,
   onOutcome,
+  isActive = true,
 }: PathViewProps) {
   const [openNodeId, setOpenNodeId] = useState<string | null>(null);
   const [isRoadmapOpen, setIsRoadmapOpen] = useState(false);
@@ -76,9 +132,28 @@ export default function PathView({
     [subject, state, todayKey],
   );
 
+  // 탭이 보이게 됐을 때 지금 칸으로 데려간다. 진도가 나갈수록 목록이 길어져
+  // (영어는 6000px가 넘는다) 매번 자기 자리를 찾아 내려가야 하기 때문이다.
+  //
+  // 다만 이미 첫 화면 안에 있으면 스크롤하지 않는다. 시작한 지 얼마 안 된
+  // 사람은 현재 칸이 맨 위인데, 그걸 화면 가운데로 올리면 미쿠 카드와 이번 주
+  // 카드가 위로 밀려 사라진다. 도와주려다 맥락을 뺏는 셈이다.
   useEffect(() => {
-    currentRef.current?.scrollIntoView({ block: "center", behavior: "auto" });
-  }, [subject]);
+    if (!isActive) {
+      return;
+    }
+    const element = currentRef.current;
+    const shouldScroll = shouldScrollToCurrent({
+      isActive,
+      hasCurrentNode: Boolean(element),
+      currentTop: element ? element.getBoundingClientRect().top : 0,
+      viewportHeight: window.innerHeight,
+    });
+    if (!shouldScroll || !element) {
+      return;
+    }
+    element.scrollIntoView({ block: "center", behavior: "auto" });
+  }, [isActive, subject]);
 
   if (openNodeId) {
     // 길 순서상 바로 다음 칸. 방금 끝낸 칸을 완료로 표시하면 여기가 열린다.
@@ -115,7 +190,9 @@ export default function PathView({
       >
         <header className="week-card-head">
           <span className="week-card-phase">{phase.name}</span>
-          <span className="week-card-range">{formatWeekRange(roadmap.currentWeek)}</span>
+          <span className="week-card-range">
+            {formatWeekRange(roadmap.currentWeek)}
+          </span>
         </header>
 
         <h2 className="week-card-title">{headline(roadmap)}</h2>
@@ -177,7 +254,9 @@ export default function PathView({
           aria-controls={roadmapId}
           onClick={() => setIsRoadmapOpen((previous) => !previous)}
         >
-          {isRoadmapOpen ? "로드맵 접기" : `수능까지 전체 로드맵 보기 (${roadmap.weeks.length}주)`}
+          {isRoadmapOpen
+            ? "로드맵 접기"
+            : `수능까지 전체 로드맵 보기 (${roadmap.weeks.length}주)`}
         </button>
 
         {isRoadmapOpen ? (
@@ -191,36 +270,55 @@ export default function PathView({
         {progress.done} / {progress.total} 칸 완료
       </p>
 
-      <ol className="path-list">
-        {nodes.map((node) => {
-          const status = getNodeStatus(state, node.id);
-          const needsReview = state.needsReviewNodeIds.includes(node.id);
-          return (
-            <li
-              key={node.id}
-              ref={status === "current" ? currentRef : null}
-              className={`path-node is-${status}`}
-            >
-              <button
-                type="button"
-                className="path-node-button"
-                disabled={status === "locked"}
-                onClick={() => setOpenNodeId(node.id)}
-                aria-current={status === "current" ? "step" : undefined}
-              >
-                <span className="path-node-order" aria-hidden="true">
-                  {status === "done" ? "✓" : node.order}
-                </span>
-                <span className="path-node-body">
-                  <strong>{node.title}</strong>
-                  <small>{node.summary}</small>
-                  {needsReview ? <em className="path-node-review">복습 필요</em> : null}
-                </span>
-              </button>
-            </li>
-          );
-        })}
-      </ol>
+      {groupByKind(nodes).map((group) => {
+        const label = SECTION_LABELS[group.kind];
+        const doneInGroup = group.nodes.filter(
+          (node) => getNodeStatus(state, node.id) === "done",
+        ).length;
+        return (
+          <section className="path-section" key={group.kind}>
+            <div className="path-section-head">
+              <h3 className="path-section-title">{label.title}</h3>
+              <span className="path-section-count">
+                {doneInGroup} / {group.nodes.length}
+              </span>
+            </div>
+            <p className="path-section-hint">{label.hint}</p>
+            <ol className="path-list">
+              {group.nodes.map((node) => {
+                const status = getNodeStatus(state, node.id);
+                const needsReview = state.needsReviewNodeIds.includes(node.id);
+                return (
+                  <li
+                    key={node.id}
+                    ref={status === "current" ? currentRef : null}
+                    className={`path-node is-${status}`}
+                  >
+                    <button
+                      type="button"
+                      className="path-node-button"
+                      disabled={status === "locked"}
+                      onClick={() => setOpenNodeId(node.id)}
+                      aria-current={status === "current" ? "step" : undefined}
+                    >
+                      <span className="path-node-order" aria-hidden="true">
+                        {status === "done" ? "✓" : node.order}
+                      </span>
+                      <span className="path-node-body">
+                        <strong>{node.title}</strong>
+                        <small>{node.summary}</small>
+                        {needsReview ? (
+                          <em className="path-node-review">복습 필요</em>
+                        ) : null}
+                      </span>
+                    </button>
+                  </li>
+                );
+              })}
+            </ol>
+          </section>
+        );
+      })}
     </section>
   );
 }

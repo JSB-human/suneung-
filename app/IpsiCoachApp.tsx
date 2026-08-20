@@ -882,6 +882,7 @@ export default function IpsiCoachApp() {
             state={appState.path}
             todayKey={todayKey}
             onCompleteNode={handleCompleteNode}
+            isActive={activeTab === "korean"}
             onOutcome={handlePracticeOutcome}
           />
         </section>
@@ -906,6 +907,7 @@ export default function IpsiCoachApp() {
             state={appState.path}
             todayKey={todayKey}
             onCompleteNode={handleCompleteNode}
+            isActive={activeTab === "english"}
             onOutcome={handlePracticeOutcome}
           />
         </section>
@@ -930,6 +932,7 @@ export default function IpsiCoachApp() {
             state={appState.path}
             todayKey={todayKey}
             onCompleteNode={handleCompleteNode}
+            isActive={activeTab === "math"}
             onOutcome={handlePracticeOutcome}
           />
         </section>

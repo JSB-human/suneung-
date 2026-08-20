@@ -2013,6 +2013,46 @@
   line-height: var(--lh-body);
 }
 
+/* --- 길의 구간 -----------------------------------------------------
+   한 과목 목록이 50칸까지 가고 화면으로 6000px가 넘는다. 한 줄로 이어 놓으면
+   지금 어디쯤인지 가늠이 안 된다. 기초 → 개념 → 유형으로 끊어 준다. */
+
+.path-section {
+  display: grid;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+}
+
+.path-section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.path-section-title {
+  margin: 0;
+  font-size: var(--fs-lead);
+  font-weight: 800;
+  line-height: var(--lh-snug);
+  color: var(--ink-strong);
+}
+
+.path-section-count {
+  flex: none;
+  font-size: var(--fs-micro);
+  font-weight: 700;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.path-section-hint {
+  margin: 0;
+  font-size: var(--fs-micro);
+  line-height: var(--lh-snug);
+  color: var(--muted);
+}
+
 /* --- 오늘 화면의 위계 -----------------------------------------------
    미쿠 카드의 버튼이 오늘의 한 칸이고, 과목 카드 셋은 "다른 걸 하고
    싶으면"이다. 둘이 같은 무게로 보이면 처음 온 사람이 멈춘다. */
